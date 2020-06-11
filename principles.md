@@ -7,7 +7,6 @@
    
 #### 2.  We will review and re-use existing standards for exchanges if they are suitable and reflect the objectives.
    - UWLR
+   - OneRoster
    - ?
-   
-
 
