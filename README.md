@@ -3,7 +3,7 @@ Source code for any services or APIs created in the technology track in Summer 2
 
 ## Objectives
 
-- To prove out the key interactions between systems as defined in the high level working document: sBDL - Moving from a Chain to an Ecosystem
+- To prove out the key interactions between systems as defined in the high level working document: [sBDL - Moving from a Chain to an Ecosystem](https://github.com/stichtingsem/functional-overview/blob/master/documents/sBDL%20-%20Moving%20from%20a%20Chain%20to%20an%20Ecosystem%20-%20v2.docx?raw=true)
 - To create a working prototype of the key interactions, that form the basis of an agreement on API’s specifications, that then allow the participants in the eco-system to begin work on their own specific implementations.
 - It is envisaged that this set of working API implementations for each of key services and roles in the ecosystem form the foundation of any new agreement between participants.
 - To allow us to understand if the de-centralised model is workable from a security perspective, given the requirement that each school be responsible for creating and authorising the connections between systems.
