@@ -1,4 +1,6 @@
 openapi: '3.0.0'
+servers:
+  - url: https://example.stichtingsem.org
 info:
   description: |-
     The proposed architecture for the new ecosystem is based on an Event model, where each provider of data to the ecosystem provides a mechanism for other participants to securely subscribe to events that are of interest to them.
@@ -52,7 +54,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/definitions/webhook'
+              $ref: '#/components/schemas/webhook'
       responses:
         '200':
           description: OK
