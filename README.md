@@ -1,6 +1,8 @@
 # technology-prototype
 Source code for any services or APIs created in the technology track in Summer 2020
 
+![Publish Documentation to Bump.sh](https://github.com/stichtingsem/technology-prototype/workflows/Publish%20Documentation%20to%20Bump.sh/badge.svg)
+
 ## Objectives
 
 - To prove out the key interactions between systems as defined in the high level working document: [sBDL - Moving from a Chain to an Ecosystem](https://github.com/stichtingsem/functional-overview/blob/master/documents/sBDL%20-%20Moving%20from%20a%20Chain%20to%20an%20Ecosystem%20-%20v2.docx?raw=true)
