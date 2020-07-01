@@ -88,9 +88,7 @@ components:
     webhooks:
         type: array
         items:
-          type: object
-          additionalProperties:
-            $ref: '#/definitions/webhook'
+          $ref: '#/components/schemas/webhook'
     webhook:
       type: object
       required:

@@ -30,9 +30,7 @@ components:
     events:
       type: array
       items:
-        type: object
-        additionalProperties:
-          $ref: '#/components/schemas/event'
+        $ref: '#/components/schemas/event'
     event:
       type: object
       required:
