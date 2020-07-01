@@ -1,8 +1,4 @@
 openapi: '3.0.0'
-host: stichtingsem.nl
-basePath: /sem-api
-schemes:
- - https
 info:
   version: 1.0.0
   title: Generic Event Stream API
@@ -22,30 +18,31 @@ paths:
       tags:
         - events
       operationId: listEvents
-      produces:
-        - application/json
       responses:
         '200':
           description: OK
-          schema:
-            $ref: '#/definitions/events'
-definitions:
-  events:
-    type: array
-    items:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/events'
+components:
+  schemas:
+    events:
+      type: array
+      items:
+        type: object
+        additionalProperties:
+          $ref: '#/components/schemas/event'
+    event:
       type: object
-      additionalProperties:
-        $ref: '#/definitions/event'
-  event:
-    type: object
-    required:
-      - id
-      - type
-    properties:
-      id:
-        type: string
-        format: uuid
-        example: d290f1ee-6c54-4b01-90e6-d701748f0851
-      type:
-        type: string
-        example: 'la:usage'
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        type:
+          type: string
+          example: 'la:usage'

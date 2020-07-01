@@ -1,8 +1,4 @@
 openapi: '3.0.0'
-host: stichtingsem.nl
-basePath: /sem-api
-schemes:
- - https
 info:
   description: Generic SEM Webhook definition for managing subscriptions.
   version: 1.0.0
@@ -27,88 +23,92 @@ paths:
       - webhooks
       description: retrieves list of webhooks registered
       operationId: listWebhooks
-      produces:
-      - application/json
       responses:
         '200':
           description: OK
-          schema:
-            $ref: '#/definitions/webhooks'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/webhooks'
     post:
       tags:
       - webhooks
       description: creates or updates a webhook
       operationId: createUpdateWebhook
-      produces:
-      - application/json
-      parameters:
-        - in: body
-          name: webhook
-          schema:
-            $ref: '#/definitions/webhook'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/webhook'
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/webhook'
+
   /webhook/{webhookId}:
     get:
       tags:
       - webhooks
       description: retrieves specific of webhook
       operationId: getWebhook
-      produces:
-      - application/json
       parameters:
-        - in: path
+        - name: webhookId
+          in: path
           required: true
-          name: webhookId
-          type: string
+          schema:
+            type: string
       responses:
         '200':
           description: OK
-          schema:
-            $ref: '#/definitions/webhook'
-
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/webhook'
     delete:
       tags:
       - webhooks
       description: deletes a webhook
       operationId: deleteWebhook
       parameters:
-        - in: path
+        - name: webhookId
+          in: path
           required: true
-          name: webhookId
-          type: string
-      produces:
-      - application/json
+          schema:
+            type: string
       responses:
         '200':
           description: OK
 
-definitions:
-  webhooks:
-      type: array
-      items:
-        type: object
-        additionalProperties:
-          $ref: '#/definitions/webhook'
-  webhook:
-    type: object
-    required:
-    - id
-    - url
-    - enabled_events
-    properties:
-      id:
-        type: string
-        format: uuid
-        example: d290f1ee-6c54-4b01-90e6-d701748f0851
-      url:
-        type: string
-        description: The url that will be called when any of the subscribed events occur
-        example: http://lms.nl/api/webhook
-      enabled_events:
+components:
+  schemas:
+    webhooks:
         type: array
-        description: Allow filtering of events that should be sent to this endpoint
         items:
+          type: object
+          additionalProperties:
+            $ref: '#/definitions/webhook'
+    webhook:
+      type: object
+      required:
+      - id
+      - url
+      - enabled_events
+      properties:
+        id:
           type: string
-        example: ["la:usage", "la:results"]
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        url:
+          type: string
+          description: The url that will be called when any of the subscribed events occur
+          example: http://lms.nl/api/webhook
+        enabled_events:
+          type: array
+          description: Allow filtering of events that should be sent to this endpoint
+          items:
+            type: string
+          example: ["la:usage", "la:results"]
