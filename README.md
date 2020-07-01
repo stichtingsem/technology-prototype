@@ -1,7 +1,9 @@
 # technology-prototype
 Source code for any services or APIs created in the technology track in Summer 2020
 
-![Publish Documentation to Bump.sh](https://github.com/stichtingsem/technology-prototype/workflows/Publish%20Documentation%20to%20Bump.sh/badge.svg)
+## Published Documentation
+
+https://stichtingsem.stoplight.io/
 
 ## Objectives
 
