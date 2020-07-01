@@ -1,12 +1,21 @@
 swagger: '2.0'
-host: stichtingsem.nl
+host: example.stichtingsem.org
 basePath: /sem-api
 schemes:
- - https
+  - https
 info:
-  description: Generic SEM Event Api
   version: 1.0.0
   title: API Definition for Event API
+  description: |-
+    The proposed architecture for the new ecosystem is based on an Event model, where each provider of data to the ecosystem provides a mechanism for other participants to securely subscribe to events that are of interest to them.
+
+        
+    The Event API is the mechanism, in conjunction with the Webhook API, that enables this event based notification mechanism to function reliably.  It enables subscribers to request events from the provider, and paginate through to the last place that it received a message.
+
+    Notes:
+      - Pagination is essential.
+      - Limits should be imposed on page size.
+      - Providers should ensure that this API is cacheable or able to be retrieved at minimal cost, as it may be accessed a lot by consumers who are 'catching up'
   contact:
     email: clifton@infinitaslearning.com
   license:
@@ -14,13 +23,13 @@ info:
     url: 'https://opensource.org/licenses/MIT'
 tags:
   - name: events
-    description: Operations related to event retrieval  
+    description: Operations related to event retrieval
 paths:
   /events:
     get:
       description: Allows a subscriber to retrieve a list of past events.
       tags:
-        - events      
+        - events
       operationId: listEvents
       produces:
         - application/json
@@ -49,3 +58,8 @@ definitions:
       type:
         type: string
         example: 'la:usage'
+securityDefinitions:
+  API Key - 1:
+    type: oauth2
+    flow: application
+    scopes: {}

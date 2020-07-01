@@ -1,33 +1,41 @@
 swagger: '2.0'
-host: stichtingsem.nl
+host: example.stichtingsem.org
 basePath: /sem-api
 schemes:
- - https
+  - https
 info:
-  description: Generic SEM Webhook 
+  description: |-
+    The proposed architecture for the new ecosystem is based on an Event model, where each provider of data to the ecosystem provides a mechanism for other participants to securely subscribe to events that are of interest to them.
+
+        
+    The Webhook API is the mechanism, in conjunction with the Event API, that enables this event based notification mechanism to function reliably.  It enables subscribers to create a webhook registration with the provider, so that the provider can send a POST to the provided URL when an event occurs.  
+
+    This forms the 'near real time' element of the architecture, and enables subscribers to retrieve information on all changes immediately, while still retaining full control of when that data will be subsequently processed.
+
+    Notes:
+      - Ideally you would have one webhook registration per subscriber, but we should allow for multiple.
+      - It should be possible to filter to only events you are interested in as part of the configuration, to avoid sending events that then need to be discarded.
+      - Event filters should automatically be applied aligned with oauth scopes in place for the subscriber - e.g. don't allow events to go to a subscriber for entities that they are not allowed to access.
+      
   version: 1.0.0
   title: Management of webhook subscription for real time events
-  # put the contact info for your development or API team
   contact:
     email: clifton@infinitaslearning.com
   license:
     name: MIT
     url: 'https://opensource.org/licenses/MIT'
-
-# tags are used for organizing operations
 tags:
-- name: webhooks
-  description: Operations related to webhook management
-
+  - name: webhooks
+    description: Operations related to webhook management
 paths:
   /api/webhook:
     get:
       tags:
-      - webhooks
+        - webhooks
       description: retrieves list of webhooks registered
       operationId: listWebhooks
       produces:
-      - application/json
+        - application/json
       responses:
         '200':
           description: OK
@@ -35,11 +43,11 @@ paths:
             $ref: '#/definitions/webhooks'
     post:
       tags:
-      - webhooks
+        - webhooks
       description: creates or updates a webhook
       operationId: createUpdateWebhook
       produces:
-      - application/json
+        - application/json
       parameters:
         - in: body
           name: webhook
@@ -48,14 +56,14 @@ paths:
       responses:
         '200':
           description: OK
-  /api/webhook/{webhookId}:
+  '/api/webhook/{webhookId}':
     get:
       tags:
-      - webhooks
+        - webhooks
       description: retrieves specific of webhook
       operationId: getWebhook
       produces:
-      - application/json
+        - application/json
       parameters:
         - in: path
           required: true
@@ -66,10 +74,9 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/webhook'
-
     delete:
       tags:
-      - webhooks
+        - webhooks
       description: deletes a webhook
       operationId: deleteWebhook
       parameters:
@@ -78,24 +85,23 @@ paths:
           name: webhookId
           type: string
       produces:
-      - application/json
+        - application/json
       responses:
         '200':
           description: OK
-
 definitions:
-  webhooks:    
-      type: array
-      items:
-        type: object
-        additionalProperties:
-          $ref: '#/definitions/webhook'
+  webhooks:
+    type: array
+    items:
+      type: object
+      additionalProperties:
+        $ref: '#/definitions/webhook'
   webhook:
     type: object
     required:
-    - id
-    - url
-    - enabled_events
+      - id
+      - url
+      - enabled_events
     properties:
       id:
         type: string
@@ -103,9 +109,16 @@ definitions:
         example: d290f1ee-6c54-4b01-90e6-d701748f0851
       url:
         type: string
-        example: http://lms.nl/api/webhook
+        example: 'http://lms.nl/api/webhook'
       enabled_events:
         type: array
         items:
           type: string
-        example: ["la:usage", "la:results"]  
+        example:
+          - 'la:usage'
+          - 'la:results'
+securityDefinitions:
+  API Key - 1:
+    type: oauth2
+    flow: application
+    scopes: {}
