@@ -1,20 +1,21 @@
 swagger: '2.0'
+host: stichtingsem.nl
+basePath: /sem-api
+schemes:
+ - https
 info:
-  description: Learning Application Events
+  description: Generic SEM Webhook 
   version: 1.0.0
-  title: Learning Application Events
+  title: Management of webhook subscription for real time events
   # put the contact info for your development or API team
   contact:
     email: clifton@infinitaslearning.com
-
   license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
+    name: MIT
+    url: 'https://opensource.org/licenses/MIT'
 
 # tags are used for organizing operations
 tags:
-- name: events
-  description: Operations related to event retrieval
 - name: webhooks
   description: Operations related to webhook management
 
@@ -23,7 +24,7 @@ paths:
     get:
       tags:
       - webhooks
-      summary: retrieves list of webhooks registered
+      description: retrieves list of webhooks registered
       operationId: listWebhooks
       produces:
       - application/json
@@ -35,7 +36,7 @@ paths:
     post:
       tags:
       - webhooks
-      summary: creates or updates a webhook
+      description: creates or updates a webhook
       operationId: createUpdateWebhook
       produces:
       - application/json
@@ -51,7 +52,7 @@ paths:
     get:
       tags:
       - webhooks
-      summary: retrieves specific of webhook
+      description: retrieves specific of webhook
       operationId: getWebhook
       produces:
       - application/json
@@ -69,7 +70,7 @@ paths:
     delete:
       tags:
       - webhooks
-      summary: deletes a webhook
+      description: deletes a webhook
       operationId: deleteWebhook
       parameters:
         - in: path
@@ -82,22 +83,8 @@ paths:
         '200':
           description: OK
 
-  /api/events:
-    get:
-      tags:
-      - events
-      summary: retrieves list of events
-      operationId: listEvents
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/events'
-
 definitions:
-  webhooks:        # <---- dictionary
+  webhooks:    
       type: array
       items:
         type: object
@@ -121,29 +108,4 @@ definitions:
         type: array
         items:
           type: string
-        example: ["la:usage", "la:results"]
-  events:
-      type: array
-      items:
-        type: object
-        additionalProperties:
-          $ref: '#/definitions/event'
-  event:
-    type: object
-    required:
-    - id
-    - type
-    properties:
-      id:
-        type: string
-        format: uuid
-        example: d290f1ee-6c54-4b01-90e6-d701748f0851
-      type:
-        type: string
-        example: la:usage
-
-# Added by API Auto Mocking Plugin
-host: virtserver.swaggerhub.com
-basePath: /Infinitas-Learning/sem-learning-application-events/1.0.0
-schemes:
- - https
+        example: ["la:usage", "la:results"]  

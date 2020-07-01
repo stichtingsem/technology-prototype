@@ -1,0 +1,51 @@
+swagger: '2.0'
+host: stichtingsem.nl
+basePath: /sem-api
+schemes:
+ - https
+info:
+  description: Generic SEM Event Api
+  version: 1.0.0
+  title: API Definition for Event API
+  contact:
+    email: clifton@infinitaslearning.com
+  license:
+    name: MIT
+    url: 'https://opensource.org/licenses/MIT'
+tags:
+  - name: events
+    description: Operations related to event retrieval  
+paths:
+  /events:
+    get:
+      description: Allows a subscriber to retrieve a list of past events.
+      tags:
+        - events      
+      operationId: listEvents
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/events'
+definitions:
+  events:
+    type: array
+    items:
+      type: object
+      additionalProperties:
+        $ref: '#/definitions/event'
+  event:
+    type: object
+    required:
+      - id
+      - type
+    properties:
+      id:
+        type: string
+        format: uuid
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      type:
+        type: string
+        example: 'la:usage'
