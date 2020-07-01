@@ -2,7 +2,15 @@ openapi: '3.0.0'
 info:
   version: 1.0.0
   title: Generic Event Stream API
-  description: Generic SEM Event Api
+  description:  |-
+    The proposed architecture for the new ecosystem is based on an Event model, where each provider of data to the ecosystem provides a mechanism for other participants to securely subscribe to events that are of interest to them.
+
+    The Event API is the mechanism, in conjunction with the Webhook API, that enables this event based notification mechanism to function reliably.  It enables subscribers to request events from the provider, and paginate through to the last place that it received a message.
+
+    Notes:
+      - Pagination is essential.
+      - Limits should be imposed on page size.
+      - Providers should ensure that this API is cacheable or able to be retrieved at minimal cost, as it may be accessed a lot by consumers who are 'catching up'
   contact:
     email: clifton@infinitaslearning.com
   license:

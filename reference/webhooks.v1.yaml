@@ -1,6 +1,17 @@
 openapi: '3.0.0'
 info:
-  description: Generic SEM Webhook definition for managing subscriptions.
+  description: |-
+    The proposed architecture for the new ecosystem is based on an Event model, where each provider of data to the ecosystem provides a mechanism for other participants to securely subscribe to events that are of interest to them.
+
+    The Webhook API is the mechanism, in conjunction with the Event API, that enables this event based notification mechanism to function reliably.  It enables subscribers to create a webhook registration with the provider, so that the provider can send a POST to the provided URL when an event occurs.
+
+    This forms the 'near real time' element of the architecture, and enables subscribers to retrieve information on all changes immediately, while still retaining full control of when that data will be subsequently processed.
+
+    Notes:
+      - Ideally you would have one webhook registration per subscriber, but we should allow for multiple.
+      - It should be possible to filter to only events you are interested in as part of the configuration, to avoid sending events that then need to be discarded.
+      - Event filters should automatically be applied aligned with oauth scopes in place for the subscriber - e.g. don't allow events to go to a subscriber for entities that they are not allowed to access.
+
   version: 1.0.0
   title: Generic Web Hook API
 
@@ -21,6 +32,7 @@ paths:
     get:
       tags:
       - webhooks
+      summary: Retrieve list of webhooks
       description: retrieves list of webhooks registered
       operationId: listWebhooks
       responses:
