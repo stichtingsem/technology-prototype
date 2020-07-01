@@ -53,6 +53,7 @@ paths:
     get:
       tags:
       - webhooks
+      summary: Retrieve webhook by ID
       description: retrieves specific of webhook
       operationId: getWebhook
       parameters:
@@ -92,9 +93,9 @@ components:
     webhook:
       type: object
       required:
-      - id
-      - url
-      - enabled_events
+        - id
+        - url
+        - enabled_events
       properties:
         id:
           type: string
