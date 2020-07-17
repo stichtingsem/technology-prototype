@@ -1,0 +1,150 @@
+openapi: '3.0.0'
+info:
+  title: sisdata
+  version: '1.0'
+servers:
+- url: http://localhost:3000
+paths: {}
+components:
+  schemas:
+    school:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      required:
+        - id
+        - name
+    student:
+      type: object
+      properties:
+        id:
+          type: string
+        eckid:
+          type: string
+        name:
+          type: string
+        date of birth:
+          type: string
+          format: date
+        postcode:
+          type: string
+        house number:
+          type: string
+        school:
+          $ref: '#/components/schemas/school'
+      required:
+        - id
+        - school
+    teacher:
+      type: object
+      properties:
+        id:
+          type: string
+        eckid:
+          type: string
+        name:
+          type: string
+        school:
+          $ref: '#/components/schemas/school'
+      required:
+        - id
+        - school
+    class:
+      type: object
+      x-examples: {}
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        start date:
+          type: string
+          format: date
+        end date:
+          type: string
+          format: date
+        school:
+          $ref: '#/components/schemas/school'
+      required:
+        - id
+        - name
+        - start date
+        - school
+    teacher-of-class:
+      type: object
+      properties:
+        id:
+          type: string
+        start date:
+          type: string
+          format: date
+        end date:
+          type: string
+          format: date
+        teacher:
+          $ref: '#/components/schemas/teacher'
+        class:
+          $ref: '#/components/schemas/class'
+        school:
+          $ref: '#/components/schemas/school'
+      required:
+        - id
+        - start date
+        - teacher
+        - class
+        - school
+    enrollment:
+      type: object
+      properties:
+        id:
+          type: string
+        start date:
+          type: string
+          format: date
+        end date:
+          type: string
+          format: date
+        education code:
+          type: string
+          description: 'Officiële elementcode, bron: Ministerie van OCW'
+        student:
+          $ref: '#/components/schemas/student'
+        school:
+          $ref: '#/components/schemas/school'
+      required:
+        - id
+        - start date
+        - student
+        - school
+    subject-choice:
+      type: object
+      title: ''
+      properties:
+        id:
+          type: string
+        start date:
+          type: string
+          format: date
+        end date:
+          type: string
+          format: date
+        subject code:
+          type: string
+          description: 'Officiële elementcode, bron: Ministerie van OCW'
+        level:
+          type: string
+          description: 'havo, vwo, etc.'
+        student:
+          $ref: '#/components/schemas/student'
+        class:
+          $ref: '#/components/schemas/class'
+        school:
+          $ref: '#/components/schemas/school'
+      required:
+        - id
+        - start date
+        - student
+        - school
