@@ -26,12 +26,14 @@ components:
           type: string
         name:
           type: string
-        date of birth:
+        dateOfBirth:
           type: string
           format: date
+        emailAddress:
+          type: string
         postcode:
           type: string
-        house number:
+        houseNumber:
           type: string
         school:
           $ref: '#/components/schemas/school'
@@ -60,10 +62,10 @@ components:
           type: string
         name:
           type: string
-        start date:
+        startDate:
           type: string
           format: date
-        end date:
+        endDate:
           type: string
           format: date
         school:
@@ -73,15 +75,15 @@ components:
         - name
         - start date
         - school
-    teacher-of-class:
+    teacherOfClass:
       type: object
       properties:
         id:
           type: string
-        start date:
+        startDate:
           type: string
           format: date
-        end date:
+        endDate:
           type: string
           format: date
         teacher:
@@ -101,13 +103,13 @@ components:
       properties:
         id:
           type: string
-        start date:
+        startDate:
           type: string
           format: date
-        end date:
+        endDate:
           type: string
           format: date
-        education code:
+        educationCode:
           type: string
           description: 'Officiële elementcode, bron: Ministerie van OCW'
         student:
@@ -125,13 +127,13 @@ components:
       properties:
         id:
           type: string
-        start date:
+        startDate:
           type: string
           format: date
-        end date:
+        endDate:
           type: string
           format: date
-        subject code:
+        subjectCode:
           type: string
           description: 'Officiële elementcode, bron: Ministerie van OCW'
         level:
