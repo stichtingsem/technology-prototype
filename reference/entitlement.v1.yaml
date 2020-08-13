@@ -47,6 +47,38 @@ paths:
     get:
       summary: Get all entitlements for a specific vendor (Learning Application Provider)
       tags: []
+      parameters:
+        - in: query
+          name: status
+          description: |
+            Filter by status
+          schema:
+            type: string
+            example: active
+        - in: query
+          name: start
+          description: 'Start point for pagination of results, defaults to 0,'
+          schema:
+            type: integer
+            format: int32
+          examples:
+            default:
+              value: 0
+              summary: The start point for pagination
+        - in: query
+          name: limit
+          description: 'Limit of number of results returned by page, defaults to 20 with max 100.'
+          schema:
+            type: integer
+            maximum: 100
+            format: int32
+          examples:
+            default:
+              value: 20
+              summary: The default value if none is provided
+            max:
+              value: 100
+              summary: The largest recommended page size
       responses:
         '200':
           description: OK
@@ -58,7 +90,10 @@ paths:
       security:
         - API Key - 1:
             - mp.entitlements.vendor
-      description: 'Get all entitlements related to products from a specific vendor.  It is assumed that at the point of setup and provision of an API key, that the Vendor name is also stored against the API key by the marketplace, so that all calls with this key will be filtered to that specific vendor in the response.'
+      description: |-
+        Get all entitlements related to products from a specific vendor.  It is assumed that at the point of setup and provision of an API key, that the Vendor name is also stored against the API key by the marketplace, so that all calls with this key will be filtered to that specific vendor in the response.
+
+        This API has pagination, using `start` and `limit`, with an optional `status` filter.
   '/entitlements/school/{id}':
     parameters:
       - schema:
@@ -70,6 +105,35 @@ paths:
     get:
       summary: Get all entitlements for a specific school
       tags: []
+      parameters:
+        - in: query
+          name: status
+          description: Filter by status
+          schema:
+            type: string
+            example: active
+        - in: query
+          name: start
+          description: 'Start point for pagination of results, defaults to 0,'
+          schema:
+            type: integer
+          examples:
+            default:
+              value: 0
+              summary: The start point for pagination
+        - in: query
+          name: limit
+          description: 'Limit of number of results returned by page, defaults to 20 with max 100.'
+          schema:
+            type: integer
+            maximum: 100
+          examples:
+            default:
+              value: 20
+              summary: The default value if none is provided
+            max:
+              value: 100
+              summary: The largest recommended page size
       responses:
         '200':
           description: OK
@@ -81,7 +145,10 @@ paths:
       security:
         - API Key - 1:
             - mp.entitlements.school
-      description: 'Retrieve all entilements for a specific school, the school will have approved the LMS to have access to its Marketplace during the setup phase.'
+      description: |-
+        Retrieve all entilements for a specific school, the school will have approved the LMS to have access to its Marketplace during the setup phase.
+
+        This API has pagination, using `start` and `limit`, with an optional `status` filter.
 components:
   schemas:
     Entitlement:
