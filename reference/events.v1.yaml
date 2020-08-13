@@ -1,6 +1,6 @@
 openapi: '3.0.0'
 servers:
-  - url: https://example.stichtingsem.org
+  - url: https://example.stichtingsem.org/api
 info:
   version: 1.0.0
   title: Generic Event Stream API
@@ -10,8 +10,10 @@ info:
     The Event API is the mechanism, in conjunction with the Webhook API, that enables this event based notification mechanism to function reliably.  It enables subscribers to request events from the provider, and paginate through to the last place that it received a message.
 
     Notes:
-      - Pagination is essential.
+      - Pagination is essential - using start and limit semantics.
       - Limits should be imposed on page size.
+      - Order should always be reverese chronological.
+      - Filtering is available by matching specific event type.
       - Providers should ensure that this API is cacheable or able to be retrieved at minimal cost, as it may be accessed a lot by consumers who are 'catching up'
   contact:
     email: clifton@infinitaslearning.com
@@ -28,6 +30,35 @@ paths:
       tags:
         - events
       operationId: listEvents
+      parameters:
+        - in: query
+          name: type
+          description: Filter by a specific type of event, e.g. la.usage - specific to the service implementing the API.
+          schema:
+            type: string
+            example: la.usage
+        - in: query
+          name: start
+          description: Start point for pagination of results, defaults to 0,
+          schema:
+            type: integer
+          examples:
+            default:
+              value: 0
+              summary: The start point for pagination
+        - in: query
+          name: limit
+          description: Limit of number of results returned by page, defaults to 20 with max 100.
+          schema:
+            type: integer
+            maximum: 100
+          examples:
+            default:
+              value: 20
+              summary: The default value if none is provided
+            max:
+              value: 100
+              summary: The largest recommended page size
       responses:
         '200':
           description: OK
@@ -53,4 +84,9 @@ components:
           example: d290f1ee-6c54-4b01-90e6-d701748f0851
         type:
           type: string
-          example: 'la:usage'
+          example: 'la.usage'
+        created:
+          type: number
+          example: 1530291411
+        data:
+          type: object

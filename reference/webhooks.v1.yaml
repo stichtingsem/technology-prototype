@@ -1,6 +1,6 @@
 openapi: '3.0.0'
 servers:
-  - url: https://example.stichtingsem.org
+  - url: https://example.stichtingsem.org/api
 info:
   description: |-
     The proposed architecture for the new ecosystem is based on an Event model, where each provider of data to the ecosystem provides a mechanism for other participants to securely subscribe to events that are of interest to them.
