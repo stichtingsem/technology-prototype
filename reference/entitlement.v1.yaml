@@ -10,6 +10,9 @@ info:
      - `mp.entitlement.active` - First created and active
      - `mp.entitlement.refunded` - Refunded
      - `mp.entitlement.updated` - Modified in any other way
+  contact:
+    name: SEM
+    url: 'https://stichtingsem.org/'
 servers:
   - url: 'https://example.stichtingsem.org/api'
     description: entitlement
@@ -24,7 +27,8 @@ paths:
         description: Specific identifier of an entitlement.
     get:
       summary: Get a specific entitlement
-      tags: []
+      tags:
+        - entitlements
       responses:
         '200':
           description: OK
@@ -46,6 +50,10 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entitlements'
       operationId: get-entitlements-vendor-id
       security:
         - API Key - 1:
@@ -62,7 +70,13 @@ paths:
     get:
       summary: Get all entitlements for a specific school
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entitlements'
       operationId: get-entitlements-school-id
       security:
         - API Key - 1:
@@ -100,7 +114,7 @@ components:
           example: 24e39454-5360-4ba4-819f-03e59b8dd679
         status:
           type: string
-          example: live
+          example: active
           description: 'The status of the entitlement '
           enum:
             - refunded
@@ -243,3 +257,5 @@ components:
           scopes:
             mp.entitlements.school: Can see all entitlements created for a specific school regardless of vendor (e.g. a LMS)
             mp.entitlements.vendor: Can see all entitlements created for products that you sell in the Marketplace (e.g. a LA)
+tags:
+  - name: entitlements
