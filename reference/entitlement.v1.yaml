@@ -102,6 +102,10 @@ components:
             - refunded
             - active
           default: active
+        marketplace:
+          type: string
+          example: 'https://iddink.nl'
+          description: The marketplace that provided the entitlement.
       required:
         - start
         - end
@@ -110,6 +114,7 @@ components:
         - model
         - id
         - status
+        - marketplace
     Product:
       title: Product
       type: object
