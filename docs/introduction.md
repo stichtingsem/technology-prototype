@@ -34,6 +34,10 @@ The particular mapping of this specification is as follows:
 
 A working description of the architecture is contained in this [issue](https://github.com/stichtingsem/technology-prototype/issues/7).
 
+A simple overview of a generic exchange is as follows, note that while this may look complex at first glance, it is a common pattern used in the B2B software space and is straight forward to implement on both sides of the exchange:
+
+![architecture](https://github.com/stichtingsem/technology-prototype/blob/master/docs/event-architecture.svg)
+
 ### Secure by design using open standards
 
 The security and data minimization approach is outlined here: [security](https://github.com/stichtingsem/technology-prototype/issues/18)
