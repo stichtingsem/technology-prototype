@@ -31,14 +31,14 @@ info:
 
     |Events|Event Data|Rationale|
     |------|---------|
-    |sis.student|id, eckId, name, school, enrollment, classes|To enable the requesting service to maintain a copy of basic (non-PII) student profile information|
+    |sis.student|id, eckId, name, school, enrollment, classes, subjects|To enable the requesting service to maintain a copy of basic (non-PII) student profile information|
     |sis.teacher|id, eckId, name, school, classes|To enable the requesting service to maintain a copy of basic (non-PII) teacher information|
 
     ### Data Visibility
 
     |Entity|Fields|Rationale|
     |------|---------|-----|
-    |Student|id, eckId, name, school, enrollment, classes|To enable the requesting service to maintain a copy of basic (non-PII) student profile information|
+    |Student|id, eckId, name, school, enrollment, classes, subjects|To enable the requesting service to maintain a copy of basic (non-PII) student profile information|
     |Teacher|id, eckId, name, school, classes|To enable the requesting service to maintain a copy of basic (non-PII) teacher information|
 
     `sis.student-teacher-delivery`
@@ -46,9 +46,6 @@ info:
     This scope enables a requestor to get additional information required to support the physical delivery of books or other material directly to an individual.  This exchange includes PII, and would be requested in addition the basic `sis.student-teacher-class` scope, so the following should be read as additive to that scope.
 
     We have a principle to never send PII in events or store in an event log, so this event is only a notification.  The subscribing system must call back to retrieve the information.
-
-    > NOTE: We should discuss if this is better as multiple events, as it is much more straight forward to have a single event, where the event *never* containts PII, and then when the service calls back for information to the API if it has the `sis.student-teacher-delivery`
-     scope then it receives the additional information.
      
     > NOTE: Do we never deliver anything to teachers?
 
@@ -204,6 +201,8 @@ components:
       x-tags:
         - teacher
         - class
+      description: ''
+      title: ''
     enrollment:
       type: object
       properties:
