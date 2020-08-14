@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: sisdata.v1
+  title: Student Information System API
   version: '1.0'
   description: |
     This is an API provided by the SIS in the SEM ecosystem, and is designed to enable a SIS to make the core information about teachers, learners, subjects and classes available to the rest of the ecosystem in a security and privacy cocnious way.
@@ -337,7 +337,8 @@ paths:
         required: true
     get:
       summary: Get Teacher by ID
-      tags: []
+      tags:
+        - teacher
       responses:
         '200':
           description: OK
@@ -408,7 +409,9 @@ paths:
         required: true
     get:
       summary: Get Student delivery information by ID
-      tags: []
+      tags:
+        - student
+        - student-delivery
       responses:
         '200':
           description: OK
@@ -425,3 +428,5 @@ tags:
   - name: enrollment
   - name: class
   - name: student
+  - name: student-delivery
+  - name: teacher
