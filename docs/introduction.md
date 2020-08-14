@@ -36,7 +36,7 @@ A working description of the architecture is contained in this [issue](https://g
 
 A simple overview of a generic exchange is as follows, note that while this may look complex at first glance, it is a common pattern used in the B2B software space and is straight forward to implement on both sides of the exchange:
 
-![architecture](https://github.com/stichtingsem/technology-prototype/blob/master/docs/event-architecture.svg)
+![architecture](https://github.com/stichtingsem/technology-prototype/raw/master/docs/event-architecture.svg)
 
 ### Secure by design using open standards
 
