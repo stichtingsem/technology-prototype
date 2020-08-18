@@ -15,6 +15,8 @@ info:
       - Order should always be reverese chronological.
       - Filtering is available by matching specific event type.
       - Providers should ensure that this API is cacheable or able to be retrieved at minimal cost, as it may be accessed a lot by consumers who are 'catching up'
+      
+      > Note:  We may need to provide an API that creates a 'dummy' event list of all entities to enable an initial synchronisation of all data (e.g. a brand new LA that wants to do an initial synchronisation with data from the SIS) - this may be simpler than providing a GET requests for entities in the SIS itseelf (e.g. get students).
   contact:
     email: clifton@infinitaslearning.com
   license:
@@ -73,11 +75,23 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/event'
+      x-tags:
+        - events
+      description: 'A list of events - reverse chronologically ordered, provided to enable subscribers to ''catch up'' on events they may have missed.'
+      title: ''
     event:
       type: object
-      required:
-        - id
-        - type
+      x-tags:
+        - events
+      description: |-
+        An event is a notification that something of interest has happened within a service, that, based on authorised scopes, a subscriber may then process.  This enables systems to communicate with each other in a loosely coupled way, where the event creator has no direct connection to any of the subscribing systems.
+
+        Typically an event will contain a basic data object that indicates what the state of the object is at the point at which the event is raised, but this is optional.  In the case that no data object exists it is intended that the subscribing system would call back to the provided API to retrieve the information.
+
+        By calling back at a future point you avoid a number of distributed system related issues:
+
+        - Ordering doesn't matter, as when you call back you always get the latest version.  The biggest risk is you call back twice and get the same information twice - but you always have correct data.
+        - Security can be checked again at the point of request, so even in the unlikely scenario that a subscriber authorization changes between an event being emitted and the call back occurring, the subscriber can only ever get data they are authorized to retrieve.
       properties:
         id:
           type: string
@@ -91,3 +105,11 @@ components:
           example: 1530291411
         data:
           type: object
+        url:
+          type: string
+          description: |
+            The URL that can be called to get information about the event.
+      required:
+        - id
+        - type
+        - url
