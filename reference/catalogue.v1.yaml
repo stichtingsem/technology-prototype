@@ -39,7 +39,7 @@ paths:
             Filter by specific level
           schema:
             type: string
-            example: havo
+            example: havo-1
         - in: query
           name: start
           description: 'Start point for pagination of results, defaults to 0,'
@@ -66,6 +66,9 @@ paths:
               summary: The largest recommended page size
         - schema:
             type: string
+            enum:
+              - active
+              - not-for-sale
           in: query
           name: status
           description: |
@@ -81,11 +84,11 @@ paths:
                   $ref: '#/components/schemas/Product'
       operationId: get-products
       description: Get products from the catalogue - either all or those matching specific criteria.
-  '/product/{id}':
+  '/product/{ean}':
     parameters:
       - schema:
           type: string
-        name: id
+        name: ean
         in: path
         required: true
     get:
@@ -98,8 +101,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
-      operationId: get-product-id
-      description: Get a specific product by ID.
+      operationId: get-product-ean
+      description: Get a specific product by EAN
 components:
   schemas:
     Product:
@@ -131,17 +134,16 @@ components:
         name:
           type: string
           description: A short name
-        subjectCodes:
+        streams:
           type: array
-          description: The governement recognised subject codes this product relates to.
+          description: The groupings (e.g method or methods) that this product is a part of.
           items:
-            type: string
-        levels:
+            $ref: '#/components/schemas/Stream'
+        levelSubjects:
           type: array
-          description: |
-            Governmeent recognised levels the product relates to.
+          description: The set of levels and subjects that this product is targeted at.
           items:
-            type: string
+            $ref: '#/components/schemas/LevelSubjects'
         models:
           type: array
           description: |
@@ -265,6 +267,29 @@ components:
       description: Sub-elements of the product - used for scheduling in the LMS?  We could probably create a better name.
       x-tags:
         - planning
+    Stream:
+      title: Stream
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+      description: A grouping of products into a set - like a method (?)
+    LevelSubjects:
+      title: LevelSubjects
+      type: object
+      description: The combination of level and subject that indicates what a product is targeted at.
+      properties:
+        level:
+          type: string
+          description: Government level - e.g. havo-1
+        subjectCode:
+          type: string
+          description: |
+            Subject code for specific subject at this level
   securitySchemes:
     API Key - 1:
       type: oauth2
