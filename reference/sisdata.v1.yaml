@@ -166,7 +166,7 @@ components:
         teachers:
           type: array
           items:
-            $ref: '#/components/schemas/teacher'
+            $ref: '#/components/schemas/teacherOfClass'
         subjectChoices:
           type: array
           items:
@@ -233,6 +233,9 @@ components:
     subject-choice:
       type: object
       title: ''
+      x-tags:
+        - subject
+        - student
       properties:
         id:
           type: string
@@ -245,6 +248,9 @@ components:
         subjectCode:
           type: string
           description: 'Officiële elementcode, bron: Ministerie van OCW'
+        schoolSubjectName:
+          type: string
+          description: Optional name of subject if different within specific school.
         level:
           type: string
           description: 'havo, vwo, etc.'
@@ -256,12 +262,8 @@ components:
           $ref: '#/components/schemas/school'
       required:
         - id
-        - start date
         - student
         - school
-      x-tags:
-        - subject
-        - student
     student-delivery:
       title: student-delivery
       type: object
