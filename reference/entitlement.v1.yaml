@@ -292,25 +292,22 @@ components:
       type: object
       description: A sub-group within a school that the entitlement is applicable to.
       properties:
-        standard_subject_code:
+        subjectCode:
           type: string
           description: Government standard subject code.
-        standard_level:
+        level:
           type: string
-          description: Government standard level.
+          description: Government standard level - e.g. havo-1
         quantity:
           type: integer
           example: 100
           description: Quantity selected or purchased.
-        school_subject_code:
+        schoolSubjectName:
           type: string
           description: 'School description of this subject, may differ from standard.'
-        school_level:
-          type: string
-          description: 'School description of this level, may differ from standard.'
       required:
-        - standard_subject_code
-        - standard_level
+        - subjectCode
+        - level
     Entitlements:
       title: Entitlements
       type: array
