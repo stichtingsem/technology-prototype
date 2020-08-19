@@ -1,6 +1,6 @@
-openapi: '3.0.0'
+openapi: 3.0.0
 servers:
-  - url: https://example.stichtingsem.org/api
+  - url: 'https://example.stichtingsem.org/api'
 info:
   description: |-
     The proposed architecture for the new ecosystem is based on an Event model, where each provider of data to the ecosystem provides a mechanism for other participants to securely subscribe to events that are of interest to them.
@@ -12,28 +12,22 @@ info:
     Notes:
       - Ideally you would have one webhook registration per subscriber, but we should allow for multiple.
       - It should be possible to filter to only events you are interested in as part of the configuration, to avoid sending events that then need to be discarded.
-      - Event filters should automatically be applied aligned with oauth scopes in place for the subscriber - e.g. don't allow events to go to a subscriber for entities that they are not allowed to access.
-
+      - Event filters should automatically be applied aligned with oauth scopes in place for the subscriber - e.g. don't allow events to go to a subscriber for entities that they are not allowed to access.  This restriction will be defined in the API specification for each service.
   version: 1.0.0
   title: Generic Web Hook API
-
-  # put the contact info for your development or API team
   contact:
     email: clifton@infinitaslearning.com
   license:
     name: MIT
     url: 'https://opensource.org/licenses/MIT'
-
-# tags are used for organizing operations
 tags:
-- name: webhooks
-  description: Operations related to webhook management
-
+  - name: webhooks
+    description: Operations related to webhook management
 paths:
   /webhook:
     get:
       tags:
-      - webhooks
+        - webhooks
       summary: Retrieve list of webhooks
       description: retrieves list of webhooks registered
       operationId: listWebhooks
@@ -46,7 +40,7 @@ paths:
                 $ref: '#/components/schemas/webhooks'
     post:
       tags:
-      - webhooks
+        - webhooks
       description: creates or updates a webhook
       operationId: createUpdateWebhook
       requestBody:
@@ -62,11 +56,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/webhook'
-
-  /webhook/{webhookId}:
+  '/webhook/{webhookId}':
     get:
       tags:
-      - webhooks
+        - webhooks
       summary: Retrieve webhook by ID
       description: retrieves specific of webhook
       operationId: getWebhook
@@ -85,7 +78,7 @@ paths:
                 $ref: '#/components/schemas/webhook'
     delete:
       tags:
-      - webhooks
+        - webhooks
       description: deletes a webhook
       operationId: deleteWebhook
       parameters:
@@ -97,13 +90,14 @@ paths:
       responses:
         '200':
           description: OK
-
 components:
   schemas:
     webhooks:
-        type: array
-        items:
-          $ref: '#/components/schemas/webhook'
+      type: array
+      items:
+        $ref: '#/components/schemas/webhook'
+      x-tags:
+        - webhooks
     webhook:
       type: object
       required:
@@ -118,10 +112,14 @@ components:
         url:
           type: string
           description: The url that will be called when any of the subscribed events occur
-          example: http://lms.nl/api/webhook
+          example: 'http://lms.nl/api/webhook'
         enabled_events:
           type: array
           description: Allow filtering of events that should be sent to this endpoint
           items:
             type: string
-          example: ["la:usage", "la:results"]
+          example:
+            - 'la:usage'
+            - 'la:results'
+      x-tags:
+        - webhooks
