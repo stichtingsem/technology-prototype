@@ -264,10 +264,7 @@ components:
         group:
           $ref: '#/components/schemas/group'
         school:
-          $ref: '#/components/schemas/school'
-        schoolYear:
-          type: string
-          description: A reference to the school year for this group.
+          $ref: '#/components/schemas/school'        
       required:
         - id
         - student
