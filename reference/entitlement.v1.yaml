@@ -308,20 +308,17 @@ components:
       properties:
         subjectCode:
           type: string
-          description: 'Officiële elementcode, bron: Ministerie van OCW'
+          description: Government standard subject code.
         level:
           type: string
-          description: 'havo, vwo, etc.'
+          description: Government standard level - e.g. havo-1
         quantity:
           type: integer
           example: 100
           description: Quantity selected or purchased.
-        schoolSubjectCode:
+        schoolSubjectName:
           type: string
           description: 'School description of this subject, may differ from standard.'
-        schoolLevel:
-          type: string
-          description: 'School description of this level, may differ from standard.'
       required:
         - subjectCode
         - level
