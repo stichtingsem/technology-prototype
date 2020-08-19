@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: entitlement.v1
+  title: Marketplace Entitlement API
   version: '1.0'
   description: |
     This is an API provided by the Marketplace in the SEM ecosystem, and is designed to enable a marketplace to make information about products that have been selected or purchased by a school or individual to be then added automatically into the LMS of the school, as well as be used by the specific Learning Application that has been purchased to ensure that all setup and provisioning has been completed in advance of access.
@@ -39,16 +39,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/Entitlement'
       operationId: get-entitlements-by-id
-      description: 'Retrieve the full specification for an entitlement from a marketplace, needs to confirm that the caller is able to access either based on their vendor information (they can only see their own products) in the case of the vendor scope.'
+      description: 'Retrieve the full specification for an entitlement from a marketplace, needs to confirm that the caller is able to access either based on their provider information (they can only see their own products) in the case of the provider scope.'
       security:
         - API Key - 1:
             - mp.entitlements.school
-            - mp.entitlements.vendor
-  /entitlements/vendor:
+            - mp.entitlements.provider
+  /entitlements/provider:
     parameters: []
     get:
       summary: Get all entitlements for a specific vendor (Learning Application Provider)
-      tags: []
+      tags:
+        - entitlements
+        - provider
       parameters:
         - in: query
           name: status
@@ -88,12 +90,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Entitlements'
-      operationId: get-entitlements-vendor-id
+      operationId: get-entitlements-provider-id
       security:
         - API Key - 1:
-            - mp.entitlements.vendor
+            - mp.entitlements.provider
       description: |-
-        Get all entitlements related to products from a specific vendor.  It is assumed that at the point of setup and provision of an API key, that the Vendor name is also stored against the API key by the marketplace, so that all calls with this key will be filtered to that specific vendor in the response.
+        Get all entitlements related to products from a specific provider of a learning application (or other product used by a school).  It is assumed that at the point of setup and provision of an API key, that the provider name is also stored against the API key by the marketplace, so that all calls with this key will be filtered to that specific provider in the response.
 
         This API has pagination, using `start` and `limit`, with an optional `status` filter.
   '/entitlements/school/{id}':
@@ -106,7 +108,9 @@ paths:
         description: School identifier.
     get:
       summary: Get all entitlements for a specific school
-      tags: []
+      tags:
+        - entitlements
+        - school
       parameters:
         - in: query
           name: status
@@ -202,26 +206,32 @@ components:
         - id
         - status
         - marketplace
+      x-tags:
+        - entitlements
     Product:
       title: Product
       type: object
       description: A product that can be accessed after being purchased or selected.
+      x-tags:
+        - entitlements
       properties:
         ean:
           type: string
         name:
           type: string
-        url:
+        defaultAccessUrl:
           type: string
-        vendor:
+          description: |
+            This is the default URL to access the product - there may be more detailed structure and access points exchanged later between LA and LMS.
+        provider:
           type: string
           description: 'Short name for a specific vendor, established (along with the vendor secret) at the point of setup.'
           example: e8346234-6bda-4c07-ab2e-a687a94430b2
       required:
         - ean
         - name
-        - url
-        - vendor
+        - defaultAccessUrl
+        - provider
     School:
       title: School
       type: object
@@ -253,23 +263,25 @@ components:
           type: string
           description: |
             A unique identifier for the purchaser.
-        name:
+        display_name:
           type: string
           description: The name of the person purchasing.
         email:
           type: string
           description: 'The email address of the person purchasing, used to notify the individual of fulfilment and provide access.'
-        eck-id:
+        eckid:
           type: string
           description: 'If needed, the ECK-ID of the individual.'
       required:
         - id
-        - name
+        - display_name
         - email
+      x-tags:
+        - entitlements
     BusinessModel:
       title: BusinessModel
       type: object
-      description: 'The model under which the entitlement has been granted, possible business models per product can be exchanged with the Marketplace by the Learning Application provider.'
+      description: 'The model under which the entitlement has been granted, possible business models per product can be exchanged with the Marketplace by the Learning Application provider via the Catalogue API.'
       properties:
         id:
           type: string
@@ -287,10 +299,12 @@ components:
       required:
         - id
         - name
+      x-tags:
+        - entitlements
     Group:
       title: Group
       type: object
-      description: A sub-group within a school that the entitlement is applicable to.
+      description: A sub-group within a school that the entitlement is applicable to - typically a subject and level.
       properties:
         subjectCode:
           type: string
@@ -308,20 +322,25 @@ components:
       required:
         - subjectCode
         - level
+      x-tags:
+        - entitlements
     Entitlements:
       title: Entitlements
       type: array
       items:
         $ref: '#/components/schemas/Entitlement'
       description: This is a list of entitlements that can be made available or retrieve in bulk.
+      x-tags:
+        - entitlements
   securitySchemes:
     API Key - 1:
       type: oauth2
       flows:
         implicit:
-          authorizationUrl: ''
           scopes:
             mp.entitlements.school: Can see all entitlements created for a specific school regardless of vendor (e.g. a LMS)
-            mp.entitlements.vendor: Can see all entitlements created for products that you sell in the Marketplace (e.g. a LA)
+            mp.entitlements.provider: Can see all entitlements created for products that you sell in the Marketplace (e.g. a LA)
 tags:
   - name: entitlements
+  - name: provider
+  - name: school
