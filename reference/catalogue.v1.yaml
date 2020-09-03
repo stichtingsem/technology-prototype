@@ -1,0 +1,301 @@
+openapi: 3.0.0
+info:
+  title: Provider Catalogue API
+  version: '1.0'
+  description: |-
+    This API enables a learning application provider (or anyone who wants to sell products in a Marketplace) to provide information about their products to a Marketplace.
+
+    It is envisaged that the service implementing this API, also implements the generic [Events](https://stichtingsem.stoplight.io/docs/sem-technology-prototype/reference/events.v1.yaml) and [Webhooks](https://stichtingsem.stoplight.io/docs/sem-technology-prototype/reference/webhooks.v1.yaml) API to enable subscription to changes vs polling.
+
+    ## Scopes and Data
+
+    It is envisaged that when a connection is made between a Marketplace and a Learning Application, that the API Key then provided is connected to that specific marketplace. 
+
+    This connection ensures that the Learning Application can provide information that may be specific to commercial agreements with a specific marketplace (e.g. pricing information).
+
+    This specification provides the placeholders for this information to be exchanged, but has no restriction on what is agreed between parties offline.
+  contact:
+    name: Stichting SEM
+    url: 'https://stichtingsem.org/'
+servers:
+  - url: 'https://example.stichtingsem.org/api'
+    description: catalogue
+paths:
+  /products:
+    get:
+      summary: Get Products from Catalogue
+      tags: []
+      parameters:
+        - in: query
+          name: subjectCode
+          description: |
+            Filter by specific subject code
+          schema:
+            type: string
+            example: math
+        - in: query
+          name: level
+          description: |
+            Filter by specific level
+          schema:
+            type: string
+            example: havo-1
+        - in: query
+          name: start
+          description: 'Start point for pagination of results, defaults to 0,'
+          schema:
+            type: integer
+            format: int32
+          examples:
+            default:
+              value: 0
+              summary: The start point for pagination
+        - in: query
+          name: limit
+          description: 'Limit of number of results returned by page, defaults to 20 with max 100.'
+          schema:
+            type: integer
+            maximum: 100
+            format: int32
+          examples:
+            default:
+              value: 20
+              summary: The default value if none is provided
+            max:
+              value: 100
+              summary: The largest recommended page size
+        - schema:
+            type: string
+            enum:
+              - active
+              - not-for-sale
+          in: query
+          name: status
+          description: |
+            Filter by status
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+      operationId: get-products
+      description: Get products from the catalogue - either all or those matching specific criteria.
+  '/product/{ean}':
+    parameters:
+      - schema:
+          type: string
+        name: ean
+        in: path
+        required: true
+    get:
+      summary: Get specific Product by ID
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+      operationId: get-product-ean
+      description: Get a specific product by EAN
+components:
+  schemas:
+    Product:
+      title: Product
+      type: object
+      description: A product that is available for sale or selection within a marketplace.  This entity captures the basic commercial information needed for selection and sale.
+      x-tags:
+        - catalogue
+      properties:
+        ean:
+          type: string
+          description: |
+            The unique EAN for this product.
+        type:
+          type: string
+          description: |
+            Type of product
+          enum:
+            - physical
+            - digital
+            - blended
+        status:
+          type: string
+          description: |
+            Status of product
+          enum:
+            - active
+            - not-for-sale
+        name:
+          type: string
+          description: A short name
+        streams:
+          type: array
+          description: The groupings (e.g method or methods) that this product is a part of.
+          items:
+            $ref: '#/components/schemas/Stream'
+        levelSubjects:
+          type: array
+          description: The set of levels and subjects that this product is targeted at.
+          items:
+            $ref: '#/components/schemas/LevelSubjects'
+        models:
+          type: array
+          description: |
+            Business models that are available for this product to be sold under.
+          items:
+            $ref: '#/components/schemas/BusinessModel'
+        trialAccessUrl:
+          type: string
+          description: Optional trial / preview URL.
+        defaultAccessUrl:
+          type: string
+          description: The default url used to access the product after selection or purchase.
+        shortDescription:
+          type: string
+          description: |
+            Short description for display on search pages or other marketing blocks.
+        longDescription:
+          type: string
+          description: |
+            Long description for display on a product page.
+        media:
+          type: object
+          description: A collection of media for use in the marketplace.
+          properties:
+            mainThumbnailUrl:
+              $ref: '#/components/schemas/Media'
+            productImageUrls:
+              type: array
+              description: A collection of image urls for a product.
+              items:
+                $ref: '#/components/schemas/Media'
+            productVideoUrls:
+              type: array
+              description: A collection of video urls for a product.
+              items:
+                $ref: '#/components/schemas/Media'
+            productPdfUrls:
+              type: array
+              description: A collection of PDF links for a product.
+              items:
+                $ref: '#/components/schemas/Media'
+        relatedProducts:
+          type: array
+          description: |
+            An array of related product ID's (for display alongside a product in a marketplace).
+          items:
+            type: string
+        bundledProducts:
+          type: array
+          description: A link to any other products that are included in this one if it is a package / bundle.
+          items:
+            type: string
+      required:
+        - ean
+        - type
+        - name
+        - models
+        - defaultAccessUrl
+        - shortDescription
+    BusinessModel:
+      title: BusinessModel
+      type: object
+      description: |-
+        The model under which a product can be sold in the marketplace, this is later communicated back at the point of selection so that the provider understands what additional steps may need to be taken (depending on the business model selected).
+
+        The list of possible models is not defined within this specification, it is entirely up to each Marketplace and Provider to agree.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the business model recognised by both the marketplace and the learning application.
+          example: 24e39454-5360-4ba4-819f-03e59b8dd679
+        name:
+          type: string
+          description: |
+            A description of the business model so it can be displayed in the Marketplace or LMS if needed.
+          example: pre-pay
+        description:
+          type: string
+          description: A longer description of the business model - used optionally for display in the marketplace if needed.
+          example: 'Pre-Pay: This product must be paid for before it can be used.'
+        price:
+          type: number
+          description: |
+            The price under which it is sold under this model, this may be exchanged via other mechanisms between parties, so is optional.
+        price_period:
+          type: string
+          description: |
+            The period the price applies to (optional - for recurring subscriptions; e.g. month, year).
+        price_currency:
+          type: string
+          description: |
+            EUR etc.
+      required:
+        - id
+        - name
+      x-tags:
+        - catalogue
+    Media:
+      title: Media
+      type: object
+      properties:
+        url:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        width:
+          type: string
+        height:
+          type: string
+      description: 'A reference to a video, image or document that can be used by a Marketplace (or LMS).'
+      x-tags:
+        - catalogue
+    ProductComponents:
+      title: ProductComponents
+      type: object
+      properties:
+        id:
+          type: string
+      description: Sub-elements of the product - used for scheduling in the LMS?  We could probably create a better name.
+      x-tags:
+        - planning
+    Stream:
+      title: Stream
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+      description: A grouping of products into a set - like a method (?)
+    LevelSubjects:
+      title: LevelSubjects
+      type: object
+      description: The combination of level and subject that indicates what a product is targeted at.
+      properties:
+        level:
+          type: string
+          description: Government level - e.g. havo-1
+        subjectCode:
+          type: string
+          description: |
+            Subject code for specific subject at this level
+  securitySchemes:
+    API Key - 1:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: ''
+          refreshUrl: ''
+          scopes:
+            la.catalogue: Access to the basic provider catalogue
