@@ -172,7 +172,7 @@ components:
         product:
           $ref: '#/components/schemas/Product'
         entitlee:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/School'
             - $ref: '#/components/schemas/Individual'
         model:
