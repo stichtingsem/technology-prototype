@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  sem-admin-client:
+    stdin_open: true
+    build:
+      context: ./sem-admin-client
+    ports:
+      - '3010:3000'
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./sem-admin-client:/app
+      - /app/node_modules
