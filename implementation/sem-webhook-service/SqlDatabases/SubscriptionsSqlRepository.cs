@@ -1,4 +1,5 @@
-﻿using Domain.Events;
+﻿using Domain.Schools;
+using Domain.Events;
 using Domain.Subscriptions;
 using RestService.Subscriptions;
 using System;
@@ -8,8 +9,10 @@ namespace SqlDatabases
 {
     public sealed class SubscriptionsSqlRepository : ISubscriptionsRepository
     {
-        public IEnumerable<Subscription> Get()
+        public IEnumerable<Subscription> Get(ISchool school)
         {
+            // Use school id to filter on schools
+
             var subscriptions = new List<Subscription>
             {
                 new Subscription

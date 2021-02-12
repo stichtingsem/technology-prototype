@@ -1,8 +1,8 @@
-﻿using Domain.Subscriptions;
+﻿using Domain.Schools;
+using Domain.Subscriptions;
 using Moq;
 using NUnit.Framework;
 using RestService.Subscriptions;
-using System.Security.Cryptography.Xml;
 
 namespace RestServiceTests.SubscriptionsControllerTests
 {
@@ -10,12 +10,19 @@ namespace RestServiceTests.SubscriptionsControllerTests
     {
         SubscriptionsController sut;
         Mock<ISubscriptionsRepository> mockSubscriptionsRepo;
+        Mock<ISchool> mockSchool;
 
         [SetUp]
         public void SetUp()
         {
             mockSubscriptionsRepo = new Mock<ISubscriptionsRepository>();
-            sut = new SubscriptionsController(mockSubscriptionsRepo.Object);
+            mockSchool = new Mock<ISchool>();
+
+            sut = new SubscriptionsController
+            (
+                mockSubscriptionsRepo.Object,
+                mockSchool.Object
+            );
         }
 
         [Test]

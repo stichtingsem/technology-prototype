@@ -1,10 +1,7 @@
-﻿using Domain.Events;
+﻿using Domain.Schools;
 using Domain.Subscriptions;
 using Microsoft.AspNetCore.Mvc;
 using RestService.Authorization;
-using SqlDatabases;
-using System;
-using System.Collections.Generic;
 
 namespace RestService.Subscriptions
 {
@@ -14,18 +11,22 @@ namespace RestService.Subscriptions
     public sealed class SubscriptionsController : ControllerBase
     {
         private readonly ISubscriptionsRepository subscriptionsRepository;
+        private readonly ISchool school;
 
-        public SubscriptionsController(ISubscriptionsRepository subscriptionsRepository)
+        public SubscriptionsController
+        (
+            ISubscriptionsRepository subscriptionsRepository, 
+            ISchool school
+        )
         {
             this.subscriptionsRepository = subscriptionsRepository;
+            this.school = school;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            // A way to get the school id of the user:
-            // var schoolId = User.Claims.ToList().Single(claim => claim.Type == "actOrgId");
-            var subscriptions = subscriptionsRepository.Get(); 
+            var subscriptions = subscriptionsRepository.Get(school); 
 
             return Ok(subscriptions);
         }

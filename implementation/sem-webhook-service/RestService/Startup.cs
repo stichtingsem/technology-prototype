@@ -1,3 +1,4 @@
+using Domain.Schools;
 using Domain.Events;
 using Domain.Subscriptions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -7,8 +8,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using RestService.Authorization;
 using SqlDatabases;
 using System;
+using RestService.Schools;
 
 namespace RestService
 {
@@ -23,6 +26,7 @@ namespace RestService
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
             services.AddControllers();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
@@ -40,7 +44,8 @@ namespace RestService
 
             services.AddTransient<IEventsRepository, EventsSqlRepository>();
             services.AddTransient<ISubscriptionsRepository, SubscriptionsSqlRepository>();
-
+            services.AddTransient<ISchool, SchoolFromHttpContext>();
+            services.AddTransient<SchoolIdClaimType>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
