@@ -1,10 +1,10 @@
-﻿using RestService.Events;
+﻿using Domain.Events;
 
 namespace RestService.Subscriptions
 {
-    public record SubscriptionDto
+    public sealed record SubscriptionDto
     (
-        EventDto Event, 
+        Event Event, 
         string PostbackUrl, 
         string Secret
     );

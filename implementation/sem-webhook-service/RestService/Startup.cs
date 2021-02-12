@@ -1,3 +1,4 @@
+using Domain.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -5,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using SqlDatabases;
 using System;
 
 namespace RestService
@@ -34,6 +36,8 @@ namespace RestService
                         ValidateAudience = Convert.ToBoolean(Configuration["Authentication:ValidateAudience"]),
                     };
                 });
+
+            services.AddTransient<IEventsRepository, EventsSqlRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
