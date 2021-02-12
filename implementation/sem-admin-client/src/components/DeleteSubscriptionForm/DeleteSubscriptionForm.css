@@ -1,0 +1,42 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.form-container label {
+  margin: 10px 0;
+}
+
+.form-container input {
+  padding: 10px;
+  border-radius: 4px;
+  border: none;
+}
+
+.form-container .error-text {
+  color: #cc0000;
+  margin: 2px 0;
+}
+
+.form-container button {
+  background: #0082c8;
+  color: white;
+  cursor: pointer;
+}
+
+.form-container button:hover {
+  background: #0082c8c4;
+}
+
+.form-container button:disabled {
+  background: lightgrey;
+  color: grey;
+}
+
+.form-container .submit-button {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 4px;
+  border: none;
+}
