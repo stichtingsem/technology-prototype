@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SqlDatabases
 {
-    public class EventsSqlRepository : IEventsRepository
+    public sealed class EventsSqlRepository : IEventsRepository
     {
         public IEnumerable<Event> Get()
         {

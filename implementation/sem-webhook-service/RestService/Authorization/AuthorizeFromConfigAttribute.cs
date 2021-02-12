@@ -4,7 +4,7 @@ using System;
 
 namespace RestService.Authorization
 {
-    public class AuthorizeFromConfigAttribute : AuthorizeAttribute
+    public sealed class AuthorizeFromConfigAttribute : AuthorizeAttribute
     {
         public AuthorizeFromConfigAttribute()
         {

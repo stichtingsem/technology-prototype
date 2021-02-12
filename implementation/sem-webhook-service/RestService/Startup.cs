@@ -1,4 +1,5 @@
 using Domain.Events;
+using Domain.Subscriptions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,6 +39,8 @@ namespace RestService
                 });
 
             services.AddTransient<IEventsRepository, EventsSqlRepository>();
+            services.AddTransient<ISubscriptionsRepository, SubscriptionsSqlRepository>();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

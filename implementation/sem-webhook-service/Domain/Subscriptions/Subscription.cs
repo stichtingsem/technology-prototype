@@ -2,7 +2,7 @@
 
 namespace RestService.Subscriptions
 {
-    public sealed record SubscriptionDto
+    public sealed record Subscription
     (
         Event Event, 
         string PostbackUrl, 
