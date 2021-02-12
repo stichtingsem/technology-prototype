@@ -1,14 +1,14 @@
 ﻿using NUnit.Framework;
-using RestService.Webhooks;
+using RestService.Events;
 
-namespace RestServiceTests.WebhookControllerTests
+namespace RestServiceTests.EventsControllerTests
 {
     public class GetTests
     {
         [Test]
-        public void EmptyResult()
+        public void Default()
         {
-            var sut = new WebhookController();
+            var sut = new EventsController();
 
             var result = sut.Get();
 
