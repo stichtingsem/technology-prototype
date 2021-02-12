@@ -8,67 +8,30 @@
   color: white;
 }
 
-.form-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.form-container label {
-  margin: 10px 0;
-}
-
-.form-container input, select {
-  padding: 10px;
-  border-radius: 4px;
-  border: none;
-}
-
-.form-container .error-text {
-  color: #cc0000;
-  margin: 2px 0;
-}
-
-.form-container button {
-  background: #0082c8;
-  color: white;
-  cursor: pointer;
-}
-
-.form-container button:hover {
-  background: #0082c8c4;
-}
-
-.form-container button:disabled {
-  background: lightgrey;
-  color: grey;
-}
-
-.form-container .submit-button {
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 4px;
-  border: none;
-}
-
-.form-container ul {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0;
-}
-
-.form-container li {
+ul {
   list-style-type: none;
-  border-radius: 4px;
-  background: lightgray;
-  padding: 5px;
-  margin-bottom: 5px;
-  color: black;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
 }
 
-.form-container .remove-button {
-  margin-left: 10px;
-  color: black;
-  cursor: pointer;
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #4CAF50;
 }
