@@ -1,8 +1,17 @@
+using Domain.Schools;
+using Domain.Events;
+using Domain.Subscriptions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using RestService.Authorization;
+using SqlDatabases;
+using System;
+using RestService.Schools;
 
 namespace RestService
 {
@@ -15,13 +24,30 @@ namespace RestService
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
             services.AddControllers();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
+                AddJwtBearer(options =>
+                {
+                    options.Authority = Configuration["Authentication:Authority"];
+                    options.Audience = Configuration["Authentication:Audience"];
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = Convert.ToBoolean(Configuration["Authentication:ValidateIssuer"]),
+                        ValidateIssuerSigningKey = Convert.ToBoolean(Configuration["Authentication:ValidateIssuerSigningKey"]),
+                        ValidateAudience = Convert.ToBoolean(Configuration["Authentication:ValidateAudience"]),
+                    };
+                });
+
+            services.AddTransient<IEventsRepository, EventsSqlRepository>();
+            services.AddTransient<ISubscriptionsRepository, SubscriptionsSqlRepository>();
+            services.AddTransient<ISchool, SchoolFromHttpContext>();
+            services.AddTransient<SchoolIdClaimType>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -32,6 +58,8 @@ namespace RestService
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
