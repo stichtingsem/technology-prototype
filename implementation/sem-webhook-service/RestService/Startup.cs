@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System;
 
 namespace RestService
 {
@@ -24,10 +25,13 @@ namespace RestService
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
                 AddJwtBearer(options =>
                 {
-                    options.Authority = "https://identity.noordhoff.nl";
+                    options.Authority = Configuration["Authentication:Authority"];
+                    options.Audience = Configuration["Authentication:Audience"];
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateAudience = false,
+                        ValidateIssuer = Convert.ToBoolean(Configuration["Authentication:ValidateIssuer"]),
+                        ValidateIssuerSigningKey = Convert.ToBoolean(Configuration["Authentication:ValidateIssuerSigningKey"]),
+                        ValidateAudience = Convert.ToBoolean(Configuration["Authentication:ValidateAudience"]),
                     };
                 });
         }
