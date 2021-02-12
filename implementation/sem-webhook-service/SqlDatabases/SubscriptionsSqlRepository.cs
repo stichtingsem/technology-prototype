@@ -1,43 +1,35 @@
 ﻿using Domain.Schools;
-using Domain.Events;
 using Domain.Subscriptions;
 using RestService.Subscriptions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SqlDatabases
 {
     public sealed class SubscriptionsSqlRepository : ISubscriptionsRepository
     {
+        static readonly List<Subscription> subscriptions = new List<Subscription>();
+
+        public void Add(Subscription subscriptionToAdd)
+        {
+            subscriptions.RemoveAll(subscription => subscription.SchoolId == subscriptionToAdd.SchoolId && subscription.EventId == subscriptionToAdd.EventId);
+            subscriptions.Add(subscriptionToAdd);
+        }
+
+        public void Delete(ISchool school, Guid eventId)
+        {
+            subscriptions.RemoveAll(subscription => subscription.SchoolId == school.Id && subscription.EventId == eventId);
+        }
+
         public IEnumerable<Subscription> Get(ISchool school)
         {
-            // Use school id to filter on schools
+            return subscriptions.Where(subscription => subscription.SchoolId == school.Id);
+        }
 
-            var subscriptions = new List<Subscription>
-            {
-                new Subscription
-                (
-                    new Event
-                    (
-                        new Guid("c46f73fa-209d-4200-a09b-260695572451"),
-                        "CatalogItemAdded"
-                    ),
-                    "https://eventbus.lambda-college.nl/catalogitemadded",
-                    "$0m3S3cr3t!12"
-                ),
-                new Subscription
-                (
-                    new Event
-                    (
-                        new Guid("145f29ad-3115-415c-8e45-c20a0b24949b"),
-                        "CatalogItemDeleted"
-                    ),
-                    "https://eventbus.lambda-college.nl/catalogitemdeleted",
-                    "$0m3S3cr3t!34"
-                ),
-            };
-
-            return subscriptions;
+        public Subscription Get(ISchool school, Guid eventId)
+        {
+            return subscriptions.SingleOrDefault(subscription => subscription.SchoolId == school.Id && subscription.EventId == eventId);
         }
     }
 }

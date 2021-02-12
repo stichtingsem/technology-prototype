@@ -1,10 +1,11 @@
-﻿using Domain.Events;
+﻿using System;
 
 namespace RestService.Subscriptions
 {
     public sealed record Subscription
     (
-        Event Event, 
+        string SchoolId,
+        Guid EventId, 
         string PostbackUrl, 
         string Secret
     );
