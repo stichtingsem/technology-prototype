@@ -1,6 +1,11 @@
-﻿using System;
+﻿using RestService.Events;
 
 namespace RestService.Subscriptions
 {
-    public record SubscriptionDto(Guid EventId, string PostbackUrl, string Secret);
+    public record SubscriptionDto
+    (
+        EventDto Event, 
+        string PostbackUrl, 
+        string Secret
+    );
 }
