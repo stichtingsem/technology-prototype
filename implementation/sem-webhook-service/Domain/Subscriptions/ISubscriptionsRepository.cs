@@ -6,6 +6,6 @@ namespace Domain.Subscriptions
 {
     public interface ISubscriptionsRepository
     {
-        IEnumerable<Subscription> Get(ISchool schoolAdmin);
+        IEnumerable<Subscription> Get(ISchool school);
     }
 }
