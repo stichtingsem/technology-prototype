@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using RestService.Authorization;
 using System.Collections.Generic;
 
 namespace RestService.Webhooks
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
+    [AuthorizeFromConfig]
     public class WebhookController : ControllerBase
     {
         [HttpGet]
