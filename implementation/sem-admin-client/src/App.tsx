@@ -1,6 +1,11 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import { IDP, IClientConfig } from '@ccs/il.authentication.avatar'
+
+import { 
+  CreateSubscriptionForm, 
+  UpdateSubscriptionForm, 
+  DeleteSubscriptionForm
+} from './components'
 import './App.css';
 
 function App() {
@@ -10,23 +15,25 @@ function App() {
     idpUrl: 'https://il-authentication-web-noordhoff.azurewebsites.net/'
   }
 
+  const [visibleSection, setVisibleSection] = useState<string>('create')
+
   return (
     <div className="App">
-      <header className="App-header">
-        <IDP {...avatarConfig} />
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Checking changes applied to docker.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <IDP {...avatarConfig} />
+      <ul>
+        <li>
+          <span className={visibleSection === 'create' ? "active" : ""} onClick={() => setVisibleSection('create')}>Create</span>
+        </li>
+        <li>
+          <span className={visibleSection === 'update' ? "active" : ""} onClick={() => setVisibleSection('update')}>Update</span>
+        </li>
+        <li>
+          <span className={visibleSection === 'delete' ? "active" : ""} onClick={() => setVisibleSection('delete')}>Delete</span>
+        </li>
+      </ul>
+      {visibleSection === 'create' && <CreateSubscriptionForm />}
+      {visibleSection === 'update' && <UpdateSubscriptionForm />}
+      {visibleSection === 'delete' && <DeleteSubscriptionForm />}
     </div>
   );
 }
