@@ -19,8 +19,8 @@ namespace RestService.Schools
 
         // How to deal with a user that does not have a 
         // school id claim type?
-        public string Id => 
+        public SchoolId Id => 
             httpContextAccessor.HttpContext.User.Claims.ToList().
-                Single(claim => claim.Type.Equals(schoolClaimType, StringComparison.OrdinalIgnoreCase)).Value;
+                Single(claim => schoolClaimType.IsFor(claim.Type)).Value;
     }
 }

@@ -1,35 +1,34 @@
-﻿using Domain.Schools;
+﻿using Domain.Events;
+using Domain.Schools;
 using Domain.Subscriptions;
-using RestService.Subscriptions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SqlDatabases
+namespace SqlRepositories
 {
     public sealed class SubscriptionsSqlRepository : ISubscriptionsRepository
     {
-        static readonly List<Subscription> subscriptions = new List<Subscription>();
+        private readonly List<Subscription> subscriptions = new List<Subscription>();
 
-        public void Add(Subscription subscriptionToAdd)
+        public void AddOrUpdate(Subscription subscriptionToMerge)
         {
-            subscriptions.RemoveAll(subscription => subscription.SchoolId == subscriptionToAdd.SchoolId && subscription.EventId == subscriptionToAdd.EventId);
-            subscriptions.Add(subscriptionToAdd);
+            subscriptions.RemoveAll(subscription => subscription == subscriptionToMerge);
+            subscriptions.Add(subscriptionToMerge);
         }
 
-        public void Delete(ISchool school, Guid eventId)
+        public void Delete(SchoolId schoolId, EventId eventId)
         {
-            subscriptions.RemoveAll(subscription => subscription.SchoolId == school.Id && subscription.EventId == eventId);
+            subscriptions.RemoveAll(subscription => subscription.IsFor(schoolId, eventId));
         }
 
-        public IEnumerable<Subscription> Get(ISchool school)
+        public IEnumerable<Subscription> GetAll(SchoolId schoolId)
         {
-            return subscriptions.Where(subscription => subscription.SchoolId == school.Id);
+            return subscriptions.Where(subscription => subscription.IsFor(schoolId));
         }
 
-        public Subscription Get(ISchool school, Guid eventId)
+        public Subscription Get(SchoolId schoolId, EventId eventId)
         {
-            return subscriptions.SingleOrDefault(subscription => subscription.SchoolId == school.Id && subscription.EventId == eventId);
+            return subscriptions.SingleOrDefault(subscription => subscription.IsFor(schoolId, eventId));
         }
     }
 }

@@ -5,7 +5,7 @@ using RestService.Events;
 
 namespace RestServiceTests.EventsControllerTests
 {
-    public class GetTests
+    public sealed class GetAllTests
     {
         EventsController sut;
         Mock<IEventsRepository> mockEventsRepository;

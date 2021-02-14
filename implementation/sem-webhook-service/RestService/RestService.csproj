@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\SqlDatabases\SqlDatabases.csproj" />
+    <ProjectReference Include="..\SqlDatabases\SqlRepositories.csproj" />
   </ItemGroup>
 
 

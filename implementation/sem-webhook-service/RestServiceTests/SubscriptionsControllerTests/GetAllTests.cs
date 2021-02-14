@@ -1,4 +1,5 @@
-﻿using Domain.Schools;
+﻿using Domain.Events;
+using Domain.Schools;
 using Domain.Subscriptions;
 using Moq;
 using NUnit.Framework;
@@ -6,21 +7,25 @@ using RestService.Subscriptions;
 
 namespace RestServiceTests.SubscriptionsControllerTests
 {
-    public class GetTests
+    public sealed class GetAllTests
     {
         SubscriptionsController sut;
-        Mock<ISubscriptionsRepository> mockSubscriptionsRepo;
+
+        Mock<IEventsRepository> mockEventsRepository;
+        Mock<ISubscriptionsRepository> mockSubscriptionsRepository;
         Mock<ISchool> mockSchool;
 
         [SetUp]
         public void SetUp()
         {
-            mockSubscriptionsRepo = new Mock<ISubscriptionsRepository>();
+            mockSubscriptionsRepository = new Mock<ISubscriptionsRepository>();
+            mockEventsRepository = new Mock<IEventsRepository>();
             mockSchool = new Mock<ISchool>();
 
             sut = new SubscriptionsController
             (
-                mockSubscriptionsRepo.Object,
+                mockSubscriptionsRepository.Object,
+                mockEventsRepository.Object,
                 mockSchool.Object
             );
         }
