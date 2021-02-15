@@ -1,4 +1,5 @@
-﻿using Domain.Schools;
+﻿using Domain.Generic;
+using Domain.Schools;
 using Microsoft.AspNetCore.Http;
 using RestService.Authorization;
 using System;
@@ -21,6 +22,6 @@ namespace RestService.Schools
         // school id claim type?
         public SchoolId Id => 
             httpContextAccessor.HttpContext.User.Claims.ToList().
-                Single(claim => schoolClaimType.IsFor(claim.Type)).Value;
+                Single(claim => schoolClaimType.IsFor(claim.Type)).Value.ToGuid();
     }
 }

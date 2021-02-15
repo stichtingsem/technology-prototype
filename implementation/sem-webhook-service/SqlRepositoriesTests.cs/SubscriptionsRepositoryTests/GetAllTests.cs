@@ -39,7 +39,7 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
 
             sut.AddOrUpdate(subscription);
 
-            var result = sut.GetAll("AnotherSchoolId");
+            var result = sut.GetAll(RandomSchoolId());
 
             Assert.AreEqual(0, result.Count());
         }

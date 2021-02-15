@@ -37,7 +37,7 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
 
             sut.AddOrUpdate(new Subscription(schoolId, eventId,  "postbackUrl", "secret"));
 
-            var result = sut.Get("DoesNotExist", eventId);
+            var result = sut.Get(RandomSchoolId(), eventId);
 
             Assert.IsNull(result);
         }
@@ -65,7 +65,7 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
             
             sut.AddOrUpdate(subscription);
 
-            SchoolId schoolIdCopy = new string(schoolId.ToString());
+            SchoolId schoolIdCopy = new Guid(schoolId.ToString());
             EventId eventIdCopy = new Guid(eventId.ToString());
 
             var result = sut.Get(schoolIdCopy, eventIdCopy);
