@@ -4,6 +4,7 @@ using Domain.Subscriptions;
 using NUnit.Framework;
 using SqlRepositories;
 using System;
+using static SqlRepositoriesTests.SubscriptionsRepositoryTests.IdHelpers;
 
 namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
 {
@@ -20,8 +21,8 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         [Test]
         public void NonExistingSubscription()
         {
-            SchoolId schoolId = "SchoolId";
-            EventId eventId = Guid.NewGuid();
+            SchoolId schoolId = RandomSchoolId();
+            EventId eventId = RandomEventId();
 
             sut.Delete(schoolId, eventId);
 
@@ -31,8 +32,8 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         [Test]
         public void ExistingSubscription()
         {
-            SchoolId schoolId = "SchoolId";
-            EventId eventId = Guid.NewGuid();
+            SchoolId schoolId = RandomSchoolId();
+            EventId eventId = RandomEventId();
 
             var subscription = new Subscription(schoolId, eventId,  "postbackUrl", "secret");
 

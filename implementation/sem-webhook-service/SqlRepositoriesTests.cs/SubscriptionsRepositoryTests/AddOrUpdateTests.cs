@@ -3,8 +3,8 @@ using Domain.Schools;
 using Domain.Subscriptions;
 using NUnit.Framework;
 using SqlRepositories;
-using System;
 using System.Linq;
+using static SqlRepositoriesTests.SubscriptionsRepositoryTests.IdHelpers;
 
 namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
 {
@@ -21,8 +21,8 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         [Test]
         public void AddSubscription()
         {
-            SchoolId schoolId = "SchoolId";
-            EventId eventId = Guid.NewGuid();
+            SchoolId schoolId = RandomSchoolId();
+            EventId eventId = RandomEventId();
 
             var subscription = new Subscription(schoolId, eventId, "postbackUrl", "secret");
 
@@ -34,8 +34,8 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         [Test]
         public void UpdateSubscription()
         {
-            SchoolId schoolId = "SchoolId";
-            EventId eventId = Guid.NewGuid();
+            SchoolId schoolId = RandomSchoolId();
+            EventId eventId = RandomEventId();
 
             var subscription1 = new Subscription(schoolId, eventId, "postbackUrl", "secret");
             var subscription2 = new Subscription(schoolId, eventId, "updatedUrl", "updatedSecret");

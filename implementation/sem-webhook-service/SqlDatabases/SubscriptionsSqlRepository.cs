@@ -8,7 +8,7 @@ namespace SqlRepositories
 {
     public sealed class SubscriptionsSqlRepository : ISubscriptionsRepository
     {
-        private readonly List<Subscription> subscriptions = new List<Subscription>();
+        static readonly List<Subscription> subscriptions = new List<Subscription>();
 
         public void AddOrUpdate(Subscription subscriptionToMerge)
         {

@@ -4,6 +4,7 @@ using Domain.Subscriptions;
 using NUnit.Framework;
 using SqlRepositories;
 using System;
+using static SqlRepositoriesTests.SubscriptionsRepositoryTests.IdHelpers;
 
 namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
 {
@@ -20,8 +21,8 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         [Test]
         public void SubscriptionDoesNotExist()
         {
-            SchoolId schoolId = "DoesNotExist";
-            EventId eventId = Guid.NewGuid();
+            SchoolId schoolId = RandomSchoolId();
+            EventId eventId = RandomEventId();
 
             var result = sut.Get(schoolId, eventId);
 
@@ -31,8 +32,8 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         [Test]
         public void SchoolIdDoesNotExist()
         {
-            SchoolId schoolId = "SchoolId";
-            EventId eventId = Guid.NewGuid();
+            SchoolId schoolId = RandomSchoolId();
+            EventId eventId = RandomEventId();
 
             sut.AddOrUpdate(new Subscription(schoolId, eventId,  "postbackUrl", "secret"));
 
@@ -44,8 +45,8 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         [Test]
         public void EventIdDoesNotExist()
         {
-            SchoolId schoolId = "SchoolId";
-            EventId eventId = Guid.NewGuid();
+            SchoolId schoolId = RandomSchoolId();
+            EventId eventId = RandomEventId();
 
             sut.AddOrUpdate(new Subscription(schoolId, eventId,  "postbackUrl", "secret"));
 
@@ -55,13 +56,19 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         }
 
         [Test]
-        public void ExistingIds()
+        public void ValueEquality()
         {
-            var subscription = new Subscription("SchoolId", new Guid("00000000-1111-2222-3333-444444444444"),  "postbackUrl", "secret");
+            SchoolId schoolId = RandomSchoolId();
+            EventId eventId = RandomEventId();
+
+            var subscription = new Subscription(schoolId, eventId, "postbackUrl", "secret");
             
             sut.AddOrUpdate(subscription);
 
-            var result = sut.Get("SchoolId", new Guid("00000000-1111-2222-3333-444444444444"));
+            SchoolId schoolIdCopy = new string(schoolId.ToString());
+            EventId eventIdCopy = new Guid(eventId.ToString());
+
+            var result = sut.Get(schoolIdCopy, eventIdCopy);
 
             Assert.AreEqual(subscription, result);
         }

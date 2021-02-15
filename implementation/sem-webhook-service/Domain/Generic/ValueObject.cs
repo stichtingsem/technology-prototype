@@ -17,7 +17,9 @@ namespace Domain.Generic
         public static bool operator ==(ValueObject<T> left, ValueObject<T> right) => left.Equals(right);
 
         public static bool operator !=(ValueObject<T> left, ValueObject<T> right) => !(left == right);
-        
+
+        public override string ToString() => value.ToString();
+
         public static implicit operator T(ValueObject<T> valueObject) => valueObject.value;
     }
 }

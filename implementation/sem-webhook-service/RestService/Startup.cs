@@ -42,8 +42,8 @@ namespace RestService
                     };
                 });
 
-            services.AddSingleton<IEventsRepository, EventsSqlRepository>();
-            services.AddSingleton<ISubscriptionsRepository, SubscriptionsSqlRepository>();
+            services.AddTransient<IEventsRepository, EventsSqlRepository>();
+            services.AddTransient<ISubscriptionsRepository, SubscriptionsSqlRepository>();
             services.AddTransient<ISchool, SchoolFromHttpContext>();
             services.AddTransient<SchoolIdClaimType>();
         }

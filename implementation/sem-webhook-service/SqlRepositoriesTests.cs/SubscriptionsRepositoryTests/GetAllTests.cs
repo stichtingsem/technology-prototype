@@ -5,6 +5,7 @@ using NUnit.Framework;
 using SqlRepositories;
 using System;
 using System.Linq;
+using static SqlRepositoriesTests.SubscriptionsRepositoryTests.IdHelpers;
 
 namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
 {
@@ -21,7 +22,7 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         [Test]
         public void EmptyRepo()
         {
-            SchoolId schoolId = "SchoolId";
+            SchoolId schoolId = RandomSchoolId();
 
             var result = sut.GetAll(schoolId);
 
@@ -31,8 +32,8 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         [Test]
         public void NonExistingSchoolId()
         {
-            SchoolId schoolId = "SchoolId";
-            EventId eventId = Guid.NewGuid();
+            SchoolId schoolId = RandomSchoolId();
+            EventId eventId = RandomEventId();
 
             var subscription = new Subscription(schoolId, eventId,  "postbackUrl", "secret");
 
@@ -46,8 +47,8 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         [Test]
         public void ExistingSchoolId()
         {
-            SchoolId schoolId = "SchoolId";
-            EventId eventId = Guid.NewGuid();
+            SchoolId schoolId = RandomSchoolId();
+            EventId eventId = RandomEventId();
 
             var subscription = new Subscription(schoolId, eventId,  "postbackUrl", "secret");
 
@@ -61,9 +62,9 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         [Test]
         public void ExistingSchoolIdMultiple()
         {
-            SchoolId schoolId = "SchoolId";
-            EventId eventId1 = Guid.NewGuid();
-            EventId eventId2 = Guid.NewGuid();
+            SchoolId schoolId = RandomSchoolId();
+            EventId eventId1 = RandomEventId();
+            EventId eventId2 = RandomEventId();
 
             var subscription1 = new Subscription(schoolId, eventId1,  "postbackUrl", "secret");
             var subscription2 = new Subscription(schoolId, eventId2,  "postbackUrl", "secret");
