@@ -1,5 +1,2 @@
-export * from './GetEvents'
-export * from './GetSubscriptions'
-export * from './CreateSubscription'
-export * from './UpdateSubscription'
-export * from './DeleteSubscription'
+export * from './Events'
+export * from './Subscriptions'
