@@ -2,9 +2,10 @@
 
 namespace RestService.Subscriptions
 {
-    public sealed record SubscriptionInput
+    public sealed record SubscriptionOutput
     (
         Guid EventId,
+        string EventName,
         string PostbackUrl,
         string Secret
     );

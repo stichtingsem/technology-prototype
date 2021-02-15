@@ -1,14 +1,16 @@
 ﻿using Microsoft.Extensions.Configuration;
+using System;
 
 namespace RestService.Authorization
 {
     public sealed class SchoolIdClaimType
     {
-        private readonly string schoolIdClaimType;
+        private readonly string value;
 
         public SchoolIdClaimType(IConfiguration configuration) => 
-            schoolIdClaimType = configuration["Authorization:SchoolIdClaimType"];
+            value = configuration["Authorization:SchoolIdClaimType"];
 
-        public static implicit operator string(SchoolIdClaimType s) => s.schoolIdClaimType;
+        public bool IsFor(string claimType) => 
+            claimType.Equals(value, StringComparison.OrdinalIgnoreCase);
     }
 }

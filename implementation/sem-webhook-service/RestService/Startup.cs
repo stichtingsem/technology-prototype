@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using RestService.Authorization;
-using SqlDatabases;
+using SqlRepositories;
 using System;
 using RestService.Schools;
 
@@ -42,8 +42,8 @@ namespace RestService
                     };
                 });
 
-            services.AddTransient<IEventsRepository, EventsSqlRepository>();
-            services.AddTransient<ISubscriptionsRepository, SubscriptionsSqlRepository>();
+            services.AddSingleton<IEventsRepository, EventsSqlRepository>();
+            services.AddSingleton<ISubscriptionsRepository, SubscriptionsSqlRepository>();
             services.AddTransient<ISchool, SchoolFromHttpContext>();
             services.AddTransient<SchoolIdClaimType>();
         }

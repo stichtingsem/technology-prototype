@@ -1,9 +1,11 @@
-﻿using Domain.Schools;
+﻿using Domain.Events;
+using Domain.Schools;
 using Domain.Subscriptions;
 using Microsoft.AspNetCore.Mvc;
 using RestService.Authorization;
+using RestService.Events;
 using System;
-using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 namespace RestService.Subscriptions
 {
@@ -13,60 +15,55 @@ namespace RestService.Subscriptions
     public sealed class SubscriptionsController : ControllerBase
     {
         private readonly ISubscriptionsRepository subscriptionsRepository;
+        private readonly IEventsRepository eventsRepository;
         private readonly ISchool school;
 
         public SubscriptionsController
         (
             ISubscriptionsRepository subscriptionsRepository,
+            IEventsRepository eventsRepository,
             ISchool school
         )
         {
             this.subscriptionsRepository = subscriptionsRepository;
+            this.eventsRepository = eventsRepository;
             this.school = school;
         }
 
         [HttpGet]
-        public IActionResult Get()
+        [Route("{eventId}")]
+        public ActionResult<SubscriptionOutput> Get(Guid eventId)
         {
-            var subscriptions = subscriptionsRepository.Get(school);
+            var eventOutput = eventsRepository.Get(eventId).ToOutput();
+            var subscriptionOutput = subscriptionsRepository.Get(school.Id, eventId).ToOutput(eventOutput);
 
-            return Ok(subscriptions);
-        }
-
-        [HttpPost]
-        public IActionResult Add([FromBody] SubscriptionInput input)
-        {
-            var subscription = new Subscription(school.Id, input.EventId, input.PostbackUrl, input.Secret);
-
-            subscriptionsRepository.Add(subscription);
-
-            return Ok();
-        }
-
-        [HttpPut]
-        public IActionResult Update([FromBody] SubscriptionInput input)
-        {
-            var subscription = new Subscription(school.Id, input.EventId, input.PostbackUrl, input.Secret);
-
-            subscriptionsRepository.Add(subscription);
-
-            return Ok();
+            return Ok(subscriptionOutput);
         }
 
         [HttpGet]
-        [Route("{eventId}")]
-        public IActionResult Get(Guid eventId)
+        public ActionResult<IEnumerable<SubscriptionOutput>> Get()
         {
-            var subscription = subscriptionsRepository.Get(school, eventId);
+            var events = eventsRepository.GetAll();
+            var subscriptionsOutput = subscriptionsRepository.GetAll(school.Id).ToOutput(events);
 
-            return Ok(subscription);
+            return Ok(subscriptionsOutput);
+        }
+
+        [HttpPost]
+        public ActionResult Add([FromBody] SubscriptionInput input)
+        {
+            var subscription = new Subscription(school.Id, input.EventId, input.PostbackUrl, input.Secret);
+
+            subscriptionsRepository.AddOrUpdate(subscription);
+
+            return Ok();
         }
 
         [HttpDelete]
         [Route("{eventId}")]
-        public IActionResult Delete(Guid eventId)
+        public ActionResult Delete(Guid eventId)
         {
-            subscriptionsRepository.Delete(school, eventId);
+            subscriptionsRepository.Delete(school.Id, eventId);
 
             return Ok();
         }

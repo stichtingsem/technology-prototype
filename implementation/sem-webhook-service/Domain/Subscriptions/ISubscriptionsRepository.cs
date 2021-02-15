@@ -1,17 +1,18 @@
-﻿using Domain.Schools;
-using RestService.Subscriptions;
-using System;
+﻿using Domain.Events;
+using Domain.Schools;
+using Domain.Subscriptions;
 using System.Collections.Generic;
 
 namespace Domain.Subscriptions
 {
     public interface ISubscriptionsRepository
     {
-        IEnumerable<Subscription> Get(ISchool school);
+        IEnumerable<Subscription> GetAll(SchoolId schoolId);
 
-        void Add(Subscription subscription);
+        Subscription Get(SchoolId schoolId, EventId eventId);
 
-        Subscription Get(ISchool school, Guid eventId);
-        void Delete(ISchool school, Guid eventId);
+        void AddOrUpdate(Subscription subscription);
+
+        void Delete(SchoolId schoolId, EventId eventId);
     }
 }

@@ -11,15 +11,13 @@ namespace RestService.Events
     {
         private readonly IEventsRepository eventsRepository;
 
-        public EventsController(IEventsRepository eventsRepository)
-        {
+        public EventsController(IEventsRepository eventsRepository) => 
             this.eventsRepository = eventsRepository;
-        }
 
         [HttpGet]
         public IActionResult Get()
         {
-            var events = eventsRepository.Get();
+            var events = eventsRepository.GetAll().ToOutput();
 
             return Ok(events);
         }
