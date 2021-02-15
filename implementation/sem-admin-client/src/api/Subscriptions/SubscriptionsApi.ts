@@ -1,20 +1,30 @@
 import axios from 'axios'
-import { ICreateFormFields, IUpdateFormFields, IDeleteFormFields } from '../../components'
+import { ISubscriptionRow, ICreateFormFields, IUpdateFormFields, IDeleteFormFields } from '../../components'
 import { ISubscriptionsResponse, ISubscriptionsPayload } from '../types'
 
-const getSubscriptions = (): Promise<ISubscriptionsResponse[]> => {
+const getSubscriptions = (): Promise<ISubscriptionRow[]> => {
   return axios.get('https://localhost:5001/subscriptions').then((response) => {
     const subscriptions = response.data as ISubscriptionsResponse[]
-    // TODO: map to the model for the UI
-    return subscriptions
+    const subscriptionsRows: ISubscriptionRow[] = subscriptions.map(subscription => ({
+      id: subscription.id,
+      url: subscription.postbackUrl,
+      enabledEvents: subscription.enabledEvents.join()
+    }))
+
+    return subscriptionsRows
   })
 }
 
-const getSubscriptionById = (id: string): Promise<ISubscriptionsResponse> => {
+const getSubscriptionById = (id: string): Promise<ISubscriptionRow> => {
   return axios.get(`https://localhost:5001/subscriptions/${id}`).then((response) => {
     const subscription = response.data as ISubscriptionsResponse
-    // TODO: map to the model for the UI
-    return subscription
+    const subscriptionRow: ISubscriptionRow = {
+      id: subscription.id,
+      url: subscription.postbackUrl,
+      enabledEvents: subscription.enabledEvents.join()
+    }
+
+    return subscriptionRow
   })
 }
 

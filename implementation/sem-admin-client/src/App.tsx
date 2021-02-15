@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { IDP, IClientConfig } from '@ccs/il.authentication.avatar'
 
-import { 
+import {
+  SubscriptionsList,
   CreateSubscriptionForm, 
   UpdateSubscriptionForm, 
   DeleteSubscriptionForm
@@ -15,12 +16,15 @@ function App() {
     idpUrl: 'https://il-authentication-web-noordhoff.azurewebsites.net/'
   }
 
-  const [visibleSection, setVisibleSection] = useState<string>('create')
+  const [visibleSection, setVisibleSection] = useState<string>('view')
 
   return (
     <div className="App">
       <IDP {...avatarConfig} />
       <ul>
+        <li>
+          <span className={visibleSection === 'view' ? "active" : ""} onClick={() => setVisibleSection('view')}>View</span>
+        </li>
         <li>
           <span className={visibleSection === 'create' ? "active" : ""} onClick={() => setVisibleSection('create')}>Create</span>
         </li>
@@ -31,6 +35,7 @@ function App() {
           <span className={visibleSection === 'delete' ? "active" : ""} onClick={() => setVisibleSection('delete')}>Delete</span>
         </li>
       </ul>
+      {visibleSection === 'view' && <SubscriptionsList />}
       {visibleSection === 'create' && <CreateSubscriptionForm />}
       {visibleSection === 'update' && <UpdateSubscriptionForm />}
       {visibleSection === 'delete' && <DeleteSubscriptionForm />}
