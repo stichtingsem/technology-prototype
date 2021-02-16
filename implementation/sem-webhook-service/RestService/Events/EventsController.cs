@@ -17,9 +17,9 @@ namespace RestService.Events
         [HttpGet]
         public IActionResult Get()
         {
-            var events = eventsRepository.GetAll().ToOutput();
+            var events = eventsRepository.GetAll();
 
-            return Ok(events);
+            return Ok(events.ToOutput());
         }
     }
 }

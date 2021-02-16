@@ -4,6 +4,7 @@ using Domain.Subscriptions;
 using NUnit.Framework;
 using SqlRepositories;
 using System;
+using System.Collections.Generic;
 using static SqlRepositoriesTests.SubscriptionsRepositoryTests.IdHelpers;
 
 namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
@@ -21,10 +22,10 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         [Test]
         public void SubscriptionDoesNotExist()
         {
+            SubscriptionId subscriptionId = RandomSubscriptionId();
             SchoolId schoolId = RandomSchoolId();
-            EventId eventId = RandomEventId();
 
-            var result = sut.Get(schoolId, eventId);
+            var result = sut.Get(subscriptionId, schoolId);
 
             Assert.IsNull(result);
         }
@@ -32,43 +33,47 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         [Test]
         public void SchoolIdDoesNotExist()
         {
+            SubscriptionId subscriptionId = RandomSubscriptionId();
             SchoolId schoolId = RandomSchoolId();
-            EventId eventId = RandomEventId();
+            IEnumerable<EventId> eventIds = ListOfRandomEventIds();
 
-            sut.AddOrUpdate(new Subscription(schoolId, eventId,  "postbackUrl", "secret"));
+            sut.Add(new Subscription(subscriptionId, schoolId, eventIds, "postbackUrl", "secret"));
 
-            var result = sut.Get(RandomSchoolId(), eventId);
+            var result = sut.Get(subscriptionId, RandomSchoolId());
 
             Assert.IsNull(result);
         }
 
         [Test]
-        public void EventIdDoesNotExist()
+        public void SubscriptionIdDoesNotExist()
         {
+            SubscriptionId subscriptionId = RandomSubscriptionId();
             SchoolId schoolId = RandomSchoolId();
-            EventId eventId = RandomEventId();
+            IEnumerable<EventId> eventIds = ListOfRandomEventIds();
 
-            sut.AddOrUpdate(new Subscription(schoolId, eventId,  "postbackUrl", "secret"));
+            sut.Add(new Subscription(subscriptionId, schoolId, eventIds, "postbackUrl", "secret"));
 
-            var result = sut.Get(schoolId, Guid.NewGuid());
+            var result = sut.Get(RandomSubscriptionId(), schoolId);
 
             Assert.IsNull(result);
         }
+
 
         [Test]
         public void ValueEquality()
         {
+            SubscriptionId subscriptionId = RandomSubscriptionId();
             SchoolId schoolId = RandomSchoolId();
-            EventId eventId = RandomEventId();
+            IEnumerable<EventId> eventIds = ListOfRandomEventIds();
 
-            var subscription = new Subscription(schoolId, eventId, "postbackUrl", "secret");
+            var subscription = new Subscription(subscriptionId, schoolId, eventIds, "postbackUrl", "secret");
             
-            sut.AddOrUpdate(subscription);
+            sut.Add(subscription);
 
+            SubscriptionId subscriptionIdCopy = new Guid(subscriptionId.ToString());
             SchoolId schoolIdCopy = new Guid(schoolId.ToString());
-            EventId eventIdCopy = new Guid(eventId.ToString());
 
-            var result = sut.Get(schoolIdCopy, eventIdCopy);
+            var result = sut.Get(subscriptionIdCopy, schoolIdCopy);
 
             Assert.AreEqual(subscription, result);
         }

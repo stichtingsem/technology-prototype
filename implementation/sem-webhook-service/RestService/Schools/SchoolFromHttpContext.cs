@@ -2,7 +2,6 @@
 using Domain.Schools;
 using Microsoft.AspNetCore.Http;
 using RestService.Authorization;
-using System;
 using System.Linq;
 
 namespace RestService.Schools

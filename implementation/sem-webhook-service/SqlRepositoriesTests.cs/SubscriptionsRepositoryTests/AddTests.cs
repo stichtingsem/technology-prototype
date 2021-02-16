@@ -8,7 +8,7 @@ using static SqlRepositoriesTests.SubscriptionsRepositoryTests.IdHelpers;
 
 namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
 {
-    public class DeleteTests
+    public class AddTests
     {
         SubscriptionsSqlRepository sut;
 
@@ -19,18 +19,7 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         }
 
         [Test]
-        public void NonExistingSubscription()
-        {
-            SubscriptionId subscriptionId = RandomSubscriptionId();
-            SchoolId schoolId = RandomSchoolId();
-
-            sut.Delete(subscriptionId, schoolId);
-
-            Assert.Pass();
-        }
-
-        [Test]
-        public void ExistingSubscription()
+        public void AddSubscription()
         {
             SubscriptionId subscriptionId = RandomSubscriptionId();
             SchoolId schoolId = RandomSchoolId();
@@ -40,9 +29,7 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
 
             sut.Add(subscription);
 
-            sut.Delete(subscriptionId, schoolId);
-
-            Assert.IsNull(sut.Get(subscriptionId, schoolId));
+            Assert.AreEqual(subscription, sut.Get(subscriptionId, schoolId));
         }
     }
 }

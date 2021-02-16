@@ -3,7 +3,6 @@ using Domain.Schools;
 using Domain.Subscriptions;
 using Microsoft.AspNetCore.Mvc;
 using RestService.Authorization;
-using RestService.Events;
 using System;
 using System.Collections.Generic;
 
@@ -31,39 +30,51 @@ namespace RestService.Subscriptions
         }
 
         [HttpGet]
-        [Route("{eventId}")]
-        public ActionResult<SubscriptionOutput> Get(Guid eventId)
+        [Route("{subscriptionId}")]
+        public ActionResult<SubscriptionOutput> Get(Guid subscriptionId)
         {
-            var eventOutput = eventsRepository.Get(eventId).ToOutput();
-            var subscriptionOutput = subscriptionsRepository.Get(school.Id, eventId).ToOutput(eventOutput);
+            var subscription = subscriptionsRepository.Get(subscriptionId, school.Id);
 
-            return Ok(subscriptionOutput);
+            var events = eventsRepository.GetAll();
+
+            return Ok(subscription.ToOutput(events));
         }
 
         [HttpGet]
         public ActionResult<IEnumerable<SubscriptionOutput>> Get()
         {
-            var events = eventsRepository.GetAll();
-            var subscriptionsOutput = subscriptionsRepository.GetAll(school.Id).ToOutput(events);
+            var subscriptions = subscriptionsRepository.GetAll(school.Id);
 
-            return Ok(subscriptionsOutput);
+            var events = eventsRepository.GetAll();
+
+            return Ok(subscriptions.ToOutput(events));
         }
 
         [HttpPost]
-        public ActionResult Add([FromBody] SubscriptionInput input)
+        public ActionResult Add([FromBody] SubscriptionAdd add)
         {
-            var subscription = new Subscription(school.Id, input.EventId, input.PostbackUrl, input.Secret);
+            var subscription = Subscription.Create(school.Id, add.EventIds, add.PostbackUrl, add.Secret);
 
-            subscriptionsRepository.AddOrUpdate(subscription);
+            subscriptionsRepository.Add(subscription);
+
+            return Ok();
+        }
+
+        [HttpPut]
+        public ActionResult Update([FromBody] SubscriptionUpdate update)
+        {
+            var subscription = Subscription.Create(update.SubscriptionId, school.Id, update.EventIds, update.PostbackUrl, update.Secret);
+
+            subscriptionsRepository.Update(subscription, school.Id);
 
             return Ok();
         }
 
         [HttpDelete]
-        [Route("{eventId}")]
-        public ActionResult Delete(Guid eventId)
+        [Route("{subscriptionId}")]
+        public ActionResult Delete(Guid subscriptionId)
         {
-            subscriptionsRepository.Delete(school.Id, eventId);
+            subscriptionsRepository.Delete(subscriptionId, school.Id);
 
             return Ok();
         }

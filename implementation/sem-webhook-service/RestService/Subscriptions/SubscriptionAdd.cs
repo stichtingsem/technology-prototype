@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace RestService.Subscriptions
 {
-    public sealed record SubscriptionInput
+    public sealed record SubscriptionAdd
     (
-        Guid EventId,
+        IEnumerable<Guid> EventIds,
         string PostbackUrl,
         string Secret
     );

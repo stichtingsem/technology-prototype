@@ -4,6 +4,7 @@ using Domain.Subscriptions;
 using NUnit.Framework;
 using SqlRepositories;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using static SqlRepositoriesTests.SubscriptionsRepositoryTests.IdHelpers;
 
@@ -32,12 +33,13 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         [Test]
         public void NonExistingSchoolId()
         {
+            SubscriptionId subscriptionId = RandomSubscriptionId();
             SchoolId schoolId = RandomSchoolId();
-            EventId eventId = RandomEventId();
+            IEnumerable<EventId> eventIds = ListOfRandomEventIds();
 
-            var subscription = new Subscription(schoolId, eventId,  "postbackUrl", "secret");
+            var subscription = new Subscription(subscriptionId, schoolId, eventIds, "postbackUrl", "secret");
 
-            sut.AddOrUpdate(subscription);
+            sut.Add(subscription);
 
             var result = sut.GetAll(RandomSchoolId());
 
@@ -47,12 +49,13 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         [Test]
         public void ExistingSchoolId()
         {
+            SubscriptionId subscriptionId = RandomSubscriptionId();
             SchoolId schoolId = RandomSchoolId();
-            EventId eventId = RandomEventId();
+            IEnumerable<EventId> eventIds = ListOfRandomEventIds();
 
-            var subscription = new Subscription(schoolId, eventId,  "postbackUrl", "secret");
+            var subscription = new Subscription(subscriptionId, schoolId, eventIds, "postbackUrl", "secret");
 
-            sut.AddOrUpdate(subscription);
+            sut.Add(subscription);
 
             var result = sut.GetAll(schoolId);
 
@@ -60,17 +63,18 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         }
 
         [Test]
-        public void ExistingSchoolIdMultiple()
+        public void ExistingSchoolIdMultipleSubscriptions()
         {
+            SubscriptionId subscriptionId = RandomSubscriptionId();
             SchoolId schoolId = RandomSchoolId();
-            EventId eventId1 = RandomEventId();
-            EventId eventId2 = RandomEventId();
+            IEnumerable<EventId> eventIds1 = ListOfRandomEventIds();
+            IEnumerable<EventId> eventIds2 = ListOfRandomEventIds();
 
-            var subscription1 = new Subscription(schoolId, eventId1,  "postbackUrl", "secret");
-            var subscription2 = new Subscription(schoolId, eventId2,  "postbackUrl", "secret");
+            var subscription1 = new Subscription(subscriptionId, schoolId, eventIds1, "postbackUrl", "secret");
+            var subscription2 = new Subscription(subscriptionId, schoolId, eventIds2, "postbackUrl", "secret");
 
-            sut.AddOrUpdate(subscription1);
-            sut.AddOrUpdate(subscription2);
+            sut.Add(subscription1);
+            sut.Add(subscription2);
 
             var result = sut.GetAll(schoolId);
 

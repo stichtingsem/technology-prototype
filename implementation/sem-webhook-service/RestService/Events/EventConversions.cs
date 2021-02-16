@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace RestService.Events
 {
-    public static class EventExtensions
+    public static class EventConversions
     {
         public static EventOutput ToOutput(this Event anEvent) => 
             anEvent.Convert((eventId, eventName) => new EventOutput(eventId, eventName));

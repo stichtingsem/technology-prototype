@@ -16,6 +16,5 @@ namespace Domain.Events
         public TResult Convert<TResult>(Func<EventId, EventName, TResult> convert) => convert(id, name);
 
         public bool IsFor(EventId eventId) => id == eventId;
-       
     }
 }

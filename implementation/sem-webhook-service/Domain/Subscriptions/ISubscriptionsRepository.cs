@@ -1,6 +1,4 @@
-﻿using Domain.Events;
-using Domain.Schools;
-using Domain.Subscriptions;
+﻿using Domain.Schools;
 using System.Collections.Generic;
 
 namespace Domain.Subscriptions
@@ -9,10 +7,12 @@ namespace Domain.Subscriptions
     {
         IEnumerable<Subscription> GetAll(SchoolId schoolId);
 
-        Subscription Get(SchoolId schoolId, EventId eventId);
+        Subscription Get(SubscriptionId subscriptionId, SchoolId schoolId);
 
-        void AddOrUpdate(Subscription subscription);
+        void Add(Subscription subscription);
 
-        void Delete(SchoolId schoolId, EventId eventId);
+        void Update(Subscription subscription, SchoolId schoolId);
+
+        void Delete(SubscriptionId subscriptionId, SchoolId schoolId);
     }
 }

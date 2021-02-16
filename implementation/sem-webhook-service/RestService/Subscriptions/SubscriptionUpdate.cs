@@ -1,13 +1,12 @@
-﻿using RestService.Events;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace RestService.Subscriptions
 {
-    public sealed record SubscriptionOutput
+    public sealed record SubscriptionUpdate
     (
         Guid SubscriptionId,
-        IEnumerable<EventOutput> Events,
+        IEnumerable<Guid> EventIds,
         string PostbackUrl,
         string Secret
     );

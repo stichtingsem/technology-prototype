@@ -4,11 +4,12 @@ using Domain.Subscriptions;
 using NUnit.Framework;
 using SqlRepositories;
 using System.Collections.Generic;
+using System.Linq;
 using static SqlRepositoriesTests.SubscriptionsRepositoryTests.IdHelpers;
 
 namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
 {
-    public class DeleteTests
+    public class UpdateTests
     {
         SubscriptionsSqlRepository sut;
 
@@ -18,31 +19,23 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
             sut = new SubscriptionsSqlRepository();
         }
 
-        [Test]
-        public void NonExistingSubscription()
-        {
-            SubscriptionId subscriptionId = RandomSubscriptionId();
-            SchoolId schoolId = RandomSchoolId();
 
-            sut.Delete(subscriptionId, schoolId);
-
-            Assert.Pass();
-        }
 
         [Test]
-        public void ExistingSubscription()
+        public void UpdateSubscription()
         {
             SubscriptionId subscriptionId = RandomSubscriptionId();
             SchoolId schoolId = RandomSchoolId();
             IEnumerable<EventId> eventIds = ListOfRandomEventIds();
 
-            var subscription = new Subscription(subscriptionId, schoolId, eventIds, "postbackUrl", "secret");
+            var subscription1 = new Subscription(subscriptionId, schoolId, eventIds, "postbackUrl", "secret");
+            var subscription2 = new Subscription(subscriptionId, schoolId, eventIds, "updatedUrl", "updatedSecret");
 
-            sut.Add(subscription);
+            sut.Add(subscription1);
 
-            sut.Delete(subscriptionId, schoolId);
+            sut.Update(subscription2, schoolId);
 
-            Assert.IsNull(sut.Get(subscriptionId, schoolId));
+            Assert.AreEqual(1, sut.GetAll(schoolId).Count());
         }
     }
 }
