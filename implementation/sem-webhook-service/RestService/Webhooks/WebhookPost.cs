@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace RestService.Webhooks
 {
-    public sealed record WebhookAdd
+    public sealed record WebhookPost
     (
         IEnumerable<Guid> EventIds,
         string PostbackUrl,

@@ -30,10 +30,10 @@ namespace RestService.Webhooks
         }
 
         [HttpGet]
-        [Route("{webhookId}")]
-        public ActionResult<WebhookOutput> Get(Guid webhookId)
+        [Route("{id}")]
+        public ActionResult<WebhookOutput> Get(Guid id)
         {
-            var webhook = webhooksRepository.Get(webhookId, school.Id);
+            var webhook = webhooksRepository.Get(id, school.Id);
 
             var events = eventsRepository.GetAll();
 
@@ -51,9 +51,9 @@ namespace RestService.Webhooks
         }
 
         [HttpPost]
-        public ActionResult Add([FromBody] WebhookAdd add)
+        public ActionResult Add([FromBody] WebhookPost webhookPost)
         {
-            var webhook = Webhook.Create(school.Id, add.EventIds, add.PostbackUrl, add.Secret);
+            var webhook = Webhook.Create(school.Id, webhookPost.EventIds, webhookPost.PostbackUrl, webhookPost.Secret);
 
             webhooksRepository.Add(webhook);
 
@@ -61,9 +61,9 @@ namespace RestService.Webhooks
         }
 
         [HttpPut]
-        public ActionResult Update([FromBody] WebhookUpdate update)
+        public ActionResult Update([FromBody] WebhookPut webhookPut)
         {
-            var webhook = Webhook.Create(update.WebhookId, school.Id, update.EventIds, update.PostbackUrl, update.Secret);
+            var webhook = Webhook.Create(webhookPut.Id, school.Id, webhookPut.EventIds, webhookPut.PostbackUrl, webhookPut.Secret);
 
             webhooksRepository.Update(webhook, school.Id);
 
@@ -71,10 +71,10 @@ namespace RestService.Webhooks
         }
 
         [HttpDelete]
-        [Route("{webhookId}")]
-        public ActionResult Delete(Guid webhookId)
+        [Route("{id}")]
+        public ActionResult Delete(Guid id)
         {
-            webhooksRepository.Delete(webhookId, school.Id);
+            webhooksRepository.Delete(id, school.Id);
 
             return Ok();
         }
