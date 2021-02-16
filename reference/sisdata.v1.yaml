@@ -96,6 +96,12 @@ components:
           type: string
         eckid:
           type: string
+        firstname:
+          type: string
+        surname:
+          type: string
+        surnamePrefix:
+          type: string
         display_name:
           type: string
           description: |
@@ -105,7 +111,7 @@ components:
         classes:
           type: array
           items:
-            $ref: '#/components/schemas/class'
+            $ref: '#/components/schemas/classReference'
         subjectChoices:
           type: array
           items:
@@ -113,6 +119,29 @@ components:
       required:
         - id
         - school
+    studentReference:
+      type: object
+      x-tags:
+        - student
+      title: ''
+      description: Access to non-sensitive student information for us in an LMS or LA.
+      properties:
+        id:
+          type: string
+        eckid:
+          type: string
+        firstname:
+          type: string
+        surname:
+          type: string
+        surnamePrefix:
+          type: string
+        display_name:
+          type: string
+          description: |
+            This is a display name only, not necessarily (and ideally not) their full real name.
+      required:
+        - id
     teacher:
       type: object
       x-tags:
@@ -125,6 +154,12 @@ components:
           type: string
         eckid:
           type: string
+        firstname:
+          type: string
+        surname:
+          type: string
+        surnamePrefix:
+          type: string
         display_name:
           type: string
           description: |
@@ -132,10 +167,32 @@ components:
         school:
           $ref: '#/components/schemas/school'
         classses:
-          $ref: '#/components/schemas/class'
+          $ref: '#/components/schemas/classReference'
       required:
         - id
         - school
+    teacherReference:
+      type: object
+      x-tags:
+        - teacher
+      title: ''
+      properties:
+        id:
+          type: string
+        eckid:
+          type: string
+        firstname:
+          type: string
+        surname:
+          type: string
+        surnamePrefix:
+          type: string
+        display_name:
+          type: string
+          description: |
+            A name used to refer to the teacher when displaying to them in an application, not necessarily their real name.
+      required:
+        - id
     class:
       type: object
       x-examples: {}
@@ -162,11 +219,11 @@ components:
         students:
           type: array
           items:
-            $ref: '#/components/schemas/student'
+            $ref: '#/components/schemas/studentReference'
         teachers:
           type: array
           items:
-            $ref: '#/components/schemas/teacher'
+            $ref: '#/components/schemas/teacherReference'
         subjectChoices:
           type: array
           items:
@@ -175,6 +232,20 @@ components:
         - id
         - name
         - school
+    classReference:
+      type: object
+      x-examples: {}
+      x-tags:
+        - class
+      description: ''
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      required:
+        - id
+        - name
     teacherOfClass:
       type: object
       properties:
@@ -189,7 +260,7 @@ components:
         teacher:
           $ref: '#/components/schemas/teacher'
         class:
-          $ref: '#/components/schemas/class'
+          $ref: '#/components/schemas/classReference'
         school:
           $ref: '#/components/schemas/school'
       required:
@@ -218,7 +289,7 @@ components:
           type: string
           description: 'Officiële elementcode, bron: Ministerie van OCW'
         student:
-          $ref: '#/components/schemas/student'
+          $ref: '#/components/schemas/studentReference'
         school:
           $ref: '#/components/schemas/school'
       required:
@@ -242,23 +313,18 @@ components:
         endDate:
           type: string
           format: date
+        subjectName:
+          type: string
+          description: 'Name of Subject as used by school'
         subjectCode:
           type: string
           description: 'Officiële elementcode, bron: Ministerie van OCW'
         level:
           type: string
-          description: 'havo, vwo, etc.'
-        student:
-          $ref: '#/components/schemas/student'
-        class:
-          $ref: '#/components/schemas/class'
-        school:
-          $ref: '#/components/schemas/school'
+          description: 'havo-1, vwo-2, etc.'
       required:
         - id
         - start date
-        - student
-        - school
       x-tags:
         - subject
         - student
@@ -291,7 +357,7 @@ components:
           type: string
           description: |
             Used for delivery
-        tussenvoegsel:
+        surnamePrefix:
           type: string
           description: Used for delivery
   securitySchemes:
@@ -396,7 +462,7 @@ paths:
       description: |-
         Get an Enrollmemnt by ID.
 
-        > Do we need this?  Is it in some way useful?
+        > Do we need this?  Is it in some way useful? Lets defer implementation
       security:
         - API Key:
             - sis.student-teacher-class

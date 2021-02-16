@@ -311,7 +311,7 @@ components:
           description: 'Officiële elementcode, bron: Ministerie van OCW'
         level:
           type: string
-          description: 'havo, vwo, etc.'
+          description: 'havo-1, vwo-2, etc.'
         quantity:
           type: integer
           example: 100

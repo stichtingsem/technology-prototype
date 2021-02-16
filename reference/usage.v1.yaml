@@ -37,12 +37,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Usage'
+            application/xml:
+              schema:
+                type: object
+                properties: {}
       operationId: get-usage-by-product-id
       description: 'Retrieve the full bla bla, needs to confirm that the caller is able to access either based on their provider information (they can only see their own usage) in the case of the provider scope.'
       security:
         - API Key - 1:
             - la.usage
-  /entitlements/provider:
+  /usage/product:
     parameters: []
     get:
       summary: Get all entitlements for a specific vendor (Learning Application Provider)
@@ -81,28 +85,6 @@ paths:
             max:
               value: 100
               summary: The largest recommended page size
-        - in: query
-          name: start
-          description: 'Start point for pagination of results, defaults to 0,'
-          schema:
-            type: integer
-          examples:
-            default:
-              value: 0
-              summary: The start point for pagination
-        - in: query
-          name: limit
-          description: 'Limit of number of results returned by page, defaults to 20 with max 100.'
-          schema:
-            type: integer
-            maximum: 100
-          examples:
-            default:
-              value: 20
-              summary: The default value if none is provided
-            max:
-              value: 100
-              summary: The largest recommended page size
       responses:
         '200':
           description: OK
@@ -119,7 +101,6 @@ paths:
           It is assumed that at the point of setup and provision of an API key, that the provider name is also stored against the API key by the marketplace, so that all calls with this key will be filtered to that specific provider in the response.
 
         This API has pagination, using `start` and `limit`, with an optional `status` filter.
-
   securitySchemes:
     API Key - 1:
       type: oauth2
@@ -132,3 +113,23 @@ tags:
   - name: entitlements
   - name: provider
   - name: school
+components:
+  schemas:
+    Usage:
+      title: Usage
+      type: object
+      properties:
+        id:
+          type: string
+        who:
+          type: object
+          properties:
+            studenteckid:
+              type: string
+            school:
+              type: string
+        what:
+          type: string
+      required:
+        - id
+      description: ''
