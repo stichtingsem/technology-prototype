@@ -14,7 +14,7 @@ const DeleteSubscriptionForm = () => {
 
   return (
     <>
-      <h2>Delete</h2>
+      <h2>Delete Webhook</h2>
       <form className="form-container" onSubmit={handleSubmit(deleteSubscription)}>
         <label htmlFor="id">Id:</label>
         <input type="text"

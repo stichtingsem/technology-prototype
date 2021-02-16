@@ -25,7 +25,7 @@ const CreateSubscriptionForm = () => {
 
   return (
     <>
-      <h2>Create</h2>
+      <h2>Create Webhook</h2>
       <form className="form-container" onSubmit={handleSubmit(createSubscription)}>
         <label htmlFor="url">URL:</label>
         <input type="text"

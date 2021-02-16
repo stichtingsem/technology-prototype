@@ -1,37 +1,25 @@
-.App {
-  text-align: center;
-  background-color: #282c34;
-  min-height: 100vh;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 4.0625rem;
+  background: #333;
+  position: fixed;
+  width: 100%;
+}
+
+.content {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  color: white;
+  padding-top: 4.0625rem;
 }
 
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #333;
-}
-
-li {
-  float: left;
-}
-
-li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
+.navbar_link {
+  color: #0082c8;
+  font-size: 1.25rem;
+  margin-left: 1.25rem;
   text-decoration: none;
-}
-
-li a:hover:not(.active) {
-  background-color: black;
-}
-
-.active {
-  background-color: #0082c8;
+  cursor: pointer;
 }
