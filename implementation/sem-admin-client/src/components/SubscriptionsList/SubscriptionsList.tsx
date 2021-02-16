@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-import { ISubscriptionRow } from './ISubscriptionRow'
+import { ISubscriptionRow } from '../'
 import { getSubscriptions } from '../../api'
 import './SubscriptionsList.css';
 
 const SubscriptionsList = () => {
   const [subscriptions, setSubscriptions] = useState<ISubscriptionRow[]>([])
+  
   useEffect(() => {
     getSubscriptions().then(result => setSubscriptions(result)).catch(() => {
       setSubscriptions([

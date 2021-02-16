@@ -6,9 +6,9 @@ const getSubscriptions = (): Promise<ISubscriptionRow[]> => {
   return axios.get('https://localhost:5001/subscriptions').then((response) => {
     const subscriptions = response.data as ISubscriptionsResponse[]
     const subscriptionsRows: ISubscriptionRow[] = subscriptions.map(subscription => ({
-      id: subscription.id,
-      url: subscription.postbackUrl,
-      enabledEvents: subscription.enabledEvents.join()
+      id: subscription.Id,
+      url: subscription.PostbackUrl,
+      enabledEvents: subscription.Events.join()
     }))
 
     return subscriptionsRows
@@ -19,9 +19,9 @@ const getSubscriptionById = (id: string): Promise<ISubscriptionRow> => {
   return axios.get(`https://localhost:5001/subscriptions/${id}`).then((response) => {
     const subscription = response.data as ISubscriptionsResponse
     const subscriptionRow: ISubscriptionRow = {
-      id: subscription.id,
-      url: subscription.postbackUrl,
-      enabledEvents: subscription.enabledEvents.join()
+      id: subscription.Id,
+      url: subscription.PostbackUrl,
+      enabledEvents: subscription.Events.join()
     }
 
     return subscriptionRow
@@ -30,9 +30,9 @@ const getSubscriptionById = (id: string): Promise<ISubscriptionRow> => {
 
 const createSubscription = (formData: ICreateFormFields) => {
   const payload: ISubscriptionsPayload = {
-    postbackUrl: formData.url,
-    enabledEvents: formData.enabledEvents,
-    secret: '' // TODO: generate random GUID or token cryptographically
+    PostbackUrl: formData.url,
+    EventIds: formData.enabledEvents,
+    Secret: '' // TODO: generate random GUID or token cryptographically
   }
 
   axios.post('https://localhost:5001/subscriptions', payload)
@@ -40,9 +40,9 @@ const createSubscription = (formData: ICreateFormFields) => {
 
 const updateSubscription = (formData: IUpdateFormFields) => {
   const payload: ISubscriptionsPayload = {
-    postbackUrl: formData.url,
-    enabledEvents: formData.enabledEvents,
-    secret: '' // TODO: do we have to generate this again?
+    PostbackUrl: formData.url,
+    EventIds: formData.enabledEvents,
+    Secret: '' // TODO: do we have to generate this again?
   }
 
   axios.put(`https://localhost:5001/subscriptions/${formData.id}`, payload)

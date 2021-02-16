@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form'
 
-import { IDeleteFormFields } from './IDeleteFormFields'
+import { IDeleteFormFields } from '../'
 import { deleteSubscription } from '../../api'
 import './DeleteSubscriptionForm.css';
 

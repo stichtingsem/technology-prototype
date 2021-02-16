@@ -1,18 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form'
 
-import { IUpdateFormFields } from './IUpdateFormFields'
-import { updateSubscription } from '../../api'
+import { IEventDropdownOption, IUpdateFormFields } from '../'
+import { getEvents, updateSubscription } from '../../api'
 import './UpdateSubscriptionForm.css';
 
 const UpdateSubscriptionForm = () => {
   const { register, handleSubmit, formState, errors } = useForm<
-  IUpdateFormFields
+    IUpdateFormFields
   >({
     mode: 'all',
   })
 
   const [enabledEventsList, setEnabledEventsList] = useState<string[]>([])
+  const [eventDropdownOptions, setEventDropdownOptions] = useState<IEventDropdownOption[]>([])
+
+  useEffect(() => {
+    getEvents().then(result => setEventDropdownOptions(result)).catch(() => {
+      setEventDropdownOptions([
+        { id: '1', name: 'mp.entitlement.active' },
+        { id: '2', name: 'mp.entitlement.refunded' },
+        { id: '3', name: 'mp.entitlement.updated' },
+        { id: '4', name: 'sis.enrollment' },
+        { id: '5', name: 'sis.student' },
+        { id: '6', name: 'sis.student-delivery' },
+        { id: '7', name: 'sis.teacher' },
+        { id: '8', name: 'sis.group' }
+      ])
+    })
+  }, [])
 
   const addEvent = (selectedEvent: string) => {
     if (selectedEvent && !enabledEventsList.includes(selectedEvent))
@@ -58,14 +74,9 @@ const UpdateSubscriptionForm = () => {
           required
         >
           <option value="">Select Event</option>
-          <option value="mp.entitlement.active" title="First created and active">mp.entitlement.active</option>
-          <option value="mp.entitlement.refunded" title="Refunded">mp.entitlement.refunded</option>
-          <option value="mp.entitlement.updated" title="Modified in any other way">mp.entitlement.updated</option>
-          <option value="sis.enrollment" title="A student has been enrolled, or their enrolment changed">sis.enrollment</option>
-          <option value="sis.student" title="A student has been created or modified">sis.student</option>
-          <option value="sis.student-delivery" title="A students delivery information has been created or modified">sis.student-delivery</option>
-          <option value="sis.teacher" title="A teacher has been created or modified">sis.teacher</option>
-          <option value="sis.group" title="A group has been modified (this is an aggregate event) - this means that basic metadata changed, a student added/removed, a teacher added or removed or a student subject choice modified within a group.">sis.group</option>
+          {eventDropdownOptions.map(option => 
+            <option value={option.id}>{option.name}</option>
+          )}
         </select>
         {(formState.dirtyFields.enabledEvents && !enabledEventsList.length) &&
           <p className="error-text">Enabled Events is required</p>

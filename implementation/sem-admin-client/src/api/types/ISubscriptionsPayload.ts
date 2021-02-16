@@ -1,5 +1,6 @@
 export interface ISubscriptionsPayload {
-  postbackUrl: string
-  enabledEvents: string[]
-  secret: string
+  WebhookId?: string
+  PostbackUrl: string
+  EventIds: string[]
+  Secret: string
 }
