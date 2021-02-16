@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { IDP, IClientConfig } from '@ccs/il.authentication.avatar'
 
-import { 
+import {
+  SubscriptionsList,
   CreateSubscriptionForm, 
   UpdateSubscriptionForm, 
   DeleteSubscriptionForm
@@ -15,25 +16,25 @@ function App() {
     idpUrl: 'https://il-authentication-web-noordhoff.azurewebsites.net/'
   }
 
-  const [visibleSection, setVisibleSection] = useState<string>('create')
+  const [visibleSection, setVisibleSection] = useState<string>('view')
 
   return (
-    <div className="App">
-      <IDP {...avatarConfig} />
-      <ul>
-        <li>
-          <span className={visibleSection === 'create' ? "active" : ""} onClick={() => setVisibleSection('create')}>Create</span>
-        </li>
-        <li>
-          <span className={visibleSection === 'update' ? "active" : ""} onClick={() => setVisibleSection('update')}>Update</span>
-        </li>
-        <li>
-          <span className={visibleSection === 'delete' ? "active" : ""} onClick={() => setVisibleSection('delete')}>Delete</span>
-        </li>
-      </ul>
-      {visibleSection === 'create' && <CreateSubscriptionForm />}
-      {visibleSection === 'update' && <UpdateSubscriptionForm />}
-      {visibleSection === 'delete' && <DeleteSubscriptionForm />}
+    <div>
+      <header className="header">
+        <nav>
+          <span className="navbar_link" onClick={() => setVisibleSection('view')}>View</span>
+          <span className="navbar_link" onClick={() => setVisibleSection('create')}>Create</span>
+          <span className="navbar_link" onClick={() => setVisibleSection('update')}>Update</span>
+          <span className="navbar_link" onClick={() => setVisibleSection('delete')}>Delete</span>
+        </nav>
+        <IDP {...avatarConfig} />
+      </header>
+      <div className="content">
+        {visibleSection === 'view' && <SubscriptionsList />}
+        {visibleSection === 'create' && <CreateSubscriptionForm />}
+        {visibleSection === 'update' && <UpdateSubscriptionForm />}
+        {visibleSection === 'delete' && <DeleteSubscriptionForm />}
+      </div>
     </div>
   );
 }
