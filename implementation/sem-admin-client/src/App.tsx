@@ -19,26 +19,39 @@ function App() {
   const [visibleSection, setVisibleSection] = useState<string>('view')
 
   return (
-    <div className="App">
-      <IDP {...avatarConfig} />
-      <ul>
-        <li>
-          <span className={visibleSection === 'view' ? "active" : ""} onClick={() => setVisibleSection('view')}>View</span>
-        </li>
-        <li>
-          <span className={visibleSection === 'create' ? "active" : ""} onClick={() => setVisibleSection('create')}>Create</span>
-        </li>
-        <li>
-          <span className={visibleSection === 'update' ? "active" : ""} onClick={() => setVisibleSection('update')}>Update</span>
-        </li>
-        <li>
-          <span className={visibleSection === 'delete' ? "active" : ""} onClick={() => setVisibleSection('delete')}>Delete</span>
-        </li>
-      </ul>
-      {visibleSection === 'view' && <SubscriptionsList />}
-      {visibleSection === 'create' && <CreateSubscriptionForm />}
-      {visibleSection === 'update' && <UpdateSubscriptionForm />}
-      {visibleSection === 'delete' && <DeleteSubscriptionForm />}
+    <div>
+      <header className="header">
+        <nav>
+          <span className="navbar_link" onClick={() => setVisibleSection('view')}>View</span>
+          <span className="navbar_link" onClick={() => setVisibleSection('create')}>Create</span>
+          <span className="navbar_link" onClick={() => setVisibleSection('update')}>Update</span>
+          <span className="navbar_link" onClick={() => setVisibleSection('delete')}>Delete</span>
+        </nav>
+        <IDP {...avatarConfig} />
+      </header>
+      {/* <div className="header">
+        <ul>
+          <li>
+            <span className={visibleSection === 'view' ? "active" : ""} onClick={() => setVisibleSection('view')}>View</span>
+          </li>
+          <li>
+            <span className={visibleSection === 'create' ? "active" : ""} onClick={() => setVisibleSection('create')}>Create</span>
+          </li>
+          <li>
+            <span className={visibleSection === 'update' ? "active" : ""} onClick={() => setVisibleSection('update')}>Update</span>
+          </li>
+          <li>
+            <span className={visibleSection === 'delete' ? "active" : ""} onClick={() => setVisibleSection('delete')}>Delete</span>
+          </li>
+        </ul>
+        <IDP {...avatarConfig} />
+      </div> */}
+      <div className="content">
+        {visibleSection === 'view' && <SubscriptionsList />}
+        {visibleSection === 'create' && <CreateSubscriptionForm />}
+        {visibleSection === 'update' && <UpdateSubscriptionForm />}
+        {visibleSection === 'delete' && <DeleteSubscriptionForm />}
+      </div>
     </div>
   );
 }

@@ -7,12 +7,18 @@ import './SubscriptionsList.css';
 const SubscriptionsList = () => {
   const [subscriptions, setSubscriptions] = useState<ISubscriptionRow[]>([])
   useEffect(() => {
-    getSubscriptions().then(result => setSubscriptions(result))
+    getSubscriptions().then(result => setSubscriptions(result)).catch(() => {
+      setSubscriptions([
+        { id: 'aaaa-bbbb-cccc-dddd', url: 'https://test.com', enabledEvents: 'mp.entitlement.active,mp.entitlement.refunded'},
+        { id: 'eeee-ffff-gggg-hhhh', url: 'https://test.com', enabledEvents: 'mp.entitlement.updated'},
+        { id: 'iiii-jjjj-kkkk-llll', url: 'https://test.com', enabledEvents: 'sis.enrollment,sis.student'},
+      ])
+    })
   }, [])
 
   return (
     <>
-      <h2>Subscriptions</h2>
+      <h2>Existing Webhooks</h2>
       <table>
         <tr>
           <th>Id</th>

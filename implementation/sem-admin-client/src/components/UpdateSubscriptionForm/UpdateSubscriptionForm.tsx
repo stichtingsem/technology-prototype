@@ -25,7 +25,7 @@ const UpdateSubscriptionForm = () => {
 
   return (
     <>
-      <h2>Update</h2>
+      <h2>Update Webhook</h2>
       <form className="form-container" onSubmit={handleSubmit(updateSubscription)}>
         <label htmlFor="id">Id:</label>
         <input type="text"
