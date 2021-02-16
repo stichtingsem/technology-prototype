@@ -29,23 +29,6 @@ function App() {
         </nav>
         <IDP {...avatarConfig} />
       </header>
-      {/* <div className="header">
-        <ul>
-          <li>
-            <span className={visibleSection === 'view' ? "active" : ""} onClick={() => setVisibleSection('view')}>View</span>
-          </li>
-          <li>
-            <span className={visibleSection === 'create' ? "active" : ""} onClick={() => setVisibleSection('create')}>Create</span>
-          </li>
-          <li>
-            <span className={visibleSection === 'update' ? "active" : ""} onClick={() => setVisibleSection('update')}>Update</span>
-          </li>
-          <li>
-            <span className={visibleSection === 'delete' ? "active" : ""} onClick={() => setVisibleSection('delete')}>Delete</span>
-          </li>
-        </ul>
-        <IDP {...avatarConfig} />
-      </div> */}
       <div className="content">
         {visibleSection === 'view' && <SubscriptionsList />}
         {visibleSection === 'create' && <CreateSubscriptionForm />}
