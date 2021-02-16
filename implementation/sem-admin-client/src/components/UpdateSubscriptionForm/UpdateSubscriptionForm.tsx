@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form'
 
 import { IUpdateFormFields } from './IUpdateFormFields'
+import { updateSubscription } from '../../api'
 import './UpdateSubscriptionForm.css';
 
 const UpdateSubscriptionForm = () => {
@@ -22,14 +23,10 @@ const UpdateSubscriptionForm = () => {
     setEnabledEventsList(enabledEventsList.filter(enabledEvent => enabledEvent !== removedEvent))
   }
 
-  const submitForm = () => {
-    console.log('Updating subscription...')
-  }
-
   return (
     <>
       <h2>Update</h2>
-      <form className="form-container" onSubmit={handleSubmit(submitForm)}>
+      <form className="form-container" onSubmit={handleSubmit(updateSubscription)}>
         <label htmlFor="id">Id:</label>
         <input type="text"
             id="id"
