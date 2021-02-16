@@ -13,11 +13,11 @@ info:
 
      - `sis.enrollment` - A student has been enrolled, or their enrolment changed
      - `sis.student` - A student has been created or modified   
-    - `sis.student-delivery` - A students delivery information has been created or modified     
+     - `sis.student-delivery` - A students delivery information has been created or modified     
      - `sis.teacher` - A teacher has been created or modified
      - `sis.group` - A group has been modified (this is an aggregate event) - this means that basic metadata changed, a student added/removed, a teacher added or removed or a student subject choice modified within a group.     
      
-    > Note: Do we need enrollment? 
+    > Note: Do we need enrollment? Or can we add enrollments to student?
 
     # Privacy and Scopes
      
@@ -43,7 +43,7 @@ info:
 
     `sis.student-teacher-delivery`
 
-    This scope enables a requestor to get additional information required to support the physical delivery of books or other material directly to an individual.  This exchange includes PII, and would be requested in addition the basic `sis.student-teacher-class` scope, so the following should be read as additive to that scope.
+    This scope enables a requestor to get additional information required to support the physical delivery of books or other material directly to an individual.  This exchange includes PII, and would be requested in addition the basic `sis.student-teacher-group` scope, so the following should be read as additive to that scope.
 
     We have a principle to never send PII in events or store in an event log, so this event is only a notification.  The subscribing system must call back to retrieve the information.
      
@@ -65,7 +65,7 @@ info:
     url: 'https://stichtingsem.org/'
 servers:
   - url: 'https://example.stichtingsem.org/api'
-    description: entitlement
+    description: sisdata
 components:
   schemas:
     school:
@@ -202,7 +202,7 @@ components:
         - teacher
         - subject
         - school
-      description: A class or other grouping of students.
+      description: A group or other grouping of students.
       title: group
       properties:
         id:
@@ -234,7 +234,7 @@ components:
       type: object
       x-examples: {}
       x-tags:
-        - class
+        - group
       description: ''
       properties:
         id:
@@ -257,7 +257,7 @@ components:
           format: date
         teacher:
           $ref: '#/components/schemas/teacher'
-        class:
+        group:
           $ref: '#/components/schemas/groupReference'
         school:
           $ref: '#/components/schemas/school'
