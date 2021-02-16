@@ -1,30 +1,30 @@
 ﻿using Domain.Events;
 using Domain.Schools;
-using Domain.Subscriptions;
+using Domain.Webhooks;
 using Moq;
 using NUnit.Framework;
-using RestService.Subscriptions;
+using RestService.Webhooks;
 
-namespace RestServiceTests.SubscriptionsControllerTests
+namespace RestServiceTests.WebhooksControllerTests
 {
     public sealed class GetAllTests
     {
-        SubscriptionsController sut;
+        WebhooksController sut;
 
         Mock<IEventsRepository> mockEventsRepository;
-        Mock<ISubscriptionsRepository> mockSubscriptionsRepository;
+        Mock<IWebhooksRepository> mockWebhooksRepository;
         Mock<ISchool> mockSchool;
 
         [SetUp]
         public void SetUp()
         {
-            mockSubscriptionsRepository = new Mock<ISubscriptionsRepository>();
+            mockWebhooksRepository = new Mock<IWebhooksRepository>();
             mockEventsRepository = new Mock<IEventsRepository>();
             mockSchool = new Mock<ISchool>();
 
-            sut = new SubscriptionsController
+            sut = new WebhooksController
             (
-                mockSubscriptionsRepository.Object,
+                mockWebhooksRepository.Object,
                 mockEventsRepository.Object,
                 mockSchool.Object
             );

@@ -1,23 +1,23 @@
 ﻿using Domain.Events;
 using Domain.Schools;
-using Domain.Subscriptions;
+using Domain.Webhooks;
 using NUnit.Framework;
 using SqlRepositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static SqlRepositoriesTests.SubscriptionsRepositoryTests.IdHelpers;
+using static SqlRepositoriesTests.WebhooksRepositoryTests.IdHelpers;
 
-namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
+namespace SqlRepositoriesTests.WebhooksRepositoryTests
 {
     public class GetAllTests
     {
-        SubscriptionsSqlRepository sut;
+        WebhooksSqlRepository sut;
 
         [SetUp]
         public void SetUp()
         {
-            sut = new SubscriptionsSqlRepository();
+            sut = new WebhooksSqlRepository();
         }
 
         [Test]
@@ -33,13 +33,13 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         [Test]
         public void NonExistingSchoolId()
         {
-            SubscriptionId subscriptionId = RandomSubscriptionId();
+            WebhookId webhookId = RandomWebhookId();
             SchoolId schoolId = RandomSchoolId();
             IEnumerable<EventId> eventIds = ListOfRandomEventIds();
 
-            var subscription = new Subscription(subscriptionId, schoolId, eventIds, "postbackUrl", "secret");
+            var webhook = new Webhook(webhookId, schoolId, eventIds, "postbackUrl", "secret");
 
-            sut.Add(subscription);
+            sut.Add(webhook);
 
             var result = sut.GetAll(RandomSchoolId());
 
@@ -49,13 +49,13 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         [Test]
         public void ExistingSchoolId()
         {
-            SubscriptionId subscriptionId = RandomSubscriptionId();
+            WebhookId webhookId = RandomWebhookId();
             SchoolId schoolId = RandomSchoolId();
             IEnumerable<EventId> eventIds = ListOfRandomEventIds();
 
-            var subscription = new Subscription(subscriptionId, schoolId, eventIds, "postbackUrl", "secret");
+            var webhook = new Webhook(webhookId, schoolId, eventIds, "postbackUrl", "secret");
 
-            sut.Add(subscription);
+            sut.Add(webhook);
 
             var result = sut.GetAll(schoolId);
 
@@ -63,24 +63,24 @@ namespace SqlRepositoriesTests.SubscriptionsRepositoryTests
         }
 
         [Test]
-        public void ExistingSchoolIdMultipleSubscriptions()
+        public void ExistingSchoolIdMultiplewebhooks()
         {
-            SubscriptionId subscriptionId = RandomSubscriptionId();
+            WebhookId webhookId = RandomWebhookId();
             SchoolId schoolId = RandomSchoolId();
             IEnumerable<EventId> eventIds1 = ListOfRandomEventIds();
             IEnumerable<EventId> eventIds2 = ListOfRandomEventIds();
 
-            var subscription1 = new Subscription(subscriptionId, schoolId, eventIds1, "postbackUrl", "secret");
-            var subscription2 = new Subscription(subscriptionId, schoolId, eventIds2, "postbackUrl", "secret");
+            var webhook1 = new Webhook(webhookId, schoolId, eventIds1, "postbackUrl", "secret");
+            var webhook2 = new Webhook(webhookId, schoolId, eventIds2, "postbackUrl", "secret");
 
-            sut.Add(subscription1);
-            sut.Add(subscription2);
+            sut.Add(webhook1);
+            sut.Add(webhook2);
 
             var result = sut.GetAll(schoolId);
 
             Assert.AreEqual(2, result.Count());
-            Assert.IsTrue(result.Contains(subscription1));
-            Assert.IsTrue(result.Contains(subscription2));
+            Assert.IsTrue(result.Contains(webhook1));
+            Assert.IsTrue(result.Contains(webhook2));
         }
     }
 }

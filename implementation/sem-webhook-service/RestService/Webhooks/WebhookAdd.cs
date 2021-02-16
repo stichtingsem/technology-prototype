@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RestService.Subscriptions
+namespace RestService.Webhooks
 {
-    public sealed record SubscriptionAdd
+    public sealed record WebhookAdd
     (
         IEnumerable<Guid> EventIds,
         string PostbackUrl,

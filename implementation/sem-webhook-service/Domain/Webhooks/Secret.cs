@@ -1,6 +1,6 @@
 ﻿using Domain.Generic;
 
-namespace Domain.Subscriptions
+namespace Domain.Webhooks
 {
     public sealed class Secret : ValueObject<string>
     {

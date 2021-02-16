@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RestService.Subscriptions
+namespace RestService.Webhooks
 {
-    public sealed record SubscriptionUpdate
+    public sealed record WebhookUpdate
     (
-        Guid SubscriptionId,
+        Guid WebhookId,
         IEnumerable<Guid> EventIds,
         string PostbackUrl,
         string Secret

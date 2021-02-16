@@ -1,6 +1,6 @@
 using Domain.Schools;
 using Domain.Events;
-using Domain.Subscriptions;
+using Domain.Webhooks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -43,7 +43,7 @@ namespace RestService
                 });
 
             services.AddTransient<IEventsRepository, EventsSqlRepository>();
-            services.AddTransient<ISubscriptionsRepository, SubscriptionsSqlRepository>();
+            services.AddTransient<IWebhooksRepository, WebhooksSqlRepository>();
             services.AddTransient<ISchool, SchoolFromHttpContext>();
             services.AddTransient<SchoolIdClaimType>();
         }
