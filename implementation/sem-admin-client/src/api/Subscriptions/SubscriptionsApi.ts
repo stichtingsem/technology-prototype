@@ -8,7 +8,7 @@ const getSubscriptions = (): Promise<ISubscriptionRow[]> => {
     const subscriptionsRows: ISubscriptionRow[] = subscriptions.map(subscription => ({
       id: subscription.Id,
       url: subscription.PostbackUrl,
-      enabledEvents: subscription.Events.join()
+      enabledEvents: subscription.Events.map(event => event.Name).join(', ')
     }))
 
     return subscriptionsRows
@@ -21,7 +21,7 @@ const getSubscriptionById = (id: string): Promise<ISubscriptionRow> => {
     const subscriptionRow: ISubscriptionRow = {
       id: subscription.Id,
       url: subscription.PostbackUrl,
-      enabledEvents: subscription.Events.join()
+      enabledEvents: subscription.Events.map(event => event.Name).join(', ')
     }
 
     return subscriptionRow
