@@ -65,7 +65,7 @@ namespace SqlRepositories.Webhooks
             }
         }
 
-        public Webhook Get(WebhookId webhookId, SchoolId schoolId)
+        public Maybe<Webhook> Get(WebhookId webhookId, SchoolId schoolId)
         {
             var selectParams = new { WebhookId = webhookId.Value, SchoolId = schoolId.Value };
 
@@ -80,7 +80,7 @@ namespace SqlRepositories.Webhooks
                 var webhookOutputs = connection.Query<WebhookOutput>(selectSql, selectParams).ToList();
 
                 if (!webhookOutputs.Any())
-                    return null;
+                    return Maybe.None;
                 
                 var webhookOutput = webhookOutputs.First();
                 var eventIds = webhookOutputs.Select(o => new EventId(o.EventId)).ToList();

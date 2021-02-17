@@ -19,7 +19,11 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
 
             sut.Add(webhook);
 
-            Assert.AreEqual(webhook, sut.Get(webhookId, schoolId));
+            sut.Get(webhookId, schoolId).Match
+            (
+                none: () => Assert.Fail(),
+                some: (result) => Assert.AreEqual(result, webhook)
+            );
         }
     }
 }

@@ -33,11 +33,13 @@ namespace RestService.Webhooks
         [Route("{id}")]
         public ActionResult<WebhookOutput> Get(Guid id)
         {
-            var webhook = webhooksRepository.Get(id, school.Id);
+            var maybeWebhook = webhooksRepository.Get(id, school.Id);
 
-            var events = eventsRepository.GetAll();
-
-            return Ok(webhook.ToOutput(events));
+            return maybeWebhook.Match<ActionResult<WebhookOutput>>
+            (
+                none: () => NotFound(),
+                some: (webhook) => Ok(webhook.ToOutput(eventsRepository.GetAll()))
+            );
         }
 
         [HttpGet]

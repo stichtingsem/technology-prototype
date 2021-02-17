@@ -15,9 +15,11 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
             WebhookId webhookId = RandomWebhookId();
             SchoolId schoolId = RandomSchoolId();
 
-            var result = sut.Get(webhookId, schoolId);
-
-            Assert.IsNull(result);
+            sut.Get(webhookId, schoolId).Match
+            (
+                none: () => Assert.Pass(),
+                some: (result) => Assert.Fail()
+            );
         }
 
         [Test]
@@ -29,9 +31,11 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
 
             sut.Add(new Webhook(webhookId, schoolId, eventIds, "postbackUrl", "secret"));
 
-            var result = sut.Get(webhookId, RandomSchoolId());
-
-            Assert.IsNull(result);
+            sut.Get(webhookId, RandomSchoolId()).Match
+            (
+                none: () => Assert.Pass(),
+                some: (result) => Assert.Fail()
+            );
         }
 
         [Test]
@@ -43,9 +47,11 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
 
             sut.Add(new Webhook(webhookId, schoolId, eventIds, "postbackUrl", "secret"));
 
-            var result = sut.Get(RandomWebhookId(), schoolId);
-
-            Assert.IsNull(result);
+            sut.Get(RandomWebhookId(), schoolId).Match
+            (
+                none: () => Assert.Pass(),
+                some: (result) => Assert.Fail()
+            );
         }
 
         [Test]
@@ -62,9 +68,11 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
             WebhookId webhookIdCopy = new Guid(webhookId.ToString());
             SchoolId schoolIdCopy = new Guid(schoolId.ToString());
 
-            var result = sut.Get(webhookIdCopy, schoolIdCopy);
-
-            Assert.AreEqual(webhook, result);
+            sut.Get(webhookIdCopy, schoolIdCopy).Match
+            (
+                none: () => Assert.Fail(),
+                some: (result) => Assert.AreEqual(result, webhook)
+            );
         }
     }
 }

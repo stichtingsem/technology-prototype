@@ -24,8 +24,17 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
             sut.Update(webhook2);
 
             Assert.AreEqual(1, sut.GetAll(schoolId).Count());
-            Assert.AreEqual("updatedUrl", sut.Get(webhookId, schoolId).Convert((webhookId, schoolId, eventIds, postbackUrl, secret) => postbackUrl.Value));
-            Assert.AreEqual("updatedSecret", sut.Get(webhookId, schoolId).Convert((webhookId, schoolId, eventIds, postbackUrl, secret) => secret.Value));
+
+            var result = sut.Get(webhookId, schoolId);
+            result.Match
+            (
+                none: Assert.Fail,
+                some: (value) =>
+                {
+                    Assert.AreEqual("updatedUrl", value.Convert((webhookId, schoolId, eventIds, postbackUrl, secret) => postbackUrl.Value));
+                    Assert.AreEqual("updatedSecret", value.Convert((webhookId, schoolId, eventIds, postbackUrl, secret) => secret.Value));
+                }
+            );
         }
     }
 }

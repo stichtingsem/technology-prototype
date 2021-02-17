@@ -32,7 +32,11 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
 
             sut.Delete(webhookId, schoolId);
 
-            Assert.IsNull(sut.Get(webhookId, schoolId));
+            sut.Get(webhookId, schoolId).Match
+            (
+                none: () => Assert.Pass(),
+                some: (result) => Assert.Fail()
+            );
         }
     }
 }
