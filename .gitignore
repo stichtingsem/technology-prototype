@@ -356,3 +356,5 @@ MigrationBackup/
 **/npm-debug.log*
 **/yarn-debug.log*
 **/yarn-error.log*
+
+sem-nginx-proxy/certs
