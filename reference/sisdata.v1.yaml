@@ -166,7 +166,7 @@ components:
             A name used to refer to the teacher when displaying to them in an application, not necessarily their real name.
         school:
           $ref: '#/components/schemas/school'
-        group:
+        groups:
           type: array
           items:
             $ref: '#/components/schemas/groupReference'
