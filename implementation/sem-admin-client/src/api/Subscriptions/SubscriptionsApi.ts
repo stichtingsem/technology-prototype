@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { v4 as uuidv4 } from 'uuid'
+
 import { ISubscriptionRow, ICreateFormFields, IUpdateFormFields, IDeleteFormFields } from '../../components'
 import { ISubscriptionsResponse, ISubscriptionsPayload } from '../types'
 
@@ -29,22 +31,20 @@ const getSubscriptionById = (id: string): Promise<ISubscriptionRow> => {
 }
 
 const createSubscription = (formData: ICreateFormFields) => {
-  console.log({formData})
   const payload: ISubscriptionsPayload = {
     PostbackUrl: formData.url,
     EventIds: formData.enabledEvents.map(event => event.id),
-    Secret: '' // TODO: generate random GUID or token cryptographically
+    Secret: uuidv4()
   }
 
   axios.post('https://localhost:5001/subscriptions', payload)
 }
 
 const updateSubscription = (formData: IUpdateFormFields) => {
-  console.log({formData})
   const payload: ISubscriptionsPayload = {
     PostbackUrl: formData.url,
     EventIds: formData.enabledEvents.map(event => event.id),
-    Secret: '' // TODO: do we have to generate this again?
+    Secret: uuidv4()
   }
 
   axios.put(`https://localhost:5001/subscriptions/${formData.id}`, payload)
