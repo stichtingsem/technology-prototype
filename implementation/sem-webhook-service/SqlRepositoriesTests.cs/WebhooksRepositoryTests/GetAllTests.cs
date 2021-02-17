@@ -2,24 +2,14 @@
 using Domain.Schools;
 using Domain.Webhooks;
 using NUnit.Framework;
-using SqlRepositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static SqlRepositoriesTests.WebhooksRepositoryTests.IdHelpers;
 
 namespace SqlRepositoriesTests.WebhooksRepositoryTests
 {
-    public class GetAllTests
+    public class GetAllTests : WebhooksSqlRepositorySetup
     {
-        WebhooksSqlRepository sut;
-
-        [SetUp]
-        public void SetUp()
-        {
-            sut = new WebhooksSqlRepository();
-        }
-
         [Test]
         public void EmptyRepo()
         {
@@ -35,7 +25,7 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
         {
             WebhookId webhookId = RandomWebhookId();
             SchoolId schoolId = RandomSchoolId();
-            IEnumerable<EventId> eventIds = ListOfRandomEventIds();
+            IEnumerable<EventId> eventIds = ListOfDistinctEventIds();
 
             var webhook = new Webhook(webhookId, schoolId, eventIds, "postbackUrl", "secret");
 
@@ -51,7 +41,7 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
         {
             WebhookId webhookId = RandomWebhookId();
             SchoolId schoolId = RandomSchoolId();
-            IEnumerable<EventId> eventIds = ListOfRandomEventIds();
+            IEnumerable<EventId> eventIds = ListOfDistinctEventIds();
 
             var webhook = new Webhook(webhookId, schoolId, eventIds, "postbackUrl", "secret");
 
@@ -63,15 +53,18 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
         }
 
         [Test]
-        public void ExistingSchoolIdMultiplewebhooks()
+        public void MultipleWebhooksForSchool()
         {
-            WebhookId webhookId = RandomWebhookId();
-            SchoolId schoolId = RandomSchoolId();
-            IEnumerable<EventId> eventIds1 = ListOfRandomEventIds();
-            IEnumerable<EventId> eventIds2 = ListOfRandomEventIds();
+            WebhookId webhookId1 = RandomWebhookId();
+            WebhookId webhookId2 = RandomWebhookId();
 
-            var webhook1 = new Webhook(webhookId, schoolId, eventIds1, "postbackUrl", "secret");
-            var webhook2 = new Webhook(webhookId, schoolId, eventIds2, "postbackUrl", "secret");
+            SchoolId schoolId = RandomSchoolId();
+
+            IEnumerable<EventId> eventIds1 = ListOfDistinctEventIds();
+            IEnumerable<EventId> eventIds2 = ListOfDistinctEventIds();
+
+            var webhook1 = new Webhook(webhookId1, schoolId, eventIds1, "postbackUrl", "secret");
+            var webhook2 = new Webhook(webhookId2, schoolId, eventIds2, "postbackUrl", "secret");
 
             sut.Add(webhook1);
             sut.Add(webhook2);

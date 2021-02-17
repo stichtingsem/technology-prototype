@@ -65,7 +65,7 @@ namespace RestService.Webhooks
         {
             var webhook = Webhook.Create(webhookPut.Id, school.Id, webhookPut.EventIds, webhookPut.PostbackUrl, webhookPut.Secret);
 
-            webhooksRepository.Update(webhook, school.Id);
+            webhooksRepository.Update(webhook);
 
             return Ok();
         }

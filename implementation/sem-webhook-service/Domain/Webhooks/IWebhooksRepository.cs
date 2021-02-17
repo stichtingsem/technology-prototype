@@ -11,8 +11,8 @@ namespace Domain.Webhooks
 
         void Add(Webhook webhook);
 
-        void Update(Webhook webhook, SchoolId schoolId);
+        void Update(Webhook webhook);
 
-        void Delete(WebhookId webhook, SchoolId schoolId);
+        void Delete(WebhookId webhookId, SchoolId schoolId);
     }
 }

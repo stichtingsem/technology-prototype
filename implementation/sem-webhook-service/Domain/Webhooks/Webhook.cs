@@ -29,7 +29,7 @@ namespace Domain.Webhooks
             this.secret = secret;
         }
 
-        public Result Convert<Result>(Func<WebhookId, IEnumerable<EventId>, PostbackUrl, Secret, Result> convert) => convert(webhookId, eventIds, postbackUrl, secret);
+        public Result Convert<Result>(Func<WebhookId, SchoolId, IEnumerable<EventId>, PostbackUrl, Secret, Result> convert) => convert(webhookId, schoolId, eventIds, postbackUrl, secret);
 
         public bool Equals(Webhook other) => other.IsFor(webhookId);
 

@@ -2,24 +2,14 @@
 using Domain.Schools;
 using Domain.Webhooks;
 using NUnit.Framework;
-using SqlRepositories;
 using System.Collections.Generic;
-using static SqlRepositoriesTests.WebhooksRepositoryTests.IdHelpers;
 
 namespace SqlRepositoriesTests.WebhooksRepositoryTests
 {
-    public class DeleteTests
+    public class DeleteTests : WebhooksSqlRepositorySetup
     {
-        WebhooksSqlRepository sut;
-
-        [SetUp]
-        public void SetUp()
-        {
-            sut = new WebhooksSqlRepository();
-        }
-
         [Test]
-        public void NonExistingwebhook()
+        public void NonExistingWebhook()
         {
             WebhookId webhookId = RandomWebhookId();
             SchoolId schoolId = RandomSchoolId();
@@ -30,11 +20,11 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
         }
 
         [Test]
-        public void Existingwebhook()
+        public void ExistingWebhook()
         {
             WebhookId webhookId = RandomWebhookId();
             SchoolId schoolId = RandomSchoolId();
-            IEnumerable<EventId> eventIds = ListOfRandomEventIds();
+            IEnumerable<EventId> eventIds = ListOfDistinctEventIds();
 
             var webhook = new Webhook(webhookId, schoolId, eventIds, "postbackUrl", "secret");
 
