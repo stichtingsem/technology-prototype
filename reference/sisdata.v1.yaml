@@ -167,7 +167,11 @@ components:
         school:
           $ref: '#/components/schemas/school'
         group:
-          $ref: '#/components/schemas/groupReference'
+          type: array
+          items:
+            $ref: '#/components/schemas/groupReference'
+          description: |
+            Do we need this? This information is already available in groups. It will not be available in the beginning of the school year when the rosters are not complete. Neither LMS or LA need it to function.
       required:
         - id
         - school
