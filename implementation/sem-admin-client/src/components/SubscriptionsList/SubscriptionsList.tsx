@@ -21,18 +21,22 @@ const SubscriptionsList = () => {
     <>
       <h2>Existing Webhooks</h2>
       <table>
-        <tr>
-          <th>Id</th>
-          <th>URL</th>
-          <th>Enabled Events</th>
-        </tr>
-        {subscriptions.map(subscription => 
+        <thead>
           <tr>
-            <td>{subscription.id}</td>
-            <td>{subscription.url}</td>
-            <td>{subscription.enabledEvents}</td>
+            <th>Id</th>
+            <th>URL</th>
+            <th>Enabled Events</th>
           </tr>
-        )}
+        </thead>
+        <tbody>
+          {subscriptions.map(subscription => 
+            <tr key={subscription.id}>
+              <td>{subscription.id}</td>
+              <td>{subscription.url}</td>
+              <td>{subscription.enabledEvents}</td>
+            </tr>
+          )}
+        </tbody>
       </table>
     </>
   );

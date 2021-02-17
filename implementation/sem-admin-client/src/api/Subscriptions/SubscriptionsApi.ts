@@ -29,9 +29,10 @@ const getSubscriptionById = (id: string): Promise<ISubscriptionRow> => {
 }
 
 const createSubscription = (formData: ICreateFormFields) => {
+  console.log({formData})
   const payload: ISubscriptionsPayload = {
     PostbackUrl: formData.url,
-    EventIds: formData.enabledEvents,
+    EventIds: formData.enabledEvents.map(event => event.id),
     Secret: '' // TODO: generate random GUID or token cryptographically
   }
 
@@ -39,9 +40,10 @@ const createSubscription = (formData: ICreateFormFields) => {
 }
 
 const updateSubscription = (formData: IUpdateFormFields) => {
+  console.log({formData})
   const payload: ISubscriptionsPayload = {
     PostbackUrl: formData.url,
-    EventIds: formData.enabledEvents,
+    EventIds: formData.enabledEvents.map(event => event.id),
     Secret: '' // TODO: do we have to generate this again?
   }
 

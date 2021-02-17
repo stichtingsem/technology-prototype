@@ -6,16 +6,18 @@ import { getEvents, updateSubscription } from '../../api'
 import './UpdateSubscriptionForm.css';
 
 const UpdateSubscriptionForm = () => {
-  const { register, handleSubmit, formState, errors } = useForm<
+  const { register, handleSubmit, formState, errors, setValue } = useForm<
     IUpdateFormFields
   >({
     mode: 'all',
   })
 
-  const [enabledEventsList, setEnabledEventsList] = useState<string[]>([])
+  const [enabledEventsList, setEnabledEventsList] = useState<IEventDropdownOption[]>([])
   const [eventDropdownOptions, setEventDropdownOptions] = useState<IEventDropdownOption[]>([])
 
   useEffect(() => {
+    register({ name: 'enabledEvents', type: 'custom' }, { required: true })
+
     getEvents().then(result => setEventDropdownOptions(result)).catch(() => {
       setEventDropdownOptions([
         { id: '1', name: 'mp.entitlement.active' },
@@ -28,15 +30,28 @@ const UpdateSubscriptionForm = () => {
         { id: '8', name: 'sis.group' }
       ])
     })
-  }, [])
+  }, [register])
 
-  const addEvent = (selectedEvent: string) => {
-    if (selectedEvent && !enabledEventsList.includes(selectedEvent))
-      setEnabledEventsList([ ...enabledEventsList, selectedEvent ])
+  const addEvent = (selectedEventId: string) => {
+    const selectedEvent = eventDropdownOptions.find(event => event.id === selectedEventId)
+
+    if (selectedEvent) {
+      const updatedEnabledEvents = [ ...enabledEventsList, selectedEvent]
+
+      setEnabledEventsList(updatedEnabledEvents)
+      setValue('enabledEvents', updatedEnabledEvents, { shouldValidate: true })
+    }
   }
 
-  const removeEvent = (removedEvent: string) => {
-    setEnabledEventsList(enabledEventsList.filter(enabledEvent => enabledEvent !== removedEvent))
+  const removeEvent = (removedEventId: string) => {
+    const removedEvent = eventDropdownOptions.find(event => event.id === removedEventId)
+
+    if (removedEvent) {
+      const updatedEnabledEvents = enabledEventsList.filter(enabledEvent => enabledEvent.id !== removedEvent.id)
+
+      setEnabledEventsList(updatedEnabledEvents)
+      setValue('enabledEvents', updatedEnabledEvents, { shouldValidate: true })
+    }
   }
 
   return (
@@ -65,25 +80,22 @@ const UpdateSubscriptionForm = () => {
         {errors.url &&
           <p className="error-text">URL is required</p>
         }
-        <label htmlFor="enabledEvents">Enabled Events:</label>
+        <label htmlFor="enabledEventsDropdown">Enabled Events:</label>
         <select
-          id="enabledEvents"
-          name="enabledEvents"
+          id="enabledEventsDropdown"
           onChange={(event) => addEvent(event.target.value)}
-          ref={register({ required: false })}
-          required
         >
           <option value="">Select Event</option>
           {eventDropdownOptions.map(option => 
-            <option value={option.id}>{option.name}</option>
+            <option key={option.id} value={option.id}>{option.name}</option>
           )}
         </select>
-        {(formState.dirtyFields.enabledEvents && !enabledEventsList.length) &&
+        {errors.enabledEvents &&
           <p className="error-text">Enabled Events is required</p>
         }
         <ul>
           {enabledEventsList.map(enabledEvent => 
-            <li key={enabledEvent}>{enabledEvent}<span className="remove-button" onClick={() => removeEvent(enabledEvent)}>x</span></li>
+            <li key={enabledEvent.id}>{enabledEvent.name}<span className="remove-button" onClick={() => removeEvent(enabledEvent.id)}>x</span></li>
           )}
         </ul>
         <button className="submit-button" type="submit" disabled={!formState.isValid || !enabledEventsList.length}>Submit</button>
