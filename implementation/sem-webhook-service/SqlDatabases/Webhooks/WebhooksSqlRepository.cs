@@ -11,7 +11,12 @@ namespace SqlRepositories.Webhooks
 {
     public sealed partial class WebhooksSqlRepository : IWebhooksRepository
     {
-        const string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Webhooks;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private readonly WebhooksSqlConnectionString connectionString;
+
+        public WebhooksSqlRepository(WebhooksSqlConnectionString connectionString)
+        {
+            this.connectionString = connectionString;
+        }
 
         public void Add(Webhook webhook)
         {

@@ -14,18 +14,19 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
     {
         protected WebhooksSqlRepository sut;
 
-        private readonly IEventsRepository eventsRepo = new EventsSqlRepository();
+        private readonly RepositoryFactory factory = new RepositoryFactory();
         private readonly IEnumerable<EventId> eventIds;
 
         public WebhooksSqlRepositorySetup()
         {
+            var eventsRepo = factory.EventsSqlRepository;
             eventIds = eventsRepo.GetAll().Select(e => e.Convert((eventId, eventName) => eventId));
         }
 
         [SetUp]
         public void SetUp()
         {
-            sut = new WebhooksSqlRepository();
+            sut = factory.WebhooksSqlRepository;
         }
 
         public WebhookId RandomWebhookId() => Guid.NewGuid();

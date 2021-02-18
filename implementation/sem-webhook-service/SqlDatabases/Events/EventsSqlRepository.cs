@@ -9,7 +9,12 @@ namespace SqlRepositories.Events
 {
     public sealed class EventsSqlRepository : IEventsRepository
     {
-        const string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Webhooks;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private readonly EventsSqlConnectionString connectionString;
+
+        public EventsSqlRepository(EventsSqlConnectionString connectionString)
+        {
+            this.connectionString = connectionString;
+        }
 
         public Event Get(Guid eventId)
         {

@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlRepositories", "SqlDatabases\SqlRepositories.csproj", "{FD3A9420-C1B4-474B-A71E-E3AE2A47B9F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlRepositoriesTests", "SqlRepositoriesTests.cs\SqlRepositoriesTests.csproj", "{7FBB96BB-26EE-4306-9DFF-2BA688B7B8AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlRepositoriesTests", "SqlRepositoriesTests\SqlRepositoriesTests.csproj", "{7FBB96BB-26EE-4306-9DFF-2BA688B7B8AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

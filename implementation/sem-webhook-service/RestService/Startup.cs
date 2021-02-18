@@ -43,6 +43,8 @@ namespace RestService
                     };
                 });
 
+            services.AddTransient<EventsSqlConnectionString>((serviceProvider) => Configuration["ConnectionStrings:Events"]);
+            services.AddTransient<WebhooksSqlConnectionString>((serviceProvider) => Configuration["ConnectionStrings:Webhooks"]);
             services.AddTransient<IEventsRepository, EventsSqlRepository>();
             services.AddTransient<IWebhooksRepository, WebhooksSqlRepository>();
             services.AddTransient<ISchool, SchoolFromHttpContext>();
