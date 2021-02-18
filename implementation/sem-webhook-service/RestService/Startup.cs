@@ -9,9 +9,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using RestService.Authorization;
-using SqlRepositories;
 using System;
 using RestService.Schools;
+using SqlRepositories.Events;
+using SqlRepositories.Webhooks;
 
 namespace RestService
 {
@@ -42,6 +43,8 @@ namespace RestService
                     };
                 });
 
+            services.AddTransient<EventsSqlConnectionString>((serviceProvider) => Configuration["ConnectionStrings:Events"]);
+            services.AddTransient<WebhooksSqlConnectionString>((serviceProvider) => Configuration["ConnectionStrings:Webhooks"]);
             services.AddTransient<IEventsRepository, EventsSqlRepository>();
             services.AddTransient<IWebhooksRepository, WebhooksSqlRepository>();
             services.AddTransient<ISchool, SchoolFromHttpContext>();

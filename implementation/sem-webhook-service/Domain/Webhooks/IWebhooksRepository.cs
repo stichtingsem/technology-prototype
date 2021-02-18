@@ -1,4 +1,5 @@
-﻿using Domain.Schools;
+﻿using Domain.Generic;
+using Domain.Schools;
 using System.Collections.Generic;
 
 namespace Domain.Webhooks
@@ -7,12 +8,12 @@ namespace Domain.Webhooks
     {
         IEnumerable<Webhook> GetAll(SchoolId schoolId);
 
-        Webhook Get(WebhookId webhookId, SchoolId schoolId);
+        Maybe<Webhook> Get(WebhookId webhookId, SchoolId schoolId);
 
         void Add(Webhook webhook);
 
-        void Update(Webhook webhook, SchoolId schoolId);
+        void Update(Webhook webhook);
 
-        void Delete(WebhookId webhook, SchoolId schoolId);
+        void Delete(WebhookId webhookId, SchoolId schoolId);
     }
 }

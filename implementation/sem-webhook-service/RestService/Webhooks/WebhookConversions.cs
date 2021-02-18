@@ -12,7 +12,7 @@ namespace RestService.Webhooks
             webhooks.Select(webhook => webhook.ToOutput(events));
 
         public static WebhookOutput ToOutput(this Webhook webhook, IEnumerable<Event> events) =>
-            webhook.Convert((webhookId, eventIds, postbackUrl, secret) =>
+            webhook.Convert((webhookId, schoolId, eventIds, postbackUrl, secret) =>
                 new WebhookOutput(webhookId, events.Where(e => eventIds.Any(eventId => e.IsFor(eventId))).ToOutput(), postbackUrl, secret));
     }
 }

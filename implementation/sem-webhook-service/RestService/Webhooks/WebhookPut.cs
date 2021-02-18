@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace RestService.Webhooks
 {
-    public sealed record WebhookUpdate
+    public sealed record WebhookPut
     (
-        Guid WebhookId,
+        Guid Id,
         IEnumerable<Guid> EventIds,
         string PostbackUrl,
         string Secret
