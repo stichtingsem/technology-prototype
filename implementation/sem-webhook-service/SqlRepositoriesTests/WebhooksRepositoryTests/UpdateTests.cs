@@ -31,8 +31,8 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
                 none: Assert.Fail,
                 some: (value) =>
                 {
-                    Assert.AreEqual("updatedUrl", value.Convert((webhookId, schoolId, eventIds, postbackUrl, secret) => postbackUrl.Value));
-                    Assert.AreEqual("updatedSecret", value.Convert((webhookId, schoolId, eventIds, postbackUrl, secret) => secret.Value));
+                    Assert.IsTrue("updatedUrl" == value.PostbackUrl);
+                    Assert.IsTrue("updatedSecret" == value.Secret);
                 }
             );
         }

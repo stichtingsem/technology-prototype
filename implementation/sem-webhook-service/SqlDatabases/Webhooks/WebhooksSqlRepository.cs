@@ -20,8 +20,7 @@ namespace SqlRepositories.Webhooks
 
         public void Add(Webhook webhook)
         {
-            var webhookInput = webhook.Convert((id, schoolId, eventIds, postbackUrl, secret) =>
-                new WebhookInput(id, schoolId, eventIds.ToValues(), postbackUrl, secret));
+            var webhookInput = new WebhookInput(webhook.Id, webhook.SchoolId, webhook.EventIds.ToValues(), webhook.PostbackUrl, webhook.Secret);
 
             var insertWebhookSql =
                 $"insert into Webhooks values (@{nameof(WebhookInput.Id)}, @{nameof(WebhookInput.SchoolId)}, @{nameof(WebhookInput.PostbackUrl)}, @{nameof(WebhookInput.Secret)})";
@@ -125,8 +124,8 @@ namespace SqlRepositories.Webhooks
 
         public void Update(Webhook webhook)
         {
-            var webhookInput = webhook.Convert((id, schoolId, eventIds, postbackUrl, secret) =>
-                new WebhookInput(id, schoolId, eventIds.ToValues(), postbackUrl, secret));
+            var webhookInput = 
+                new WebhookInput(webhook.Id, webhook.SchoolId, webhook.EventIds.ToValues(), webhook.PostbackUrl, webhook.Secret);
 
             var updateWebhookSql =
                 @$"update Webhooks 
