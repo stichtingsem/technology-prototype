@@ -18,18 +18,7 @@ const CreateSubscriptionForm = () => {
   useEffect(() => {
     register({ name: 'enabledEvents', type: 'custom' }, { required: true })
 
-    getEvents().then(result => setEventDropdownOptions(result)).catch(() => {
-      setEventDropdownOptions([
-        { id: '1', name: 'mp.entitlement.active' },
-        { id: '2', name: 'mp.entitlement.refunded' },
-        { id: '3', name: 'mp.entitlement.updated' },
-        { id: '4', name: 'sis.enrollment' },
-        { id: '5', name: 'sis.student' },
-        { id: '6', name: 'sis.student-delivery' },
-        { id: '7', name: 'sis.teacher' },
-        { id: '8', name: 'sis.group' }
-      ])
-    })
+    getEvents().then(result => setEventDropdownOptions(result))
   }, [register])
 
   const addEvent = (selectedEventId: string) => {
