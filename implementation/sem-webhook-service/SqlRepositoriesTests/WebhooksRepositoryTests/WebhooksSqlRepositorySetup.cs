@@ -2,7 +2,6 @@
 using Domain.Schools;
 using Domain.Webhooks;
 using NUnit.Framework;
-using SqlRepositories.Events;
 using SqlRepositories.Webhooks;
 using System;
 using System.Collections.Generic;
@@ -20,7 +19,7 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
         public WebhooksSqlRepositorySetup()
         {
             var eventsRepo = factory.EventsSqlRepository;
-            eventIds = eventsRepo.GetAll().Select(e => e.Convert((eventId, eventName) => eventId));
+            eventIds = eventsRepo.GetAll().Select(ev => ev.Id);
         }
 
         [SetUp]
