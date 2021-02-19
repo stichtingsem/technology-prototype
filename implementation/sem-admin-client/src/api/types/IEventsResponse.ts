@@ -1,4 +1,4 @@
 export interface IEventsResponse {
-  id: string
-  name: string
+  Id: string
+  Name: string
 }

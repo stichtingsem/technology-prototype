@@ -1,6 +1,8 @@
+import { IEventsResponse } from './IEventsResponse'
+
 export interface ISubscriptionsResponse {
-  id: string
-  postbackUrl: string
-  enabledEvents: string[]
-  secret: string
+  Id: string
+  PostbackUrl: string
+  Events: IEventsResponse[]
+  Secret: string
 }
