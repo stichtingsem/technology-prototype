@@ -20,7 +20,7 @@ namespace SqlRepositories.Webhooks
 
         public void Add(Webhook webhook)
         {
-            var webhookInput = new WebhookInput(webhook.Id, webhook.SchoolId, webhook.EventIds.ToValues(), webhook.PostbackUrl, webhook.Secret);
+            var webhookInput = webhook.ToInput();
 
             var insertWebhookSql =
                 $"insert into Webhooks values (@{nameof(WebhookInput.Id)}, @{nameof(WebhookInput.SchoolId)}, @{nameof(WebhookInput.PostbackUrl)}, @{nameof(WebhookInput.Secret)})";
@@ -112,6 +112,7 @@ namespace SqlRepositories.Webhooks
 
         private IEnumerable<Webhook> Convert(List<WebhookOutput> webhookOutputs)
         {
+            // Can Dapper do this grouping for us??
             var webhookGroupings = webhookOutputs.GroupBy(webhook => webhook.Id);
             foreach (var webhookGrouping in webhookGroupings)
             {
@@ -124,8 +125,7 @@ namespace SqlRepositories.Webhooks
 
         public void Update(Webhook webhook)
         {
-            var webhookInput = 
-                new WebhookInput(webhook.Id, webhook.SchoolId, webhook.EventIds.ToValues(), webhook.PostbackUrl, webhook.Secret);
+            var webhookInput = webhook.ToInput();
 
             var updateWebhookSql =
                 @$"update Webhooks 
