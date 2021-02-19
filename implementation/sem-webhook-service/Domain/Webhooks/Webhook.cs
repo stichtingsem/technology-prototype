@@ -15,36 +15,33 @@ namespace Domain.Webhooks
             new Webhook(webhookId, schoolId, eventIds.Select(eventId => new EventId(eventId)), postbackUrl, secret);
 
         private readonly IEnumerable<EventId> eventIds;
-        private readonly WebhookId webhookId;
-        private readonly SchoolId schoolId;
         private readonly PostbackUrl postbackUrl;
         private readonly Secret secret;
 
-        public Webhook(WebhookId webhookId, SchoolId schoolId, IEnumerable<EventId> eventIds, PostbackUrl postbackUrl, Secret secret)
+        public Webhook(WebhookId id, SchoolId schoolId, IEnumerable<EventId> eventIds, PostbackUrl postbackUrl, Secret secret)
         {
+            Id = id;
+            SchoolId = schoolId;
+
             this.eventIds = eventIds;
-            this.webhookId = webhookId;
-            this.schoolId = schoolId;
             this.postbackUrl = postbackUrl;
             this.secret = secret;
         }
 
-        public Result Convert<Result>(Func<WebhookId, SchoolId, IEnumerable<EventId>, PostbackUrl, Secret, Result> convert) => convert(webhookId, schoolId, eventIds, postbackUrl, secret);
+        public WebhookId Id { get; }
 
-        public bool Equals(Webhook other) => other.IsFor(webhookId);
+        public SchoolId SchoolId { get; }
+
+        public Result Convert<Result>(Func<WebhookId, SchoolId, IEnumerable<EventId>, PostbackUrl, Secret, Result> convert) => convert(Id, SchoolId, eventIds, postbackUrl, secret);
+
+        public bool Equals(Webhook other) => other.Id == Id;
 
         public override bool Equals(object obj) => Equals(obj as Webhook);
 
-        public override int GetHashCode() => webhookId.GetHashCode();
+        public override int GetHashCode() => Id.GetHashCode();
 
         public static bool operator ==(Webhook left, Webhook right) => left.Equals(right);
 
         public static bool operator !=(Webhook left, Webhook right) => !(left == right);
-
-        public bool IsFor(WebhookId webhookId, SchoolId schoolId) => IsFor(webhookId) && IsFor(schoolId);
-
-        public bool IsFor(SchoolId schoolId) => this.schoolId == schoolId;
-
-        public bool IsFor(WebhookId webhookId) => this.webhookId == webhookId;
     }
 }
