@@ -1,19 +1,62 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+# Node.js with React
+# Build a Node.js project that uses React.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- main
+- master
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+    checkLatest: true
+  displayName: 'Use Node 10.x'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: YarnInstaller@3
+  inputs:
+    versionSpec: '1.x'
+    checkLatest: true
+
+- task: Yarn@3
+  inputs:
+    projectDirectory: 'sem-admin-client'
+    arguments: 'install'
+  
+- task: Yarn@3
+  inputs:
+   projectDirectory: 'sem-admin-client'
+   arguments: 'lint'
+
+- task: Yarn@3
+  inputs:
+   projectDirectory: 'sem-admin-client'
+   arguments: 'test --watchAll=false'
+
+- task: Yarn@3
+  inputs:
+    projectDirectory: 'sem-admin-client'
+    arguments: 'build'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'sem-admin-client'
+    Contents: 'web.config'
+    TargetFolder: 'sem-admin-client/build'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: 'sem-admin-client/build'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/sem-admin-client.zip'
+    replaceExistingArchive: true
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/sem-admin-client.zip'
+    artifact: 'website'
+    publishLocation: 'pipeline'
