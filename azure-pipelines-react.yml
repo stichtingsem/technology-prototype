@@ -25,6 +25,8 @@ steps:
   inputs:
     projectDirectory: 'implementation/sem-admin-client'
     arguments: 'install'
+    customRegistry: 'useFeed'
+    customFeed: '445bf733-2596-4e3d-a319-a70892d2bea9'
   
 - task: Yarn@3
   inputs:
