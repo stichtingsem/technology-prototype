@@ -23,22 +23,22 @@ steps:
 
 - task: Yarn@3
   inputs:
-    projectDirectory: 'sem-admin-client'
+    projectDirectory: 'implementation/sem-admin-client'
     arguments: 'install'
   
 - task: Yarn@3
   inputs:
-   projectDirectory: 'sem-admin-client'
+   projectDirectory: 'implementation/sem-admin-client'
    arguments: 'lint'
 
 - task: Yarn@3
   inputs:
-   projectDirectory: 'sem-admin-client'
+   projectDirectory: 'implementation/sem-admin-client'
    arguments: 'test --watchAll=false'
 
 - task: Yarn@3
   inputs:
-    projectDirectory: 'sem-admin-client'
+    projectDirectory: 'implementation/sem-admin-client'
     arguments: 'build'
 
 - task: CopyFiles@2
