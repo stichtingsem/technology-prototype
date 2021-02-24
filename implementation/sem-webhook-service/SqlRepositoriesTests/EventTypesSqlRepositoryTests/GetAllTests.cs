@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace SqlRepositoriesTests.EventsSqlRepositoryTests
 {
-    public class GetAllTests : EventsSqlRepositorySetup
+    public class GetAllTests : EventTypesSqlRepositorySetup
     {
         [Test]
         public void EventsExist()

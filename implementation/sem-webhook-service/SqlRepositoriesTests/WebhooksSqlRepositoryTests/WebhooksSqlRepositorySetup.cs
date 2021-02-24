@@ -18,7 +18,7 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
 
         public WebhooksSqlRepositorySetup()
         {
-            var eventsRepo = factory.EventsSqlRepository;
+            var eventsRepo = factory.EventsTypesSqlRepository;
             eventIds = eventsRepo.GetAll().Select(ev => ev.Id);
         }
 

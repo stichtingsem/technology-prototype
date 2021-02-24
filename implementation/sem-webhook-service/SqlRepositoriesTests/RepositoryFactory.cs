@@ -17,7 +17,7 @@ namespace SqlRepositoriesTests
                 Build();
         }
 
-        public EventTypesSqlRepository EventsSqlRepository => new EventTypesSqlRepository(config["ConnectionStrings:Events"]);
+        public EventTypesSqlRepository EventsTypesSqlRepository => new EventTypesSqlRepository(config["ConnectionStrings:EventTypes"]);
 
         public WebhooksSqlRepository WebhooksSqlRepository => new WebhooksSqlRepository(config["ConnectionStrings:Webhooks"]);
     }

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace SqlRepositoriesTests.EventsSqlRepositoryTests
 {
-    public class GetTests : EventsSqlRepositorySetup
+    public class GetTests : EventTypesSqlRepositorySetup
     {
         [Test]
         public void ExistingEvent()

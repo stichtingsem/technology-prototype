@@ -3,7 +3,7 @@ using SqlRepositories.EventTypes;
 
 namespace SqlRepositoriesTests.EventsSqlRepositoryTests
 {
-    public abstract class EventsSqlRepositorySetup
+    public abstract class EventTypesSqlRepositorySetup
     {
         protected EventTypesSqlRepository sut;
 
@@ -12,7 +12,7 @@ namespace SqlRepositoriesTests.EventsSqlRepositoryTests
         [SetUp]
         public void SetUp()
         {
-            sut = factory.EventsSqlRepository;
+            sut = factory.EventsTypesSqlRepository;
         }
     }
 }
