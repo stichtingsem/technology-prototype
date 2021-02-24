@@ -47,13 +47,13 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: 'sem-admin-client'
+    SourceFolder: 'implementation/sem-admin-client'
     Contents: 'web.config'
-    TargetFolder: 'sem-admin-client/build'
+    TargetFolder: 'implementation/sem-admin-client/build'
 
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: 'sem-admin-client/build'
+    rootFolderOrFile: 'implementation/sem-admin-client/build'
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/sem-admin-client.zip'
