@@ -30,7 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\SqlDatabases\SqlRepositories.csproj" />
+    <ProjectReference Include="..\SqlRepositories\SqlRepositories.csproj" />
   </ItemGroup>
 
 </Project>
