@@ -15,6 +15,7 @@ To be able to authenticate with a remote IDP we need a few more additional steps
 
 Get credentials to the infinitas registry which contains the avatar library (for now we have no place where to store secrets, so ask a team-mate who's working on sem):
 - .npmrc file. Place this file into `technology-prototype/implementation/sem-admin-client/` folder
+vsts-npm-auth -config .npmrc -T .npmrc
 
 Next we set up local environment that runs on an https domain, so that it can be authenticated with a (remote) IDP
 
