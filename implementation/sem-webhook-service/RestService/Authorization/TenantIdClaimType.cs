@@ -3,12 +3,12 @@ using System;
 
 namespace RestService.Authorization
 {
-    public sealed class SchoolIdClaimType
+    public sealed class TenantIdClaimType
     {
         private readonly string value;
 
-        public SchoolIdClaimType(IConfiguration configuration) => 
-            value = configuration["Authorization:SchoolIdClaimType"];
+        public TenantIdClaimType(IConfiguration configuration) => 
+            value = configuration["Authorization:TenantIdClaimType"];
 
         public bool IsFor(string claimType) => 
             claimType.Equals(value, StringComparison.OrdinalIgnoreCase);

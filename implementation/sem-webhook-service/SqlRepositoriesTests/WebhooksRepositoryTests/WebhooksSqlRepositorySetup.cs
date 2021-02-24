@@ -1,5 +1,5 @@
 ﻿using Domain.Events;
-using Domain.Schools;
+using Domain.Tenants;
 using Domain.Webhooks;
 using NUnit.Framework;
 using SqlRepositories.Webhooks;
@@ -30,7 +30,7 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
 
         public WebhookId RandomWebhookId() => Guid.NewGuid();
 
-        public SchoolId RandomSchoolId() => Guid.NewGuid();
+        public TenantId RandomTenantId() => Guid.NewGuid();
 
         public IEnumerable<EventId> ListOfDistinctEventIds() => eventIds.Take(2);
 

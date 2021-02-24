@@ -1,4 +1,4 @@
-using Domain.Schools;
+using Domain.Tenants;
 using Domain.Events;
 using Domain.Webhooks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using RestService.Authorization;
 using System;
-using RestService.Schools;
+using RestService.Tenants;
 using SqlRepositories.Events;
 using SqlRepositories.Webhooks;
 
@@ -47,8 +47,8 @@ namespace RestService
             services.AddTransient<WebhooksSqlConnectionString>((serviceProvider) => Configuration["ConnectionStrings:Webhooks"]);
             services.AddTransient<IEventsRepository, EventsSqlRepository>();
             services.AddTransient<IWebhooksRepository, WebhooksSqlRepository>();
-            services.AddTransient<ISchool, SchoolFromHttpContext>();
-            services.AddTransient<SchoolIdClaimType>();
+            services.AddTransient<ITenant, TenantFromHttpContext>();
+            services.AddTransient<TenantIdClaimType>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

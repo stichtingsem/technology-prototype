@@ -1,5 +1,5 @@
 ﻿using Domain.Events;
-using Domain.Schools;
+using Domain.Tenants;
 using Domain.Webhooks;
 using Moq;
 using NUnit.Framework;
@@ -13,20 +13,20 @@ namespace RestServiceTests.WebhooksControllerTests
 
         Mock<IEventsRepository> mockEventsRepository;
         Mock<IWebhooksRepository> mockWebhooksRepository;
-        Mock<ISchool> mockSchool;
+        Mock<ITenant> mockTenant;
 
         [SetUp]
         public void SetUp()
         {
             mockWebhooksRepository = new Mock<IWebhooksRepository>();
             mockEventsRepository = new Mock<IEventsRepository>();
-            mockSchool = new Mock<ISchool>();
+            mockTenant = new Mock<ITenant>();
 
             sut = new WebhooksController
             (
                 mockWebhooksRepository.Object,
                 mockEventsRepository.Object,
-                mockSchool.Object
+                mockTenant.Object
             );
         }
 

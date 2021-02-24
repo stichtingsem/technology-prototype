@@ -1,5 +1,5 @@
 ﻿using Domain.Events;
-using Domain.Schools;
+using Domain.Tenants;
 using Domain.Webhooks;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -13,19 +13,19 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
         public void UpdateWebhook()
         {
             WebhookId webhookId = RandomWebhookId();
-            SchoolId schoolId = RandomSchoolId();
+            TenantId tenantId = RandomTenantId();
             IEnumerable<EventId> eventIds = ListOfDistinctEventIds();
 
-            var webhook1 = new Webhook(webhookId, schoolId, eventIds, "postbackUrl", "secret");
-            var webhook2 = new Webhook(webhookId, schoolId, eventIds, "updatedUrl", "updatedSecret");
+            var webhook1 = new Webhook(webhookId, tenantId, eventIds, "postbackUrl", "secret");
+            var webhook2 = new Webhook(webhookId, tenantId, eventIds, "updatedUrl", "updatedSecret");
 
             sut.Add(webhook1);
 
             sut.Update(webhook2);
 
-            Assert.AreEqual(1, sut.GetAll(schoolId).Count());
+            Assert.AreEqual(1, sut.GetAll(tenantId).Count());
 
-            var result = sut.Get(webhookId, schoolId);
+            var result = sut.Get(webhookId, tenantId);
             result.Match
             (
                 none: Assert.Fail,

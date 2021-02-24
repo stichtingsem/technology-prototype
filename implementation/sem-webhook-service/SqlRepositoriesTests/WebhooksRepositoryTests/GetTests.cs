@@ -1,5 +1,5 @@
 ﻿using Domain.Events;
-using Domain.Schools;
+using Domain.Tenants;
 using Domain.Webhooks;
 using NUnit.Framework;
 using System;
@@ -13,9 +13,9 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
         public void WebhookDoesNotExist()
         {
             WebhookId webhookId = RandomWebhookId();
-            SchoolId schoolId = RandomSchoolId();
+            TenantId tenantId = RandomTenantId();
 
-            sut.Get(webhookId, schoolId).Match
+            sut.Get(webhookId, tenantId).Match
             (
                 none: () => Assert.Pass(),
                 some: (result) => Assert.Fail()
@@ -23,15 +23,15 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
         }
 
         [Test]
-        public void SchoolIdDoesNotExist()
+        public void TenantIdDoesNotExist()
         {
             WebhookId webhookId = RandomWebhookId();
-            SchoolId schoolId = RandomSchoolId();
+            TenantId tenantId = RandomTenantId();
             IEnumerable<EventId> eventIds = ListOfDistinctEventIds();
 
-            sut.Add(new Webhook(webhookId, schoolId, eventIds, "postbackUrl", "secret"));
+            sut.Add(new Webhook(webhookId, tenantId, eventIds, "postbackUrl", "secret"));
 
-            sut.Get(webhookId, RandomSchoolId()).Match
+            sut.Get(webhookId, RandomTenantId()).Match
             (
                 none: () => Assert.Pass(),
                 some: (result) => Assert.Fail()
@@ -42,12 +42,12 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
         public void WebhookIdDoesNotExist()
         {
             WebhookId webhookId = RandomWebhookId();
-            SchoolId schoolId = RandomSchoolId();
+            TenantId tenantId = RandomTenantId();
             IEnumerable<EventId> eventIds = ListOfDistinctEventIds();
 
-            sut.Add(new Webhook(webhookId, schoolId, eventIds, "postbackUrl", "secret"));
+            sut.Add(new Webhook(webhookId, tenantId, eventIds, "postbackUrl", "secret"));
 
-            sut.Get(RandomWebhookId(), schoolId).Match
+            sut.Get(RandomWebhookId(), tenantId).Match
             (
                 none: () => Assert.Pass(),
                 some: (result) => Assert.Fail()
@@ -58,17 +58,17 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
         public void ValueEquality()
         {
             WebhookId webhookId = RandomWebhookId();
-            SchoolId schoolId = RandomSchoolId();
+            TenantId tenantId = RandomTenantId();
             IEnumerable<EventId> eventIds = ListOfDistinctEventIds();
 
-            var webhook = new Webhook(webhookId, schoolId, eventIds, "postbackUrl", "secret");
+            var webhook = new Webhook(webhookId, tenantId, eventIds, "postbackUrl", "secret");
             
             sut.Add(webhook);
 
             WebhookId webhookIdCopy = new Guid(webhookId.ToString());
-            SchoolId schoolIdCopy = new Guid(schoolId.ToString());
+            TenantId tenantIdCopy = new Guid(tenantId.ToString());
 
-            sut.Get(webhookIdCopy, schoolIdCopy).Match
+            sut.Get(webhookIdCopy, tenantIdCopy).Match
             (
                 none: () => Assert.Fail(),
                 some: (result) => Assert.AreEqual(result, webhook)

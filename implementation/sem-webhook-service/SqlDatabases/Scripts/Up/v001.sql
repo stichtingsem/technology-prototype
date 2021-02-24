@@ -13,7 +13,7 @@ go
 
 create table dbo.Webhooks (
 	Id uniqueidentifier not null primary key,
-	SchoolId uniqueidentifier not null,
+	TenantId uniqueidentifier not null,
 	PostbackUrl nvarchar(1024) not null,
 	[Secret] nvarchar(256) not null
 )
