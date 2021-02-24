@@ -35,10 +35,10 @@ steps:
 #   projectDirectory: 'implementation/sem-admin-client'
 #   arguments: 'lint'
 
-- task: Yarn@3
-  inputs:
-   projectDirectory: 'implementation/sem-admin-client'
-   arguments: 'test --watchAll=false'
+#- task: Yarn@3
+#  inputs:
+#   projectDirectory: 'implementation/sem-admin-client'
+#   arguments: 'test --watchAll=false'
 
 - task: Yarn@3
   inputs:
