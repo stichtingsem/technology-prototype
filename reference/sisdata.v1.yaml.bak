@@ -3,7 +3,7 @@ info:
   title: Student Information System API
   version: '1.0'
   description: |
-    This is an API provided by the SIS in the SEM ecosystem, and is designed to enable a SIS to make the core information about teachers, learners, subjects and groups available to the rest of the ecosystem in a security and privacy cocnious way.
+    This is an API provided by the SIS in the SEM ecosystem, and is designed to enable a SIS to make the core information about teachers, learners, subjects and classes available to the rest of the ecosystem in a security and privacy cocnious way.
 
     # Events
 
@@ -13,37 +13,37 @@ info:
 
      - `sis.enrollment` - A student has been enrolled, or their enrolment changed
      - `sis.student` - A student has been created or modified   
-     - `sis.student-delivery` - A students delivery information has been created or modified     
+    - `sis.student-delivery` - A students delivery information has been created or modified     
      - `sis.teacher` - A teacher has been created or modified
-     - `sis.group` - A group has been modified (this is an aggregate event) - this means that basic metadata changed, a student added/removed, a teacher added or removed or a student subject choice modified within a group.     
+     - `sis.class` - A class has been modified (this is an aggregate event) - this means that basic metadata changed, a student added/removed, a teacher added or removed or a student subject choice modified within a class.     
      
-    > Note: Do we need enrollment? Or can we add enrollments to student?
+    > Note: Do we need enrollment? 
 
     # Privacy and Scopes
      
     Data from the SIS can be sensitive, and the events and APIs available to a requesting service depend on the scopes requested and approved during setup.  The following scopes exist for the SIS, and map to the following entities and attributes:
 
-    `sis.student-teacher-group`
+    `sis.student-teacher-class`
 
-    This scope enables a requestor to get basic information about a user (student or teacher) to enable that platform to present appropriate information or a basic profile for them and understand what groups or subjects they are enrolled in or teach.
+    This scope enables a requestor to get basic information about a user (student or teacher) to enable that platform to present appropriate information or a basic profile for them and understand what classes or subjects they are enrolled in or teach.
 
     ### Event Access
 
     |Events|Event Data|Rationale|
     |------|---------|
-    |sis.student|id, eckId, name, school, enrollment, groups, subjects|To enable the requesting service to maintain a copy of basic (non-PII) student profile information|
-    |sis.teacher|id, eckId, name, school, groups|To enable the requesting service to maintain a copy of basic (non-PII) teacher information|
+    |sis.student|id, eckId, name, school, enrollment, classes, subjects|To enable the requesting service to maintain a copy of basic (non-PII) student profile information|
+    |sis.teacher|id, eckId, name, school, classes|To enable the requesting service to maintain a copy of basic (non-PII) teacher information|
 
     ### Data Visibility
 
     |Entity|Fields|Rationale|
     |------|---------|-----|
-    |Student|id, eckId, name, school, enrollment, groups, subjects|To enable the requesting service to maintain a copy of basic (non-PII) student profile information|
-    |Teacher|id, eckId, name, school, groups|To enable the requesting service to maintain a copy of basic (non-PII) teacher information|
+    |Student|id, eckId, name, school, enrollment, classes, subjects|To enable the requesting service to maintain a copy of basic (non-PII) student profile information|
+    |Teacher|id, eckId, name, school, classes|To enable the requesting service to maintain a copy of basic (non-PII) teacher information|
 
     `sis.student-teacher-delivery`
 
-    This scope enables a requestor to get additional information required to support the physical delivery of books or other material directly to an individual.  This exchange includes PII, and would be requested in addition the basic `sis.student-teacher-group` scope, so the following should be read as additive to that scope.
+    This scope enables a requestor to get additional information required to support the physical delivery of books or other material directly to an individual.  This exchange includes PII, and would be requested in addition the basic `sis.student-teacher-class` scope, so the following should be read as additive to that scope.
 
     We have a principle to never send PII in events or store in an event log, so this event is only a notification.  The subscribing system must call back to retrieve the information.
      
@@ -65,7 +65,7 @@ info:
     url: 'https://stichtingsem.org/'
 servers:
   - url: 'https://example.stichtingsem.org/api'
-    description: sisdata
+    description: entitlement
 components:
   schemas:
     school:
@@ -86,7 +86,7 @@ components:
       x-tags:
         - student
         - school
-        - group
+        - class
         - enrollment
         - subject
       title: ''
@@ -94,9 +94,6 @@ components:
       properties:
         id:
           type: string
-        schemaVersion:
-          type: integer
-          description: 'schema version of this event/object. Start with 0, inclement when we have changes, so we know how to deserialise.'
         eckid:
           type: string
         firstname:
@@ -105,15 +102,16 @@ components:
           type: string
         surnamePrefix:
           type: string
-        schoolYear:
+        display_name:
           type: string
-          description: A reference to the school year for this student.
+          description: |
+            This is a display name only, not necessarily (and ideally not) their full real name.
         school:
           $ref: '#/components/schemas/school'
-        groups:
+        classes:
           type: array
           items:
-            $ref: '#/components/schemas/groupReference'
+            $ref: '#/components/schemas/classReference'
         subjectChoices:
           type: array
           items:
@@ -121,28 +119,6 @@ components:
       required:
         - id
         - school
-      x-examples:
-        example-Student:
-          id: fdff8a426c0a4e9996d70260de623add
-          schemaVersion: 0
-          firstname: Kim
-          surname: Abrahamjan
-          surnamePrefix: de
-          schoolYear: 2020-2021
-          school:
-            id: '12345'
-            name: TestCollege
-          groups:
-            - id: ae0119c7780f40b482f27ef7f3edc1e2
-              name: W2C MM
-          subjectChoices:
-            - id: 65aad9b5acf74ab1a677095bb051fe91
-              startDate: '2020-08-01'
-              subjectCode: '0131'
-              schoolSubjectName: Aardrijkskunde
-              level: HAVO-2
-              course: W_HAVO
-              courseYear: 2
     studentReference:
       type: object
       x-tags:
@@ -160,21 +136,22 @@ components:
           type: string
         surnamePrefix:
           type: string
+        display_name:
+          type: string
+          description: |
+            This is a display name only, not necessarily (and ideally not) their full real name.
       required:
         - id
     teacher:
       type: object
       x-tags:
         - teacher
-        - group
+        - class
         - school
       title: ''
       properties:
         id:
           type: string
-        schemaVersion:
-          type: integer
-          description: 'schema version of this event/object. Start with 0, inclement when we have changes, so we know how to deserialise.'
         eckid:
           type: string
         firstname:
@@ -183,34 +160,17 @@ components:
           type: string
         surnamePrefix:
           type: string
-        schoolYear:
+        display_name:
           type: string
-          description: A reference to the school year for this teacher.
+          description: |
+            A name used to refer to the teacher when displaying to them in an application, not necessarily their real name.
         school:
           $ref: '#/components/schemas/school'
-        groups:
-          type: array
-          items:
-            $ref: '#/components/schemas/groupReference'
-          description: |
-            Do we need this? This information is already available in groups. It will not be available in the beginning of the school year when the rosters are not complete. Neither LMS or LA need it to function.
+        classses:
+          $ref: '#/components/schemas/classReference'
       required:
         - id
         - school
-      x-examples:
-        example-1:
-          id: 407b751eb2a44ad98ae3f7336c160fde
-          schemaVersion: 0
-          firstname: Anja
-          surname: Jong
-          surnamePrefix: de
-          schoolYear: 2020-2021
-          school:
-            id: '1234'
-            name: TestCollege
-          groups:
-            - id: 83302cc7309c497c9530537ac50248b3
-              name: W2C MM
     teacherReference:
       type: object
       x-tags:
@@ -227,54 +187,33 @@ components:
           type: string
         surnamePrefix:
           type: string
+        display_name:
+          type: string
+          description: |
+            A name used to refer to the teacher when displaying to them in an application, not necessarily their real name.
       required:
         - id
-    group:
+    class:
       type: object
-      x-examples:
-        example-1:
-          id: ae0119c7780f40b482f27ef7f3edc1e2
-          schemaVersion: 0
-          name: W2C MM
-          school:
-            id: '12345'
-            name: TestCollege
-          students:
-            - id: ''
-              firstname: Kim
-              surname: Abrahamjan
-              surnamePrefix: de
-          teachers:
-            - id: 407b751eb2a44ad98ae3f7336c160fde
-              firstname: Anja
-              surname: Jong
-              surnamePrefix: de
-          subjectChoices:
-            - id: 65aad9b5acf74ab1a677095bb051fe91
-              startDate: '2020-08-01'
-              subjectCode: '0131'
-              schoolSubjectName: Aardrijkskunde
-              level: HAVO-2
-              course: W_HAVO
-              courseYear: 2
-          schoolYear: 2020-2021
+      x-examples: {}
       x-tags:
-        - group
+        - class
         - student
         - teacher
         - subject
         - school
-      description: A group or other grouping of students.
-      title: group
+      description: ''
       properties:
         id:
           type: string
-        schemaVersion:
-          type: integer
-          description: 'schema version of this event/object. Start with 0, inclement when we have changes, so we know how to deserialise.'
-          default: 0
         name:
           type: string
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
         school:
           $ref: '#/components/schemas/school'
         students:
@@ -289,18 +228,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/subject-choice'
-        schoolYear:
-          type: string
-          description: A reference to the school year for this group.
       required:
         - id
         - name
         - school
-    groupReference:
+    classReference:
       type: object
       x-examples: {}
       x-tags:
-        - group
+        - class
       description: ''
       properties:
         id:
@@ -310,42 +246,88 @@ components:
       required:
         - id
         - name
-    subject-choice:
+    teacherOfClass:
       type: object
-      title: ''
-      x-tags:
-        - subject
-        - student
       properties:
         id:
           type: string
         startDate:
           type: string
           format: date
-          description: Start of this subject for the student. Date cannot be in the future.
         endDate:
           type: string
           format: date
-          description: Start of this subject for the student. Date cannot be in the future. null if not ended
-        subjectCode:
-          type: string
-          description: 'Officiële elementcode, bron: Ministerie van OCW, like https://zoek.officielebekendmakingen.nl/stcrt-2019-35044'
-        schoolSubjectName:
-          type: string
-          description: Optional name of subject if different within specific school.
-        level:
-          type: string
-          description: 'Official Level, followed by courseyear. example ''havo-1, vwo-2, etc.'''
-        course:
-          type: string
-          description: 'School name of the Level/couse/study. example ''Technasium, etc.'' This gives schools a way to name the course how they want it, wile we still have a link with the official level'
-        courseYear:
-          type: integer
-          description: null
+        teacher:
+          $ref: '#/components/schemas/teacher'
+        class:
+          $ref: '#/components/schemas/classReference'
+        school:
+          $ref: '#/components/schemas/school'
       required:
         - id
-        - schoolSubjectName
-      x-examples: {}
+        - start date
+        - teacher
+        - class
+        - school
+      x-tags:
+        - teacher
+        - class
+      description: ''
+      title: ''
+    enrollment:
+      type: object
+      properties:
+        id:
+          type: string
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        educationCode:
+          type: string
+          description: 'Officiële elementcode, bron: Ministerie van OCW'
+        student:
+          $ref: '#/components/schemas/studentReference'
+        school:
+          $ref: '#/components/schemas/school'
+      required:
+        - id
+        - start date
+        - student
+        - school
+      x-tags:
+        - student
+        - school
+        - enrollment
+    subject-choice:
+      type: object
+      title: ''
+      properties:
+        id:
+          type: string
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        subjectName:
+          type: string
+          description: 'Name of Subject as used by school'
+        subjectCode:
+          type: string
+          description: 'Officiële elementcode, bron: Ministerie van OCW'
+        level:
+          type: string
+          description: 'havo-1, vwo-2, etc.'
+      required:
+        - id
+        - start date
+      x-tags:
+        - subject
+        - student
     student-delivery:
       title: student-delivery
       type: object
@@ -356,9 +338,6 @@ components:
       properties:
         id:
           type: string
-        schemaVersion:
-          type: integer
-          description: 'schema version of this event/object. Start with 0, inclement when we have changes, so we know how to deserialise.'
         eckid:
           type: string
         dateOfBirth:
@@ -389,7 +368,7 @@ components:
           authorizationUrl: ''
           refreshUrl: ''
           scopes:
-            sis.student-teacher-group: 'Access to basic student, teacher and group information.'
+            sis.student-teacher-class: 'Access to basic student, teacher and class information.'
             sis.student-teacher-delivery: Access to sensitive student and teacher delivery information.
 paths:
   '/student/{id}':
@@ -411,16 +390,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/student'
       operationId: get-student-id
-      description: 'Retrieve basic student information, including their groups and subject choices.'
+      description: 'Retrieve basic student information, including their classes and subject choices.'
       security:
         - API Key:
-            - sis.student-teacher-group
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: schoolYear
-          description: 'Request data for this student about a specific school year, if not provided, default to current.'
+            - sis.student-teacher-class
   '/teacher/{id}':
     parameters:
       - schema:
@@ -442,15 +415,9 @@ paths:
       operationId: get-teacher-id
       security:
         - API Key:
-            - sis.student-teacher-group
-      description: 'Retrieve basic teacher information including the groups they teach.  '
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: schoolYear
-          description: 'Request data for this teacher about a specific school year, if not provided, default to current.'
-  '/group/{id}':
+            - sis.student-teacher-class
+      description: 'Retrieve basic teacher information including the classes they teach.  '
+  '/class/{id}':
     parameters:
       - schema:
           type: string
@@ -458,27 +425,47 @@ paths:
         in: path
         required: true
     get:
-      summary: Get group by ID
+      summary: Get Class by ID
       tags:
-        - group
+        - class
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/group'
-      operationId: get-group-id
-      description: 'Retrieve information about a specific group by ID, this includes the teachers, students and their subject choices.'
+                $ref: '#/components/schemas/class'
+      operationId: get-class-id
+      description: 'Retrieve information about a specific class by ID, this includes the teachers, students and their subject choices.'
       security:
         - API Key:
-            - sis.student-teacher-group
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: schoolYear
-          description: 'Request data for this group about a specific school year, if not provided, default to current.'
+            - sis.student-teacher-class
+  '/enrollment/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Get Enrollment by ID
+      tags:
+        - enrollment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/enrollment'
+      operationId: get-enrolment-id
+      description: |-
+        Get an Enrollmemnt by ID.
+
+        > Do we need this?  Is it in some way useful? Lets defer implementation
+      security:
+        - API Key:
+            - sis.student-teacher-class
   '/student/{id}/delivery-information':
     parameters:
       - schema:
@@ -505,7 +492,7 @@ paths:
             - sis.student-teacher-delivery
 tags:
   - name: enrollment
-  - name: group
+  - name: class
   - name: student
   - name: student-delivery
   - name: teacher
