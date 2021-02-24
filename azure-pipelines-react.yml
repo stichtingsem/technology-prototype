@@ -23,7 +23,7 @@ steps:
 
 - task: npmAuthenticate@0
   inputs:
-    workingFile: 'implementation/sem-admin-client/build.npmrc'
+    workingFile: '/implementation/sem-admin-client/build.npmrc'
 
 - task: Yarn@3
   inputs:
