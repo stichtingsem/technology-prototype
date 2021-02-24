@@ -7,28 +7,28 @@ pool:
 
 variables:
   buildConfiguration: "Release"
-#  NUGET_PACKAGES: $(Pipeline.Workspace)/.nuget/packages
+  NUGET_PACKAGES: $(Pipeline.Workspace)/.nuget/packages
 #  npm_config_cache: $(Pipeline.Workspace)/.npm
 
 steps:
-#  - task: Cache@2
-#    inputs:
-#      key: 'nuget | "$(Agent.OS)" | **/*.csproj'
-#      restoreKeys: |
-#        nuget | "$(Agent.OS)"
-#        nuget
-#      path: $(NUGET_PACKAGES)
-#    displayName: Cache NuGet packages
+  - task: Cache@2
+    inputs:
+      key: 'nuget | "$(Agent.OS)" | **/*.csproj'
+      restoreKeys: |
+        nuget | "$(Agent.OS)"
+        nuget
+      path: $(NUGET_PACKAGES)
+    displayName: Cache NuGet packages
 
-#  - task: DotNetCoreCLI@2
-#    inputs:
-#      command: "restore"
-#      projects: "IL.Authentication.sln"
-#      arguments: "--configuration $(buildConfiguration)"
-#      feedsToUse: "select"
-#      vstsFeed: "e42a86c2-354c-4655-a0bc-5c0c6870ca2b"
-#      includeNuGetOrg: true
-#    displayName: "dotnet restore"
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: "restore"
+      projects: "implementation\\sem-webhook-service\\SEM.WebhookService.sln"
+      arguments: "--configuration $(buildConfiguration)"
+      feedsToUse: "select"
+      vstsFeed: "e42a86c2-354c-4655-a0bc-5c0c6870ca2b"
+      includeNuGetOrg: true
+    displayName: "dotnet restore"
 
   - task: DotNetCoreCLI@2
     inputs:
