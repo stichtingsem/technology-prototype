@@ -1,4 +1,4 @@
-﻿using Domain.Events;
+﻿using Domain.EventTypes;
 using Domain.Tenants;
 using System;
 using System.Collections.Generic;
@@ -8,19 +8,19 @@ namespace Domain.Webhooks
 {
     public sealed class Webhook : IEquatable<Webhook>
     {
-        public static Webhook Create(Guid tenantId, IEnumerable<Guid> eventIds, string postbackUrl, string secret) =>
-            Create(WebhookId.Create(), tenantId, eventIds, postbackUrl, secret);
+        public static Webhook Create(Guid tenantId, IEnumerable<Guid> eventTypeIds, string postbackUrl, string secret) =>
+            Create(WebhookId.Create(), tenantId, eventTypeIds, postbackUrl, secret);
 
-        public static Webhook Create(Guid webhookId, Guid tenantId, IEnumerable<Guid> eventIds, string postbackUrl, string secret) =>
-            new Webhook(webhookId, tenantId, eventIds.Select(eventId => new EventId(eventId)), postbackUrl, secret);
+        public static Webhook Create(Guid webhookId, Guid tenantId, IEnumerable<Guid> eventTypeIds, string postbackUrl, string secret) =>
+            new Webhook(webhookId, tenantId, eventTypeIds.Select(eventTypeId => new EventTypeId(eventTypeId)), postbackUrl, secret);
 
-        public bool HasEventId(EventId eventId) => EventIds.Any(ev => ev == eventId);
+        public bool HasEventType(EventTypeId eventTypeId) => EventTypeIds.Any(ev => ev == eventTypeId);
 
-        public Webhook(WebhookId id, TenantId tenantId, IEnumerable<EventId> eventIds, PostbackUrl postbackUrl, Secret secret)
+        public Webhook(WebhookId id, TenantId tenantId, IEnumerable<EventTypeId> eventTypeIds, PostbackUrl postbackUrl, Secret secret)
         {
             Id = id;
             TenantId = tenantId;
-            EventIds = eventIds;
+            EventTypeIds = eventTypeIds;
             PostbackUrl = postbackUrl;
             Secret = secret;
         }
@@ -29,7 +29,7 @@ namespace Domain.Webhooks
 
         public TenantId TenantId { get; }
 
-        public IEnumerable<EventId> EventIds { get; }
+        public IEnumerable<EventTypeId> EventTypeIds { get; }
         
         public PostbackUrl PostbackUrl { get; }
         

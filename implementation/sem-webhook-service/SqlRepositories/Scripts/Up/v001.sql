@@ -5,7 +5,7 @@ go
 use Webhooks
 go
 
-create table dbo.[Events] (
+create table dbo.[EventTypes] (
 	Id uniqueidentifier not null primary key,
 	[Name] nvarchar(256) not null
 )
@@ -21,14 +21,14 @@ go
 
 create table dbo.Subscriptions (
 	WebhookId uniqueidentifier not null,
-	EventId uniqueidentifier not null,
-	primary key (WebhookId, EventId),
+	EventTypeId uniqueidentifier not null,
+	primary key (WebhookId, EventTypeId),
 	foreign key (WebhookId) references dbo.Webhooks(Id),
-	foreign key (EventId) references dbo.[Events](Id),
+	foreign key (EventTypeId) references dbo.[EventTypes](Id),
 )
 go
 
-insert into dbo.[Events] values(newid(), 'Catalog item added')
-insert into dbo.[Events] values(newid(), 'Catalog item updated')
-insert into dbo.[Events] values(newid(), 'Catalog item deleted')
+insert into dbo.[EventTypes] values(newid(), 'Catalog item added')
+insert into dbo.[EventTypes] values(newid(), 'Catalog item updated')
+insert into dbo.[EventTypes] values(newid(), 'Catalog item deleted')
 go

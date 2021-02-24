@@ -1,4 +1,4 @@
-﻿using Domain.Events;
+﻿using Domain.EventTypes;
 using Domain.Tenants;
 using Domain.Webhooks;
 using NUnit.Framework;
@@ -27,7 +27,7 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
         {
             WebhookId webhookId = RandomWebhookId();
             TenantId tenantId = RandomTenantId();
-            IEnumerable<EventId> eventIds = ListOfDistinctEventIds();
+            IEnumerable<EventTypeId> eventIds = ListOfDistinctEventIds();
 
             sut.Add(new Webhook(webhookId, tenantId, eventIds, "postbackUrl", "secret"));
 
@@ -43,7 +43,7 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
         {
             WebhookId webhookId = RandomWebhookId();
             TenantId tenantId = RandomTenantId();
-            IEnumerable<EventId> eventIds = ListOfDistinctEventIds();
+            IEnumerable<EventTypeId> eventIds = ListOfDistinctEventIds();
 
             sut.Add(new Webhook(webhookId, tenantId, eventIds, "postbackUrl", "secret"));
 
@@ -59,7 +59,7 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
         {
             WebhookId webhookId = RandomWebhookId();
             TenantId tenantId = RandomTenantId();
-            IEnumerable<EventId> eventIds = ListOfDistinctEventIds();
+            IEnumerable<EventTypeId> eventIds = ListOfDistinctEventIds();
 
             var webhook = new Webhook(webhookId, tenantId, eventIds, "postbackUrl", "secret");
             

@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using Domain.Events;
+using Domain.EventTypes;
 using Domain.Generic;
 using Domain.Tenants;
 using Domain.Webhooks;
@@ -28,10 +28,10 @@ namespace SqlRepositories.Webhooks
             var deleteSubscriptionsSql =
                 $"delete from Subscriptions where WebhookId = @{nameof(WebhookInput.Id)}";
 
-            var subscriptionsInput = webhookInput.EventIds.Select(eventId => new SubscriptionInput(webhookInput.Id, eventId));
+            var subscriptionsInput = webhookInput.EventTypeIds.Select(eventTypeId => new SubscriptionInput(webhookInput.Id, eventTypeId));
 
             var insertSubscriptionsSql =
-                $"insert into Subscriptions values (@{nameof(SubscriptionInput.WebhookId)}, @{nameof(SubscriptionInput.EventId)})";
+                $"insert into Subscriptions values (@{nameof(SubscriptionInput.WebhookId)}, @{nameof(SubscriptionInput.EventTypeId)})";
 
             using (var connection = new SqlConnection(connectionString))
             {
@@ -74,7 +74,7 @@ namespace SqlRepositories.Webhooks
             var selectParams = new { WebhookId = webhookId.Value, TenantId = tenantId.Value };
 
             var selectSql =
-                @$"select wh.Id, wh.TenantId, wh.PostbackUrl, wh.Secret, sub.EventId
+                @$"select wh.Id, wh.TenantId, wh.PostbackUrl, wh.Secret, sub.EventTypeId
                    from dbo.Webhooks wh
                    inner join dbo.[Subscriptions] sub on sub.WebhookId = wh.Id
                    where wh.Id = @{nameof(selectParams.WebhookId)} and wh.TenantId = @{nameof(selectParams.TenantId)}";
@@ -87,9 +87,9 @@ namespace SqlRepositories.Webhooks
                     return Maybe.None;
                 
                 var webhookOutput = webhookOutputs.First();
-                var eventIds = webhookOutputs.Select(o => new EventId(o.EventId)).ToList();
+                var eventTypeIds = webhookOutputs.Select(output => new EventTypeId(output.EventTypeId)).ToList();
 
-                return new Webhook(webhookOutput.Id, webhookOutput.TenantId, eventIds, webhookOutput.PostbackUrl, webhookOutput.Secret);
+                return new Webhook(webhookOutput.Id, webhookOutput.TenantId, eventTypeIds, webhookOutput.PostbackUrl, webhookOutput.Secret);
             }
         }
 
@@ -97,7 +97,7 @@ namespace SqlRepositories.Webhooks
         {
             var selectParams = new { TenantId = tenantId.Value };
             var selectSql =
-                @$"select wh.Id, wh.TenantId, wh.PostbackUrl, wh.Secret, sub.EventId
+                @$"select wh.Id, wh.TenantId, wh.PostbackUrl, wh.Secret, sub.EventTypeId
                    from dbo.Webhooks wh
                    inner join dbo.[Subscriptions] sub on sub.WebhookId = wh.Id
                    where wh.TenantId = @{nameof(selectParams.TenantId)}";
@@ -117,9 +117,9 @@ namespace SqlRepositories.Webhooks
             foreach (var webhookGrouping in webhookGroupings)
             {
                 var webhookOutput = webhookGrouping.First();
-                var eventIds = webhookGrouping.Select(o => new EventId(o.EventId)).ToList();
+                var eventTypeIds = webhookGrouping.Select(o => new EventTypeId(o.EventTypeId)).ToList();
 
-                yield return new Webhook(webhookOutput.Id, webhookOutput.TenantId, eventIds, webhookOutput.PostbackUrl, webhookOutput.Secret);
+                yield return new Webhook(webhookOutput.Id, webhookOutput.TenantId, eventTypeIds, webhookOutput.PostbackUrl, webhookOutput.Secret);
             }
         }
 
@@ -135,10 +135,10 @@ namespace SqlRepositories.Webhooks
             var deleteSubscriptionsSql =
                 $"delete from Subscriptions where WebhookId = @{nameof(WebhookInput.Id)}";
 
-            var subscriptionsInput = webhookInput.EventIds.Select(eventId => new SubscriptionInput(webhookInput.Id, eventId));
+            var subscriptionsInput = webhookInput.EventTypeIds.Select(eventTypeId => new SubscriptionInput(webhookInput.Id, eventTypeId));
 
             var insertSubscriptionsSql =
-                $"insert into Subscriptions values (@{nameof(SubscriptionInput.WebhookId)}, @{nameof(SubscriptionInput.EventId)})";
+                $"insert into Subscriptions values (@{nameof(SubscriptionInput.WebhookId)}, @{nameof(SubscriptionInput.EventTypeId)})";
 
             using (var connection = new SqlConnection(connectionString))
             {

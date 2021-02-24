@@ -1,5 +1,5 @@
 using Domain.Tenants;
-using Domain.Events;
+using Domain.EventTypes;
 using Domain.Webhooks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -11,7 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using RestService.Authorization;
 using System;
 using RestService.Tenants;
-using SqlRepositories.Events;
+using SqlRepositories.EventTypes;
 using SqlRepositories.Webhooks;
 
 namespace RestService
@@ -43,9 +43,9 @@ namespace RestService
                     };
                 });
 
-            services.AddTransient<EventsSqlConnectionString>((serviceProvider) => Configuration["ConnectionStrings:Events"]);
+            services.AddTransient<EventTypesSqlConnectionString>((serviceProvider) => Configuration["ConnectionStrings:Events"]);
             services.AddTransient<WebhooksSqlConnectionString>((serviceProvider) => Configuration["ConnectionStrings:Webhooks"]);
-            services.AddTransient<IEventsRepository, EventsSqlRepository>();
+            services.AddTransient<IEventTypesRepository, EventTypesSqlRepository>();
             services.AddTransient<IWebhooksRepository, WebhooksSqlRepository>();
             services.AddTransient<ITenant, TenantFromHttpContext>();
             services.AddTransient<TenantIdClaimType>();

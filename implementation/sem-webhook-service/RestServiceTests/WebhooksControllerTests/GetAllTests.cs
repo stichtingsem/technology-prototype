@@ -1,4 +1,4 @@
-﻿using Domain.Events;
+﻿using Domain.EventTypes;
 using Domain.Tenants;
 using Domain.Webhooks;
 using Moq;
@@ -11,7 +11,7 @@ namespace RestServiceTests.WebhooksControllerTests
     {
         WebhooksController sut;
 
-        Mock<IEventsRepository> mockEventsRepository;
+        Mock<IEventTypesRepository> mockEventTypesRepository;
         Mock<IWebhooksRepository> mockWebhooksRepository;
         Mock<ITenant> mockTenant;
 
@@ -19,13 +19,13 @@ namespace RestServiceTests.WebhooksControllerTests
         public void SetUp()
         {
             mockWebhooksRepository = new Mock<IWebhooksRepository>();
-            mockEventsRepository = new Mock<IEventsRepository>();
+            mockEventTypesRepository = new Mock<IEventTypesRepository>();
             mockTenant = new Mock<ITenant>();
 
             sut = new WebhooksController
             (
                 mockWebhooksRepository.Object,
-                mockEventsRepository.Object,
+                mockEventTypesRepository.Object,
                 mockTenant.Object
             );
         }

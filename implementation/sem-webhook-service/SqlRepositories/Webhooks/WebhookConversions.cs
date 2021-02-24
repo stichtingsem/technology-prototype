@@ -6,6 +6,6 @@ namespace SqlRepositories.Webhooks
     internal static class WebhookConversions
     {
         internal static WebhookInput ToInput(this Webhook webhook) =>
-            new WebhookInput(webhook.Id, webhook.TenantId, webhook.EventIds.ToValues(), webhook.PostbackUrl, webhook.Secret);
+            new WebhookInput(webhook.Id, webhook.TenantId, webhook.EventTypeIds.ToValues(), webhook.PostbackUrl, webhook.Secret);
     }
 }

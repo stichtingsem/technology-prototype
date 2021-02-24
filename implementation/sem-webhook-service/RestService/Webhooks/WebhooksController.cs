@@ -1,4 +1,4 @@
-﻿using Domain.Events;
+﻿using Domain.EventTypes;
 using Domain.Tenants;
 using Domain.Webhooks;
 using Microsoft.AspNetCore.Mvc;
@@ -14,13 +14,13 @@ namespace RestService.Webhooks
     public sealed class WebhooksController : ControllerBase
     {
         private readonly IWebhooksRepository webhooksRepository;
-        private readonly IEventsRepository eventsRepository;
+        private readonly IEventTypesRepository eventsRepository;
         private readonly ITenant tenant;
 
         public WebhooksController
         (
             IWebhooksRepository webhooksRepository,
-            IEventsRepository eventsRepository,
+            IEventTypesRepository eventsRepository,
             ITenant tenant
         )
         {

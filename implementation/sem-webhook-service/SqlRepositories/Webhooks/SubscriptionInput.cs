@@ -2,5 +2,5 @@
 
 namespace SqlRepositories.Webhooks
 {
-    internal sealed record SubscriptionInput(Guid WebhookId, Guid EventId);
+    internal sealed record SubscriptionInput(Guid WebhookId, Guid EventTypeId);
 }

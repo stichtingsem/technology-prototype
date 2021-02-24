@@ -1,4 +1,4 @@
-﻿using Domain.Events;
+﻿using Domain.EventTypes;
 using Domain.Tenants;
 using Domain.Webhooks;
 using NUnit.Framework;
@@ -14,7 +14,7 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
         protected WebhooksSqlRepository sut;
 
         private readonly RepositoryFactory factory = new RepositoryFactory();
-        private readonly IEnumerable<EventId> eventIds;
+        private readonly IEnumerable<EventTypeId> eventIds;
 
         public WebhooksSqlRepositorySetup()
         {
@@ -32,7 +32,7 @@ namespace SqlRepositoriesTests.WebhooksRepositoryTests
 
         public TenantId RandomTenantId() => Guid.NewGuid();
 
-        public IEnumerable<EventId> ListOfDistinctEventIds() => eventIds.Take(2);
+        public IEnumerable<EventTypeId> ListOfDistinctEventIds() => eventIds.Take(2);
 
     }
 }

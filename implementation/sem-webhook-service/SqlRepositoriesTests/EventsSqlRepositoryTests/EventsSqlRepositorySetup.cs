@@ -1,11 +1,11 @@
 ﻿using NUnit.Framework;
-using SqlRepositories.Events;
+using SqlRepositories.EventTypes;
 
 namespace SqlRepositoriesTests.EventsSqlRepositoryTests
 {
     public abstract class EventsSqlRepositorySetup
     {
-        protected EventsSqlRepository sut;
+        protected EventTypesSqlRepository sut;
 
         private readonly RepositoryFactory factory = new RepositoryFactory();
 

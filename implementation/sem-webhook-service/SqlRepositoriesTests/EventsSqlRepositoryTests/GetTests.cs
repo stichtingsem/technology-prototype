@@ -1,4 +1,4 @@
-﻿using Domain.Events;
+﻿using Domain.EventTypes;
 using NUnit.Framework;
 using System;
 using System.Linq;
@@ -26,7 +26,7 @@ namespace SqlRepositoriesTests.EventsSqlRepositoryTests
         [Test]
         public void NonExistingEvent()
         {
-            EventId randomEventId = Guid.NewGuid();
+            EventTypeId randomEventId = Guid.NewGuid();
 
             var result = sut.Get(randomEventId);
 
