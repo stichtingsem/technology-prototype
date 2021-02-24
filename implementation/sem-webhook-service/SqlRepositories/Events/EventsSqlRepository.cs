@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Domain.Events;
+using Domain.Generic;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -16,15 +17,20 @@ namespace SqlRepositories.Events
             this.connectionString = connectionString;
         }
 
-        public Event Get(Guid eventId)
+        public Maybe<Event> Get(EventId eventId)
         {
-            var selectSql = $"select * from dbo.[Events] where Id = @{nameof(eventId)}";
+            var sqlParams = new { Id = eventId.Value };
+            var selectSql = $"select * from dbo.[Events] where Id = @{nameof(sqlParams.Id)}";
 
             using (var connection = new SqlConnection(connectionString))
             {
-                var eventDto = connection.QuerySingle<EventOutput>(selectSql, eventId);
+                var results = connection.Query<EventOutput>(selectSql, sqlParams);
 
-                return new Event(eventDto.Id, eventDto.Name);
+                if (!results.Any())
+                    return Maybe.None;
+
+                var eventOutput = results.Single();
+                return new Event(eventOutput.Id, eventOutput.Name);
             }
         }
 

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Domain.Generic;
 using System.Collections.Generic;
 
 namespace Domain.Events
@@ -7,6 +7,6 @@ namespace Domain.Events
     {
         IEnumerable<Event> GetAll();
         
-        Event Get(Guid eventId);
+        Maybe<Event> Get(EventId eventId);
     }
 }
