@@ -21,6 +21,10 @@ steps:
     versionSpec: '1.x'
     checkLatest: true
 
+- task: npmAuthenticate@0
+  inputs:
+    workingFile: 'build.npmrc'
+
 - task: Yarn@3
   inputs:
     projectDirectory: 'implementation/sem-admin-client'
