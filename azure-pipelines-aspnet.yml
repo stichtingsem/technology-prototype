@@ -33,7 +33,7 @@ steps:
   - task: DotNetCoreCLI@2
     inputs:
       command: "build"
-      projects: "SEM.WebhookService.sln"
+      projects: "implementation\\sem-webhook-service\\SEM.WebhookService.sln"
       arguments: "--configuration $(buildConfiguration)"
     displayName: "dotnet build $(buildConfiguration)"
   - task: DotNetCoreCLI@2
@@ -47,7 +47,7 @@ steps:
       publishWebProjects: false
       zipAfterPublish: false
       modifyOutputPath: true
-      projects: RestService\RestService.csproj
+      projects: implementation\sem-webhook-service\RestService\RestService.csproj
       arguments: "--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)"
     displayName: "dotnet publish"
   - task: ArchiveFiles@2
@@ -61,25 +61,3 @@ steps:
     inputs:
       pathtoPublish: '$(Build.ArtifactStagingDirectory)\\web.zip'
       artifactName: "WebPackage"
-
-
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: publish
-      publishWebProjects: false
-      zipAfterPublish: false
-      modifyOutputPath: true
-      projects: IL.Authentication.AdminUI\src\IL.Authentication.AdminUI.Admin\IL.Authentication.AdminUI.Admin.csproj
-      arguments: "--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)"
-    displayName: "dotnet publish"
-  - task: ArchiveFiles@2
-    inputs:
-      rootFolderOrFile: '$(Build.ArtifactStagingDirectory)\\IL.Authentication.AdminUI.Admin\\'
-      includeRootFolder: false
-      archiveType: "zip"
-      archiveFile: '$(Build.ArtifactStagingDirectory)\\AdminWeb.zip'
-      replaceExistingArchive: true
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathtoPublish: '$(Build.ArtifactStagingDirectory)\\AdminWeb.zip'
-      artifactName: "AdminWeb"
