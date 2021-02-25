@@ -359,3 +359,5 @@ MigrationBackup/
 
 sem-nginx-proxy/certs
 /implementation/sem-admin-client/.nprmc
+/implementation/sem-nginx-proxy/certs/localhost+1.pem
+/implementation/sem-nginx-proxy/certs/localhost+1-key.pem

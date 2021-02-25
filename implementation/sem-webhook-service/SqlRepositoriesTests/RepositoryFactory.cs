@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using SqlRepositories.Events;
+using SqlRepositories.EventTypes;
 using SqlRepositories.Webhooks;
 using System;
 
@@ -17,7 +17,7 @@ namespace SqlRepositoriesTests
                 Build();
         }
 
-        public EventsSqlRepository EventsSqlRepository => new EventsSqlRepository(config["ConnectionStrings:Events"]);
+        public EventTypesSqlRepository EventsTypesSqlRepository => new EventTypesSqlRepository(config["ConnectionStrings:EventTypes"]);
 
         public WebhooksSqlRepository WebhooksSqlRepository => new WebhooksSqlRepository(config["ConnectionStrings:Webhooks"]);
     }

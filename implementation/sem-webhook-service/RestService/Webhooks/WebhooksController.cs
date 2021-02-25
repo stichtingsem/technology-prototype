@@ -1,5 +1,5 @@
-﻿using Domain.Events;
-using Domain.Schools;
+﻿using Domain.EventTypes;
+using Domain.Tenants;
 using Domain.Webhooks;
 using Microsoft.AspNetCore.Mvc;
 using RestService.Authorization;
@@ -14,26 +14,26 @@ namespace RestService.Webhooks
     public sealed class WebhooksController : ControllerBase
     {
         private readonly IWebhooksRepository webhooksRepository;
-        private readonly IEventsRepository eventsRepository;
-        private readonly ISchool school;
+        private readonly IEventTypesRepository eventsRepository;
+        private readonly ITenant tenant;
 
         public WebhooksController
         (
             IWebhooksRepository webhooksRepository,
-            IEventsRepository eventsRepository,
-            ISchool school
+            IEventTypesRepository eventsRepository,
+            ITenant tenant
         )
         {
             this.webhooksRepository = webhooksRepository;
             this.eventsRepository = eventsRepository;
-            this.school = school;
+            this.tenant = tenant;
         }
 
         [HttpGet]
         [Route("{id}")]
         public ActionResult<WebhookOutput> Get(Guid id)
         {
-            var maybeWebhook = webhooksRepository.Get(id, school.Id);
+            var maybeWebhook = webhooksRepository.Get(id, tenant.Id);
 
             return maybeWebhook.Match<ActionResult<WebhookOutput>>
             (
@@ -45,7 +45,7 @@ namespace RestService.Webhooks
         [HttpGet]
         public ActionResult<IEnumerable<WebhookOutput>> Get()
         {
-            var webhooks = webhooksRepository.GetAll(school.Id);
+            var webhooks = webhooksRepository.GetAll(tenant.Id);
 
             var events = eventsRepository.GetAll();
 
@@ -55,7 +55,7 @@ namespace RestService.Webhooks
         [HttpPost]
         public ActionResult Add([FromBody] WebhookPost webhookPost)
         {
-            var webhook = Webhook.Create(school.Id, webhookPost.EventIds, webhookPost.PostbackUrl, webhookPost.Secret);
+            var webhook = Webhook.Create(tenant.Id, webhookPost.EventIds, webhookPost.PostbackUrl, webhookPost.Secret);
 
             webhooksRepository.Add(webhook);
 
@@ -65,7 +65,7 @@ namespace RestService.Webhooks
         [HttpPut]
         public ActionResult Update([FromBody] WebhookPut webhookPut)
         {
-            var webhook = Webhook.Create(webhookPut.Id, school.Id, webhookPut.EventIds, webhookPut.PostbackUrl, webhookPut.Secret);
+            var webhook = Webhook.Create(webhookPut.Id, tenant.Id, webhookPut.EventIds, webhookPut.PostbackUrl, webhookPut.Secret);
 
             webhooksRepository.Update(webhook);
 
@@ -76,7 +76,7 @@ namespace RestService.Webhooks
         [Route("{id}")]
         public ActionResult Delete(Guid id)
         {
-            webhooksRepository.Delete(id, school.Id);
+            webhooksRepository.Delete(id, tenant.Id);
 
             return Ok();
         }

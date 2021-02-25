@@ -1,5 +1,5 @@
-﻿using Domain.Events;
-using Domain.Schools;
+﻿using Domain.EventTypes;
+using Domain.Tenants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,35 +8,32 @@ namespace Domain.Webhooks
 {
     public sealed class Webhook : IEquatable<Webhook>
     {
-        public static Webhook Create(Guid schoolId, IEnumerable<Guid> eventIds, string postbackUrl, string secret) =>
-            Create(WebhookId.Create(), schoolId, eventIds, postbackUrl, secret);
+        public static Webhook Create(Guid tenantId, IEnumerable<Guid> eventTypeIds, string postbackUrl, string secret) =>
+            Create(WebhookId.Create(), tenantId, eventTypeIds, postbackUrl, secret);
 
-        public static Webhook Create(Guid webhookId, Guid schoolId, IEnumerable<Guid> eventIds, string postbackUrl, string secret) =>
-            new Webhook(webhookId, schoolId, eventIds.Select(eventId => new EventId(eventId)), postbackUrl, secret);
+        public static Webhook Create(Guid webhookId, Guid tenantId, IEnumerable<Guid> eventTypeIds, string postbackUrl, string secret) =>
+            new Webhook(webhookId, tenantId, eventTypeIds.Select(eventTypeId => new EventTypeId(eventTypeId)), postbackUrl, secret);
 
-        public bool HasEventId(EventId eventId) => EventIds.Any(ev => ev == eventId);
+        public bool HasEventType(EventTypeId eventTypeId) => EventTypeIds.Any(ev => ev == eventTypeId);
 
-        public Webhook(WebhookId id, SchoolId schoolId, IEnumerable<EventId> eventIds, PostbackUrl postbackUrl, Secret secret)
+        public Webhook(WebhookId id, TenantId tenantId, IEnumerable<EventTypeId> eventTypeIds, PostbackUrl postbackUrl, Secret secret)
         {
             Id = id;
-            SchoolId = schoolId;
-
-            EventIds = eventIds;
+            TenantId = tenantId;
+            EventTypeIds = eventTypeIds;
             PostbackUrl = postbackUrl;
             Secret = secret;
         }
 
         public WebhookId Id { get; }
 
-        public SchoolId SchoolId { get; }
+        public TenantId TenantId { get; }
 
-        public IEnumerable<EventId> EventIds { get; }
+        public IEnumerable<EventTypeId> EventTypeIds { get; }
         
         public PostbackUrl PostbackUrl { get; }
         
         public Secret Secret { get; }
-
-        //public Result Convert<Result>(Func<WebhookId, SchoolId, IEnumerable<EventId>, PostbackUrl, Secret, Result> convert) => convert(Id, SchoolId, EventIds, PostbackUrl, Secret);
 
         public bool Equals(Webhook other) => other.Id == Id;
 

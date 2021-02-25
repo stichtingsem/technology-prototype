@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestServiceTests", "RestSer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{33CC50BF-E2E7-4C55-8C27-766D402F1618}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepositories", "SqlDatabases\SqlRepositories.csproj", "{FD3A9420-C1B4-474B-A71E-E3AE2A47B9F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepositories", "SqlRepositories\SqlRepositories.csproj", "{FD3A9420-C1B4-474B-A71E-E3AE2A47B9F3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlRepositoriesTests", "SqlRepositoriesTests\SqlRepositoriesTests.csproj", "{7FBB96BB-26EE-4306-9DFF-2BA688B7B8AF}"
 EndProject
