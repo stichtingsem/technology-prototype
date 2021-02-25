@@ -36,11 +36,11 @@ steps:
       projects: "implementation\\sem-webhook-service\\SEM.WebhookService.sln"
       arguments: "--configuration $(buildConfiguration)"
     displayName: "dotnet build $(buildConfiguration)"
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: "test"
-      projects: "**/*Tests.csproj"
-    displayName: dotnet test
+  #- task: DotNetCoreCLI@2
+  #  inputs:
+  #    command: "test"
+  #    projects: "**/*Tests.csproj"
+  #  displayName: dotnet test
   - task: DotNetCoreCLI@2
     inputs:
       command: publish
