@@ -52,7 +52,7 @@ steps:
     displayName: "dotnet publish"
   - task: ArchiveFiles@2
     inputs:
-      rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
+      rootFolderOrFile: '$(Build.ArtifactStagingDirectory)\\RestService'
       includeRootFolder: false
       archiveType: "zip"
       archiveFile: '$(Build.ArtifactStagingDirectory)\\web.zip'
