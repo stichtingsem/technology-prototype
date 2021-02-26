@@ -52,6 +52,9 @@ steps:
       web.config
       web.Acc.config
       web.Prd.config
+      client_config.json
+      client_config.Acc.json
+      client_config.Prd.json
     TargetFolder: 'implementation/sem-admin-client/build'
 
 - task: ArchiveFiles@2
