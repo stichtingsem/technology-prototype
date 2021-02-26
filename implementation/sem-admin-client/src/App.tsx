@@ -10,10 +10,11 @@ import {
 import './App.css';
 
 function App() {
+  const idpUrl = process.env.REACT_APP_IDP_URL || '';
   const avatarConfig: IClientConfig = {
     clientId: 'IDP.Playground',
     scope: 'openid fullname profile email role offline_access',
-    idpUrl: process.env.APPSETTING_IDP_URL || ''
+    idpUrl: idpUrl
   }
 
   const [visibleSection, setVisibleSection] = useState<string>('view')
