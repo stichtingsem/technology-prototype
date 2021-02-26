@@ -48,7 +48,10 @@ steps:
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'implementation/sem-admin-client'
-    Contents: 'web.config'
+    Contents: |
+      web.config
+      web.Acc.config
+      web.Prd.config
     TargetFolder: 'implementation/sem-admin-client/build'
 
 - task: ArchiveFiles@2
