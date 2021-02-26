@@ -37,7 +37,7 @@ docker-compose up -d
 ```
 Now you can access the whole service from
 ```
-https://localhost:3010
+https://localhost:3050
 ```
 
 The nginx proxy will automatically route the requests to the correct url: client requests to the sem-admin-client container, and apis to the sem-webhook-service backend.

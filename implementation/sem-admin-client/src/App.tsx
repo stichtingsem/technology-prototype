@@ -36,7 +36,7 @@ function App() {
   }
 
   const avatarConfig: IClientConfig = {
-    clientId: 'IDP.Playground',
+    clientId: 'IDP.Sem',
     scope: 'openid fullname profile email role offline_access',
     idpUrl: idpUrl
   }

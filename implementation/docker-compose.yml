@@ -26,7 +26,7 @@ services:
     container_name: sem-nginx-proxy
     image: nginx:mainline
     ports:
-      - "3010:3010"
+      - "3050:3050"
     volumes:
       - "./sem-nginx-proxy/nginx.conf:/etc/nginx/conf.d/sem.conf"
       - "./sem-nginx-proxy/certs/:/usr/share/certs/"
