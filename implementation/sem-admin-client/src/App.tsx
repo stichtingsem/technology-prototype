@@ -29,6 +29,12 @@ function App() {
     });
   });
 
+  if (idpUrl == '') {
+    return (
+      <div></div>
+    );
+  }
+
   const avatarConfig: IClientConfig = {
     clientId: 'IDP.Playground',
     scope: 'openid fullname profile email role offline_access',
