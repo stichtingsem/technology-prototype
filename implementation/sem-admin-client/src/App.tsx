@@ -13,7 +13,7 @@ function App() {
   const avatarConfig: IClientConfig = {
     clientId: 'IDP.Playground',
     scope: 'openid fullname profile email role offline_access',
-    idpUrl: 'https://il-authentication-web-noordhoff.azurewebsites.net/'
+    idpUrl: process.env.APPSETTING_IDP_URL
   }
 
   const [visibleSection, setVisibleSection] = useState<string>('view')
