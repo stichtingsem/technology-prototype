@@ -29,7 +29,7 @@ function App() {
     });
   });
 
-  if (idpUrl == '') {
+  if (idpUrl === '') {
     return (
       <div></div>
     );
