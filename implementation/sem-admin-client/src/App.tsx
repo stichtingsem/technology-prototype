@@ -18,6 +18,9 @@ function getClientConfig() {
 }
 
 function App() {
+
+  const [visibleSection, setVisibleSection] = useState<string>('view')
+
   const clientConfig = getClientConfig();
   clientConfig.then(config => {
     const idpUrl = config.IdpUrl;
@@ -26,8 +29,6 @@ function App() {
       scope: 'openid fullname profile email role offline_access',
       idpUrl: idpUrl
     }
-
-    const [visibleSection, setVisibleSection] = useState<string>('view')
 
     return (
       <div>
