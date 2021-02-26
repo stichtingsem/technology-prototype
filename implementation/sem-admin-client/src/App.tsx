@@ -20,36 +20,37 @@ function getClientConfig() {
 function App() {
 
   const [visibleSection, setVisibleSection] = useState<string>('view')
+  const [idpUrl, setIdpUrl] = useState<string>('')
 
   const clientConfig = getClientConfig();
   clientConfig.then(config => {
-    const idpUrl = config.IdpUrl;
-    const avatarConfig: IClientConfig = {
-      clientId: 'IDP.Playground',
-      scope: 'openid fullname profile email role offline_access',
-      idpUrl: idpUrl
-    }
+    setIdpUrl(config.IdpUrl);
+  });
+  const avatarConfig: IClientConfig = {
+    clientId: 'IDP.Playground',
+    scope: 'openid fullname profile email role offline_access',
+    idpUrl: idpUrl
+  }
 
-    return (
-      <div>
-        <header className="header">
-          <nav>
-            <span className="navbar_link" onClick={() => setVisibleSection('view')}>View</span>
-            <span className="navbar_link" onClick={() => setVisibleSection('create')}>Create</span>
-            <span className="navbar_link" onClick={() => setVisibleSection('update')}>Update</span>
-            <span className="navbar_link" onClick={() => setVisibleSection('delete')}>Delete</span>
-          </nav>
-          <IDP {...avatarConfig} />
-        </header>
-        <div className="content">
-          {visibleSection === 'view' && <SubscriptionsList />}
-          {visibleSection === 'create' && <CreateSubscriptionForm />}
-          {visibleSection === 'update' && <UpdateSubscriptionForm />}
-          {visibleSection === 'delete' && <DeleteSubscriptionForm />}
-        </div>
+  return (
+    <div>
+      <header className="header">
+        <nav>
+          <span className="navbar_link" onClick={() => setVisibleSection('view')}>View</span>
+          <span className="navbar_link" onClick={() => setVisibleSection('create')}>Create</span>
+          <span className="navbar_link" onClick={() => setVisibleSection('update')}>Update</span>
+          <span className="navbar_link" onClick={() => setVisibleSection('delete')}>Delete</span>
+        </nav>
+        <IDP {...avatarConfig} />
+      </header>
+      <div className="content">
+        {visibleSection === 'view' && <SubscriptionsList />}
+        {visibleSection === 'create' && <CreateSubscriptionForm />}
+        {visibleSection === 'update' && <UpdateSubscriptionForm />}
+        {visibleSection === 'delete' && <DeleteSubscriptionForm />}
       </div>
-    );
-  })
+    </div>
+  );
 }
 
 export default App;
