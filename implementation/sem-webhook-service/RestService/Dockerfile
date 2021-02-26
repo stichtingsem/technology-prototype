@@ -9,7 +9,7 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
 COPY ["RestService/RestService.csproj", "RestService/"]
 COPY ["Domain/Domain.csproj", "Domain/"]
-COPY ["SqlDatabases/SqlRepositories.csproj", "SqlDatabases/"]
+COPY ["SqlRepositories/SqlRepositories.csproj", "SqlRepositories/"]
 RUN dotnet restore "RestService/RestService.csproj"
 COPY . .
 WORKDIR "/src/RestService"

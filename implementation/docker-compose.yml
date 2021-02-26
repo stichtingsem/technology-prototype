@@ -30,6 +30,7 @@ services:
     volumes:
       - "./sem-nginx-proxy/nginx.conf:/etc/nginx/conf.d/sem.conf"
       - "./sem-nginx-proxy/certs/:/usr/share/certs/"
+      - "./sem-nginx-proxy/client_config.json:/home/www-data/mysite/static/client_config.json"
     depends_on:
     - sem-admin-client
     - sem-webhook-service
