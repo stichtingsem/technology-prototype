@@ -137,7 +137,7 @@ components:
               subjectCode: '0131'
               schoolSubjectName: Aardrijkskunde
               level: HAVO-2
-              course: W_HAVO
+              courseCode: W_HAVO
               courseYear: 2
     studentReference:
       type: object
@@ -251,7 +251,7 @@ components:
               subjectCode: '0131'
               schoolSubjectName: Aardrijkskunde
               level: HAVO-2
-              course: W_HAVO
+              courseCode: W_HAVO
               courseYear: 2
           schoolYear: 2020-2021
       x-tags:
@@ -333,9 +333,9 @@ components:
         level:
           type: string
           description: 'Official Level, followed by courseyear. example ''havo-1, vwo-2, etc.'''
-        course:
+        courseCode:
           type: string
-          description: 'School name of the Level/couse/study. example ''Technasium, etc.'' This gives schools a way to name the course how they want it, wile we still have a link with the official level'
+          description: 'School code of the Level/couse/study. example ''Technasium'' This gives schools a way to name the course how they want it, while we still have a link with the official level'
         courseYear:
           type: integer
           description: Learning year
