@@ -22,10 +22,13 @@ function App() {
   const [visibleSection, setVisibleSection] = useState<string>('view')
   const [idpUrl, setIdpUrl] = useState<string>('')
 
-  const clientConfig = getClientConfig();
-  clientConfig.then(config => {
-    setIdpUrl(config.IdpUrl);
+  React.useEffect(() => {
+    const clientConfig = getClientConfig();
+    clientConfig.then(config => {
+      setIdpUrl(config.IdpUrl);
+    });
   });
+
   const avatarConfig: IClientConfig = {
     clientId: 'IDP.Playground',
     scope: 'openid fullname profile email role offline_access',
