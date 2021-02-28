@@ -1,0 +1,11 @@
+﻿Generate service implementations:
+- Navigate to: https://stichtingsem.stoplight.io/docs/sem-technology-prototype
+- select the API of interest
+- Go to Overview for that API
+- Click on Export (top right), select Bundled references
+- Open in a new browser tab: https://editor.swagger.io/
+- Copy the yaml in the stoplight tab and paste it in the SwaggerEditor
+- Click on Generate Server menu item and then aspnetcore
+- unzip the downloaded file
+- Open the project from the unzipped folder
+- Copy/paste the needed parts
