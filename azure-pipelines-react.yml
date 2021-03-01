@@ -1,0 +1,72 @@
+# Node.js with React
+# Build a Node.js project that uses React.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+    checkLatest: true
+  displayName: 'Use Node 10.x'
+
+- task: YarnInstaller@3
+  inputs:
+    versionSpec: '1.x'
+    checkLatest: true
+
+- task: npmAuthenticate@0
+  inputs:
+    workingFile: 'implementation/sem-admin-client/.npmrc'
+
+- task: Yarn@3
+  inputs:
+    projectDirectory: 'implementation/sem-admin-client'
+    arguments: 'install'
+  
+#- task: Yarn@3
+#  inputs:
+#   projectDirectory: 'implementation/sem-admin-client'
+#   arguments: 'lint'
+
+#- task: Yarn@3
+#  inputs:
+#   projectDirectory: 'implementation/sem-admin-client'
+#   arguments: 'test --watchAll=false'
+
+- task: Yarn@3
+  inputs:
+    projectDirectory: 'implementation/sem-admin-client'
+    arguments: 'build'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'implementation/sem-admin-client'
+    Contents: |
+      web.config
+      web.Acc.config
+      web.Prd.config
+      client_config.json
+      client_config.Acc.json
+      client_config.Prd.json
+    TargetFolder: 'implementation/sem-admin-client/build'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: 'implementation/sem-admin-client/build'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/sem-admin-client.zip'
+    replaceExistingArchive: true
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/sem-admin-client.zip'
+    artifact: 'website'
+    publishLocation: 'pipeline'

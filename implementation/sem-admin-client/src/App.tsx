@@ -9,14 +9,37 @@ import {
 } from './components'
 import './App.css';
 
+function getClientConfig() {
+  return fetch('/client_config.json')
+    .then((response) => { return response.json() })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
 function App() {
-  const avatarConfig: IClientConfig = {
-    clientId: 'IDP.Playground',
-    scope: 'openid fullname profile email role offline_access',
-    idpUrl: 'https://il-authentication-web-noordhoff.azurewebsites.net/'
-  }
 
   const [visibleSection, setVisibleSection] = useState<string>('view')
+  const [idpUrl, setIdpUrl] = useState<string>('')
+
+  React.useEffect(() => {
+    const clientConfig = getClientConfig();
+    clientConfig.then(config => {
+      setIdpUrl(config.IdpUrl);
+    });
+  });
+
+  if (idpUrl === '') {
+    return (
+      <div></div>
+    );
+  }
+
+  const avatarConfig: IClientConfig = {
+    clientId: 'IDP.Sem',
+    scope: 'openid fullname profile email role offline_access',
+    idpUrl: idpUrl
+  }
 
   return (
     <div>

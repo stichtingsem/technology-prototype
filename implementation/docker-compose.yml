@@ -26,10 +26,11 @@ services:
     container_name: sem-nginx-proxy
     image: nginx:mainline
     ports:
-      - "3010:3010"
+      - "3050:3050"
     volumes:
       - "./sem-nginx-proxy/nginx.conf:/etc/nginx/conf.d/sem.conf"
       - "./sem-nginx-proxy/certs/:/usr/share/certs/"
+      - "./sem-nginx-proxy/client_config.json:/home/www-data/mysite/static/client_config.json"
     depends_on:
     - sem-admin-client
     - sem-webhook-service
