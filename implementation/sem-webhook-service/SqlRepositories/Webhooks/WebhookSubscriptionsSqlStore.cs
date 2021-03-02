@@ -3,6 +3,7 @@ using Dapper;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SqlRepositories.Webhooks
@@ -28,7 +29,13 @@ namespace SqlRepositories.Webhooks
 
         public WebhookSubscriptionInfo Get(Guid id)
         {
-            throw new NotImplementedException();
+            var sqlParams = new { Id = id };
+            var sql = $"select * from dbo.WebhookSubscriptionInfo where Id = @{nameof(sqlParams.Id)}";
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                return connection.Query<WebhookSubscriptionInfo>(sql, sqlParams).Single();
+            }
         }
 
         public List<WebhookSubscriptionInfo> GetAllSubscriptions(int? tenantId)
@@ -58,7 +65,9 @@ namespace SqlRepositories.Webhooks
 
         public void Insert(WebhookSubscriptionInfo webhookSubscription)
         {
-            var sql = "insert into dbo.WebhookSubscriptionInfo values (@Id, @TenantId, @Secret, @WebhookUri, @IsActive, @CreationTime)";
+            var sql = 
+                @"insert into dbo.WebhookSubscriptionInfo (Id, TenantId, Secret, WebhookUri, IsActive, CreationTime)
+                  values (@Id, @TenantId, @Secret, @WebhookUri, @IsActive, @CreationTime)";
 
             using (var connection = new SqlConnection(connectionString))
             {
