@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace SqlRepositories.Webhooks
 {
-    public sealed partial class WebhooksSqlRepository : IWebhooksRepository
+    public sealed class WebhooksSqlRepository : IWebhooksRepository
     {
         private readonly WebhooksSqlConnectionString connectionString;
 
@@ -23,7 +23,7 @@ namespace SqlRepositories.Webhooks
             var webhookInput = webhook.ToInput();
 
             var insertWebhookSql =
-                $"insert into Webhooks values (@{nameof(WebhookInput.Id)}, @{nameof(WebhookInput.TenantId)}, @{nameof(WebhookInput.PostbackUrl)}, @{nameof(WebhookInput.Secret)})";
+                $"insert into ObsoleteWebhooks values (@{nameof(WebhookInput.Id)}, @{nameof(WebhookInput.TenantId)}, @{nameof(WebhookInput.PostbackUrl)}, @{nameof(WebhookInput.Secret)})";
 
             var deleteSubscriptionsSql =
                 $"delete from Subscriptions where WebhookId = @{nameof(WebhookInput.Id)}";
@@ -59,7 +59,7 @@ namespace SqlRepositories.Webhooks
 
             var deleteWebhooksParams = new { WebhookId = webhookId.Value, TenantId = tenantId.Value };
             var deleteWebhooksSql = 
-                @$"delete from Webhooks
+                @$"delete from ObsoleteWebhooks
                    where Id = @{nameof(deleteWebhooksParams.WebhookId)} and TenantId = @{nameof(deleteWebhooksParams.TenantId)}";
 
             using (var connection = new SqlConnection(connectionString))
@@ -75,7 +75,7 @@ namespace SqlRepositories.Webhooks
 
             var selectSql =
                 @$"select wh.Id, wh.TenantId, wh.PostbackUrl, wh.Secret, sub.EventTypeId
-                   from dbo.Webhooks wh
+                   from dbo.ObsoleteWebhooks wh
                    inner join dbo.[Subscriptions] sub on sub.WebhookId = wh.Id
                    where wh.Id = @{nameof(selectParams.WebhookId)} and wh.TenantId = @{nameof(selectParams.TenantId)}";
 
@@ -98,7 +98,7 @@ namespace SqlRepositories.Webhooks
             var selectParams = new { TenantId = tenantId.Value };
             var selectSql =
                 @$"select wh.Id, wh.TenantId, wh.PostbackUrl, wh.Secret, sub.EventTypeId
-                   from dbo.Webhooks wh
+                   from dbo.ObsoleteWebhooks wh
                    inner join dbo.[Subscriptions] sub on sub.WebhookId = wh.Id
                    where wh.TenantId = @{nameof(selectParams.TenantId)}";
 
@@ -128,7 +128,7 @@ namespace SqlRepositories.Webhooks
             var webhookInput = webhook.ToInput();
 
             var updateWebhookSql =
-                @$"update Webhooks 
+                @$"update ObsoleteWebhooks 
                    set PostbackUrl = @{nameof(WebhookInput.PostbackUrl)}, Secret = @{nameof(WebhookInput.Secret)}
                    where Id = @{nameof(WebhookInput.Id)} and TenantId = @{nameof(WebhookInput.TenantId)}"; 
 
