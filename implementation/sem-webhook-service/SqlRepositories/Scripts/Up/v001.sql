@@ -25,7 +25,7 @@ create table dbo.Subscriptions (
 	WebhookId uniqueidentifier not null,
 	EventTypeId uniqueidentifier not null,
 	primary key (WebhookId, EventTypeId),
-	foreign key (WebhookId) references dbo.ObsoleteWebhooksWebhooks(Id),
+	foreign key (WebhookId) references dbo.ObsoleteWebhooks(Id),
 	foreign key (EventTypeId) references dbo.[EventTypes](Id),
 )
 go
@@ -44,14 +44,7 @@ create table dbo.WebhookSubscriptionInfo (
 	WebhookUri nvarchar(1024) not null,
 	[Secret] nvarchar(256) not null,
 	IsActive bit not null,
+	Webhooks nvarchar(4096) null,
 	CreationTime datetime not null
-)
-go
-
-create table dbo.Webhooks (
-	WebhookSubscriptionInfoId uniqueidentifier not null,
-	[Name] varchar(256) not null,
-	primary key (WebhookSubscriptionInfoId, [Name]),
-	foreign key (WebhookSubscriptionInfoId) references dbo.WebhookSubscriptionInfo(Id),
 )
 go

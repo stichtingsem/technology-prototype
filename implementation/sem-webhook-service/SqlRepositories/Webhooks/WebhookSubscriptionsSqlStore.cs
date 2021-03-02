@@ -65,13 +65,13 @@ namespace SqlRepositories.Webhooks
 
         public void Insert(WebhookSubscriptionInfo webhookSubscription)
         {
-            var sql = 
-                @"insert into dbo.WebhookSubscriptionInfo (Id, TenantId, Secret, WebhookUri, IsActive, CreationTime)
-                  values (@Id, @TenantId, @Secret, @WebhookUri, @IsActive, @CreationTime)";
+            var insertWebhookSubscriptions = 
+                @"insert into dbo.WebhookSubscriptionInfo (Id, TenantId, Secret, WebhookUri, Webhooks, IsActive, CreationTime)
+                  values (@Id, @TenantId, @Secret, @WebhookUri, @Webhooks, @IsActive, @CreationTime)";
 
             using (var connection = new SqlConnection(connectionString))
             {
-                connection.Execute(sql, webhookSubscription);
+                connection.Execute(insertWebhookSubscriptions, webhookSubscription);
             }
         }
 

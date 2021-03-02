@@ -30,5 +30,20 @@ namespace SqlRepositoriesTests.WebhookSubscriptionsSqlStoreTests
 
             webhookSubscriptionInfo.Should().BeEquivalentTo(sut.Get(webhookSubscriptionInfo.Id));
         }
+
+        [Test]
+        public void WebhookSubscriptionInfoWithWebhooks()
+        {
+            var sut = factory.WebhookSubscriptionsSqlStore;
+
+            var webhookSubscriptionInfo = CreateWebhookSubscriptionInfo();
+
+            webhookSubscriptionInfo.SubscribeWebhook("aWebhook0");
+            webhookSubscriptionInfo.SubscribeWebhook("aWebhook1");
+
+            sut.Insert(webhookSubscriptionInfo);
+
+            webhookSubscriptionInfo.Should().BeEquivalentTo(sut.Get(webhookSubscriptionInfo.Id));
+        }
     }
 }
