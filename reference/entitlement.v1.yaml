@@ -161,6 +161,8 @@ components:
       title: Entitlement
       type: object
       description: 'The core object that expresses information about a product that a school or indivdiual has selected for use - typically via a LML, but not always.'
+      x-tags:
+        - entitlements
       properties:
         start:
           type: string
@@ -190,8 +192,8 @@ components:
           example: active
           description: 'The status of the entitlement '
           enum:
-            - refunded
-            - active
+            - entitled
+            - cancelled
           default: active
         marketplace:
           type: string
@@ -206,8 +208,6 @@ components:
         - id
         - status
         - marketplace
-      x-tags:
-        - entitlements
     Product:
       title: Product
       type: object
@@ -230,7 +230,6 @@ components:
       required:
         - ean
         - name
-        - defaultAccessUrl
         - provider
     School:
       title: School
