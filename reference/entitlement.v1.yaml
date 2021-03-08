@@ -191,12 +191,12 @@ components:
           example: 24e39454-5360-4ba4-819f-03e59b8dd679
         status:
           type: string
-          example: active
           description: 'The status of the entitlement '
           enum:
-            - refunded
-            - active
-          default: active
+            - entitled
+            - cancelled
+          default: entitled
+          example: entitled
         marketplace:
           type: string
           example: 'https://iddink.nl'
@@ -231,7 +231,6 @@ components:
       required:
         - ean
         - name
-        - defaultAccessUrl
         - provider
     School:
       title: School
