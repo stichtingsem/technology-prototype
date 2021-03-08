@@ -41,7 +41,7 @@ paths:
       operationId: get-entitlements-by-id
       description: 'Retrieve the full specification for an entitlement from a marketplace, needs to confirm that the caller is able to access either based on their provider information (they can only see their own products) in the case of the provider scope.'
       security:
-        - API Key - 1:
+        - APIKey:
             - mp.entitlements.school
             - mp.entitlements.provider
   /entitlements/provider:
@@ -92,7 +92,7 @@ paths:
                 $ref: '#/components/schemas/Entitlements'
       operationId: get-entitlements-provider-id
       security:
-        - API Key - 1:
+        - APIKey:
             - mp.entitlements.provider
       description: |-
         Get all entitlements related to products from a specific provider of a learning application (or other product used by a school).  It is assumed that at the point of setup and provision of an API key, that the provider name is also stored against the API key by the marketplace, so that all calls with this key will be filtered to that specific provider in the response.
@@ -149,7 +149,7 @@ paths:
                 $ref: '#/components/schemas/Entitlements'
       operationId: get-entitlements-school-id
       security:
-        - API Key - 1:
+        - APIKey:
             - mp.entitlements.school
       description: |-
         Retrieve all entilements for a specific school, the school will have approved the LMS to have access to its Marketplace during the setup phase.
@@ -225,7 +225,7 @@ components:
             This is the default URL to access the product - there may be more detailed structure and access points exchanged later between LA and LMS.
         provider:
           type: string
-          description: 'Short name for a specific vendor, established (along with the vendor secret) at the point of setup.'
+          description: 'id for a specific vendor, established (along with the vendor secret) at the point of setup.'
           example: e8346234-6bda-4c07-ab2e-a687a94430b2
       required:
         - ean
@@ -304,14 +304,20 @@ components:
     Group:
       title: Group
       type: object
-      description: A sub-group within a school that the entitlement is applicable to - typically a subject and level.
+      description: A sub-group within a school that the entitlement is applicable to - typically a subject and level. So every student in this group is entitled to the products in this entitlement
       properties:
         subjectCode:
           type: string
-          description: Government standard subject code.
+          description: 'Government standard subject code. bron: Ministerie van OCW, like https://zoek.officielebekendmakingen.nl/stcrt-2019-35044'
         level:
           type: string
-          description: Government standard level - e.g. havo-1
+          description: 'Official Level, followed by courseyear. example ''havo-1, vwo-2, etc.'''
+        courseCode:
+          type: string
+          description: 'School code of the Level/couse/study. example ''Technasium'' This gives schools a way to name the course how they want it, while we still have a link with the official level'
+        courseYear:
+          type: integer
+          description: Learning year
         quantity:
           type: integer
           example: 100
@@ -333,10 +339,12 @@ components:
       x-tags:
         - entitlements
   securitySchemes:
-    API Key - 1:
+    APIKey:
       type: oauth2
       flows:
         implicit:
+          authorizationUrl: ''
+          refreshUrl: ''
           scopes:
             mp.entitlements.school: Can see all entitlements created for a specific school regardless of vendor (e.g. a LMS)
             mp.entitlements.provider: Can see all entitlements created for products that you sell in the Marketplace (e.g. a LA)
