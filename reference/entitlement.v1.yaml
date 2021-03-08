@@ -161,7 +161,11 @@ components:
       title: Entitlement
       type: object
       description: 'The core object that expresses information about a product that a school or indivdiual has selected for use - typically via a LML, but not always.'
+      x-tags:
+        - entitlements
       properties:
+        schemaVersion:
+          type: integer
         start:
           type: string
           format: date
@@ -205,8 +209,6 @@ components:
         - id
         - status
         - marketplace
-      x-tags:
-        - entitlements
     Product:
       title: Product
       type: object
