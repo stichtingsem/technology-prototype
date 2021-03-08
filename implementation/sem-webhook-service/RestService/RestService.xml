@@ -1,0 +1,685 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RestService</name>
+    </assembly>
+    <members>
+        <member name="T:RestService.Attributes.ValidateModelStateAttribute">
+            <summary>
+            Model state validation attribute
+            </summary>
+        </member>
+        <member name="M:RestService.Attributes.ValidateModelStateAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            Called before the action method is invoked
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:RestService.Catalog.ProductController.GetProductEan(System.String)">
+            <summary>
+            Get specific Product by ID
+            </summary>
+            <remarks>Get a specific product by EAN</remarks>
+            <param name="ean"></param>
+            <response code="200">OK</response>
+        </member>
+        <member name="M:RestService.Catalog.ProductController.GetProducts(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+            <summary>
+            Get Products from Catalogue
+            </summary>
+            <remarks>Get products from the catalogue - either all or those matching specific criteria.</remarks>
+            <param name="subjectCode">Filter by specific subject code </param>
+            <param name="level">Filter by specific level </param>
+            <param name="start">Start point for pagination of results, defaults to 0,</param>
+            <param name="limit">Limit of number of results returned by page, defaults to 20 with max 100.</param>
+            <param name="status">Filter by status </param>
+            <response code="200">OK</response>
+        </member>
+        <member name="T:RestService.Filters.BasePathFilter">
+            <summary>
+            BasePath Document Filter sets BasePath property of Swagger and removes it from the individual URL paths
+            </summary>
+        </member>
+        <member name="M:RestService.Filters.BasePathFilter.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="basePath">BasePath to remove from Operations</param>
+        </member>
+        <member name="P:RestService.Filters.BasePathFilter.BasePath">
+            <summary>
+            Gets the BasePath of the Swagger Doc
+            </summary>
+            <returns>The BasePath of the Swagger Doc</returns>
+        </member>
+        <member name="M:RestService.Filters.BasePathFilter.Apply(Microsoft.OpenApi.Models.OpenApiDocument,Swashbuckle.AspNetCore.SwaggerGen.DocumentFilterContext)">
+            <summary>
+            Apply the filter
+            </summary>
+            <param name="swaggerDoc">OpenApiDocument</param>
+            <param name="context">FilterContext</param>
+        </member>
+        <member name="T:RestService.Filters.GeneratePathParamsValidationFilter">
+            <summary>
+            Path Parameter Validation Rules Filter
+            </summary>
+        </member>
+        <member name="M:RestService.Filters.GeneratePathParamsValidationFilter.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="operation">Operation</param>
+            <param name="context">OperationFilterContext</param>
+        </member>
+        <member name="T:IO.Swagger.Models.BusinessModel">
+            <summary>
+            The model under which a product can be sold in the marketplace, this is later communicated back at the point of selection so that the provider understands what additional steps may need to be taken (depending on the business model selected).  The list of possible models is not defined within this specification, it is entirely up to each Marketplace and Provider to agree.
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.BusinessModel.Id">
+            <summary>
+            Unique identifier of the business model recognised by both the marketplace and the learning application.
+            </summary>
+            <value>Unique identifier of the business model recognised by both the marketplace and the learning application.</value>
+        </member>
+        <member name="P:IO.Swagger.Models.BusinessModel.Name">
+            <summary>
+            A description of the business model so it can be displayed in the Marketplace or LMS if needed. 
+            </summary>
+            <value>A description of the business model so it can be displayed in the Marketplace or LMS if needed. </value>
+        </member>
+        <member name="P:IO.Swagger.Models.BusinessModel.Description">
+            <summary>
+            A longer description of the business model - used optionally for display in the marketplace if needed.
+            </summary>
+            <value>A longer description of the business model - used optionally for display in the marketplace if needed.</value>
+        </member>
+        <member name="P:IO.Swagger.Models.BusinessModel.Price">
+            <summary>
+            The price under which it is sold under this model, this may be exchanged via other mechanisms between parties, so is optional. 
+            </summary>
+            <value>The price under which it is sold under this model, this may be exchanged via other mechanisms between parties, so is optional. </value>
+        </member>
+        <member name="P:IO.Swagger.Models.BusinessModel.PricePeriod">
+            <summary>
+            The period the price applies to (optional - for recurring subscriptions; e.g. month, year). 
+            </summary>
+            <value>The period the price applies to (optional - for recurring subscriptions; e.g. month, year). </value>
+        </member>
+        <member name="P:IO.Swagger.Models.BusinessModel.PriceCurrency">
+            <summary>
+            EUR etc. 
+            </summary>
+            <value>EUR etc. </value>
+        </member>
+        <member name="M:IO.Swagger.Models.BusinessModel.ToString">
+            <summary>
+            Returns the string presentation of the object
+            </summary>
+            <returns>String presentation of the object</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.BusinessModel.ToJson">
+            <summary>
+            Returns the JSON string presentation of the object
+            </summary>
+            <returns>JSON string presentation of the object</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.BusinessModel.Equals(System.Object)">
+            <summary>
+            Returns true if objects are equal
+            </summary>
+            <param name="obj">Object to be compared</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.BusinessModel.Equals(IO.Swagger.Models.BusinessModel)">
+            <summary>
+            Returns true if BusinessModel instances are equal
+            </summary>
+            <param name="other">Instance of BusinessModel to be compared</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.BusinessModel.GetHashCode">
+            <summary>
+            Gets the hash code
+            </summary>
+            <returns>Hash code</returns>
+        </member>
+        <member name="T:IO.Swagger.Models.LevelSubjects">
+            <summary>
+            The combination of level and subject that indicates what a product is targeted at.
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.LevelSubjects.Level">
+            <summary>
+            Government level - e.g. havo-1
+            </summary>
+            <value>Government level - e.g. havo-1</value>
+        </member>
+        <member name="P:IO.Swagger.Models.LevelSubjects.SubjectCode">
+            <summary>
+            Subject code for specific subject at this level 
+            </summary>
+            <value>Subject code for specific subject at this level </value>
+        </member>
+        <member name="M:IO.Swagger.Models.LevelSubjects.ToString">
+            <summary>
+            Returns the string presentation of the object
+            </summary>
+            <returns>String presentation of the object</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.LevelSubjects.ToJson">
+            <summary>
+            Returns the JSON string presentation of the object
+            </summary>
+            <returns>JSON string presentation of the object</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.LevelSubjects.Equals(System.Object)">
+            <summary>
+            Returns true if objects are equal
+            </summary>
+            <param name="obj">Object to be compared</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.LevelSubjects.Equals(IO.Swagger.Models.LevelSubjects)">
+            <summary>
+            Returns true if LevelSubjects instances are equal
+            </summary>
+            <param name="other">Instance of LevelSubjects to be compared</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.LevelSubjects.GetHashCode">
+            <summary>
+            Gets the hash code
+            </summary>
+            <returns>Hash code</returns>
+        </member>
+        <member name="T:IO.Swagger.Models.Media">
+            <summary>
+            A reference to a video, image or document that can be used by a Marketplace (or LMS).
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.Media.Url">
+            <summary>
+            Gets or Sets Url
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.Media.Type">
+            <summary>
+            Gets or Sets Type
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.Media.Description">
+            <summary>
+            Gets or Sets Description
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.Media.Width">
+            <summary>
+            Gets or Sets Width
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.Media.Height">
+            <summary>
+            Gets or Sets Height
+            </summary>
+        </member>
+        <member name="M:IO.Swagger.Models.Media.ToString">
+            <summary>
+            Returns the string presentation of the object
+            </summary>
+            <returns>String presentation of the object</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.Media.ToJson">
+            <summary>
+            Returns the JSON string presentation of the object
+            </summary>
+            <returns>JSON string presentation of the object</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.Media.Equals(System.Object)">
+            <summary>
+            Returns true if objects are equal
+            </summary>
+            <param name="obj">Object to be compared</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.Media.Equals(IO.Swagger.Models.Media)">
+            <summary>
+            Returns true if Media instances are equal
+            </summary>
+            <param name="other">Instance of Media to be compared</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.Media.GetHashCode">
+            <summary>
+            Gets the hash code
+            </summary>
+            <returns>Hash code</returns>
+        </member>
+        <member name="T:IO.Swagger.Models.Product">
+            <summary>
+            A product that is available for sale or selection within a marketplace.  This entity captures the basic commercial information needed for selection and sale.
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.Product.Ean">
+            <summary>
+            The unique EAN for this product. 
+            </summary>
+            <value>The unique EAN for this product. </value>
+        </member>
+        <member name="T:IO.Swagger.Models.Product.TypeEnum">
+            <summary>
+            Type of product 
+            </summary>
+            <value>Type of product </value>
+        </member>
+        <member name="F:IO.Swagger.Models.Product.TypeEnum.PhysicalEnum">
+            <summary>
+            Enum PhysicalEnum for physical
+            </summary>
+        </member>
+        <member name="F:IO.Swagger.Models.Product.TypeEnum.DigitalEnum">
+            <summary>
+            Enum DigitalEnum for digital
+            </summary>
+        </member>
+        <member name="F:IO.Swagger.Models.Product.TypeEnum.BlendedEnum">
+            <summary>
+            Enum BlendedEnum for blended
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.Product.Type">
+            <summary>
+            Type of product 
+            </summary>
+            <value>Type of product </value>
+        </member>
+        <member name="T:IO.Swagger.Models.Product.StatusEnum">
+            <summary>
+            Status of product 
+            </summary>
+            <value>Status of product </value>
+        </member>
+        <member name="F:IO.Swagger.Models.Product.StatusEnum.ActiveEnum">
+            <summary>
+            Enum ActiveEnum for active
+            </summary>
+        </member>
+        <member name="F:IO.Swagger.Models.Product.StatusEnum.NotForSaleEnum">
+            <summary>
+            Enum NotForSaleEnum for not-for-sale
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.Product.Status">
+            <summary>
+            Status of product 
+            </summary>
+            <value>Status of product </value>
+        </member>
+        <member name="P:IO.Swagger.Models.Product.Name">
+            <summary>
+            A short name
+            </summary>
+            <value>A short name</value>
+        </member>
+        <member name="P:IO.Swagger.Models.Product.Streams">
+            <summary>
+            The groupings (e.g method or methods) that this product is a part of.
+            </summary>
+            <value>The groupings (e.g method or methods) that this product is a part of.</value>
+        </member>
+        <member name="P:IO.Swagger.Models.Product.LevelSubjects">
+            <summary>
+            The set of levels and subjects that this product is targeted at.
+            </summary>
+            <value>The set of levels and subjects that this product is targeted at.</value>
+        </member>
+        <member name="P:IO.Swagger.Models.Product.Models">
+            <summary>
+            Business models that are available for this product to be sold under. 
+            </summary>
+            <value>Business models that are available for this product to be sold under. </value>
+        </member>
+        <member name="P:IO.Swagger.Models.Product.TrialAccessUrl">
+            <summary>
+            Optional trial / preview URL.
+            </summary>
+            <value>Optional trial / preview URL.</value>
+        </member>
+        <member name="P:IO.Swagger.Models.Product.DefaultAccessUrl">
+            <summary>
+            The default url used to access the product after selection or purchase.
+            </summary>
+            <value>The default url used to access the product after selection or purchase.</value>
+        </member>
+        <member name="P:IO.Swagger.Models.Product.ShortDescription">
+            <summary>
+            Short description for display on search pages or other marketing blocks. 
+            </summary>
+            <value>Short description for display on search pages or other marketing blocks. </value>
+        </member>
+        <member name="P:IO.Swagger.Models.Product.LongDescription">
+            <summary>
+            Long description for display on a product page. 
+            </summary>
+            <value>Long description for display on a product page. </value>
+        </member>
+        <member name="P:IO.Swagger.Models.Product.Media">
+            <summary>
+            Gets or Sets Media
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.Product.RelatedProducts">
+            <summary>
+            An array of related product ID&#x27;s (for display alongside a product in a marketplace). 
+            </summary>
+            <value>An array of related product ID&#x27;s (for display alongside a product in a marketplace). </value>
+        </member>
+        <member name="P:IO.Swagger.Models.Product.BundledProducts">
+            <summary>
+            A link to any other products that are included in this one if it is a package / bundle.
+            </summary>
+            <value>A link to any other products that are included in this one if it is a package / bundle.</value>
+        </member>
+        <member name="M:IO.Swagger.Models.Product.ToString">
+            <summary>
+            Returns the string presentation of the object
+            </summary>
+            <returns>String presentation of the object</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.Product.ToJson">
+            <summary>
+            Returns the JSON string presentation of the object
+            </summary>
+            <returns>JSON string presentation of the object</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.Product.Equals(System.Object)">
+            <summary>
+            Returns true if objects are equal
+            </summary>
+            <param name="obj">Object to be compared</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.Product.Equals(IO.Swagger.Models.Product)">
+            <summary>
+            Returns true if Product instances are equal
+            </summary>
+            <param name="other">Instance of Product to be compared</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.Product.GetHashCode">
+            <summary>
+            Gets the hash code
+            </summary>
+            <returns>Hash code</returns>
+        </member>
+        <member name="T:IO.Swagger.Models.ProductComponents">
+            <summary>
+            Sub-elements of the product - used for scheduling in the LMS?  We could probably create a better name.
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.ProductComponents.Id">
+            <summary>
+            Gets or Sets Id
+            </summary>
+        </member>
+        <member name="M:IO.Swagger.Models.ProductComponents.ToString">
+            <summary>
+            Returns the string presentation of the object
+            </summary>
+            <returns>String presentation of the object</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.ProductComponents.ToJson">
+            <summary>
+            Returns the JSON string presentation of the object
+            </summary>
+            <returns>JSON string presentation of the object</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.ProductComponents.Equals(System.Object)">
+            <summary>
+            Returns true if objects are equal
+            </summary>
+            <param name="obj">Object to be compared</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.ProductComponents.Equals(IO.Swagger.Models.ProductComponents)">
+            <summary>
+            Returns true if ProductComponents instances are equal
+            </summary>
+            <param name="other">Instance of ProductComponents to be compared</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.ProductComponents.GetHashCode">
+            <summary>
+            Gets the hash code
+            </summary>
+            <returns>Hash code</returns>
+        </member>
+        <member name="T:IO.Swagger.Models.ProductMedia">
+            <summary>
+            A collection of media for use in the marketplace.
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.ProductMedia.MainThumbnailUrl">
+            <summary>
+            Gets or Sets MainThumbnailUrl
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.ProductMedia.ProductImageUrls">
+            <summary>
+            A collection of image urls for a product.
+            </summary>
+            <value>A collection of image urls for a product.</value>
+        </member>
+        <member name="P:IO.Swagger.Models.ProductMedia.ProductVideoUrls">
+            <summary>
+            A collection of video urls for a product.
+            </summary>
+            <value>A collection of video urls for a product.</value>
+        </member>
+        <member name="P:IO.Swagger.Models.ProductMedia.ProductPdfUrls">
+            <summary>
+            A collection of PDF links for a product.
+            </summary>
+            <value>A collection of PDF links for a product.</value>
+        </member>
+        <member name="M:IO.Swagger.Models.ProductMedia.ToString">
+            <summary>
+            Returns the string presentation of the object
+            </summary>
+            <returns>String presentation of the object</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.ProductMedia.ToJson">
+            <summary>
+            Returns the JSON string presentation of the object
+            </summary>
+            <returns>JSON string presentation of the object</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.ProductMedia.Equals(System.Object)">
+            <summary>
+            Returns true if objects are equal
+            </summary>
+            <param name="obj">Object to be compared</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.ProductMedia.Equals(IO.Swagger.Models.ProductMedia)">
+            <summary>
+            Returns true if ProductMedia instances are equal
+            </summary>
+            <param name="other">Instance of ProductMedia to be compared</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.ProductMedia.GetHashCode">
+            <summary>
+            Gets the hash code
+            </summary>
+            <returns>Hash code</returns>
+        </member>
+        <member name="T:IO.Swagger.Models.Stream">
+            <summary>
+            A grouping of products into a set - like a method (?)
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.Stream.Id">
+            <summary>
+            Gets or Sets Id
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.Stream.Name">
+            <summary>
+            Gets or Sets Name
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.Stream.Description">
+            <summary>
+            Gets or Sets Description
+            </summary>
+        </member>
+        <member name="M:IO.Swagger.Models.Stream.ToString">
+            <summary>
+            Returns the string presentation of the object
+            </summary>
+            <returns>String presentation of the object</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.Stream.ToJson">
+            <summary>
+            Returns the JSON string presentation of the object
+            </summary>
+            <returns>JSON string presentation of the object</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.Stream.Equals(System.Object)">
+            <summary>
+            Returns true if objects are equal
+            </summary>
+            <param name="obj">Object to be compared</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.Stream.Equals(IO.Swagger.Models.Stream)">
+            <summary>
+            Returns true if Stream instances are equal
+            </summary>
+            <param name="other">Instance of Stream to be compared</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.Stream.GetHashCode">
+            <summary>
+            Gets the hash code
+            </summary>
+            <returns>Hash code</returns>
+        </member>
+        <member name="T:IO.Swagger.Models.Events">
+            <summary>
+            A list of events - reverse chronologically ordered, provided to enable subscribers to &#x27;catch up&#x27; on events they may have missed.
+            </summary>
+        </member>
+        <member name="M:IO.Swagger.Models.Events.ToString">
+            <summary>
+            Returns the string presentation of the object
+            </summary>
+            <returns>String presentation of the object</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.Events.ToJson">
+            <summary>
+            Returns the JSON string presentation of the object
+            </summary>
+            <returns>JSON string presentation of the object</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.Events.Equals(System.Object)">
+            <summary>
+            Returns true if objects are equal
+            </summary>
+            <param name="obj">Object to be compared</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.Events.Equals(IO.Swagger.Models.Events)">
+            <summary>
+            Returns true if Events instances are equal
+            </summary>
+            <param name="other">Instance of Events to be compared</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.Events.GetHashCode">
+            <summary>
+            Gets the hash code
+            </summary>
+            <returns>Hash code</returns>
+        </member>
+        <member name="T:IO.Swagger.Models.ModelEvent">
+            <summary>
+            An event is a notification that something of interest has happened within a service, that, based on authorised scopes, a subscriber may then process.  This enables systems to communicate with each other in a loosely coupled way, where the event creator has no direct connection to any of the subscribing systems.  Typically an event will contain a basic data object that indicates what the state of the object is at the point at which the event is raised, but this is optional.  In the case that no data object exists it is intended that the subscribing system would call back to the provided API to retrieve the information.  By calling back at a future point you avoid a number of distributed system related issues:  - Ordering doesn&#x27;t matter, as when you call back you always get the latest version.  The biggest risk is you call back twice and get the same information twice - but you always have correct data. - Security can be checked again at the point of request, so even in the unlikely scenario that a subscriber authorization changes between an event being emitted and the call back occurring, the subscriber can only ever get data they are authorized to retrieve.
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.ModelEvent.Id">
+            <summary>
+            Gets or Sets Id
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.ModelEvent.Type">
+            <summary>
+            Gets or Sets Type
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.ModelEvent.Created">
+            <summary>
+            Gets or Sets Created
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.ModelEvent.Data">
+            <summary>
+            Gets or Sets Data
+            </summary>
+        </member>
+        <member name="P:IO.Swagger.Models.ModelEvent.Url">
+            <summary>
+            The URL that can be called to get information about the event. 
+            </summary>
+            <value>The URL that can be called to get information about the event. </value>
+        </member>
+        <member name="M:IO.Swagger.Models.ModelEvent.ToString">
+            <summary>
+            Returns the string presentation of the object
+            </summary>
+            <returns>String presentation of the object</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.ModelEvent.ToJson">
+            <summary>
+            Returns the JSON string presentation of the object
+            </summary>
+            <returns>JSON string presentation of the object</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.ModelEvent.Equals(System.Object)">
+            <summary>
+            Returns true if objects are equal
+            </summary>
+            <param name="obj">Object to be compared</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.ModelEvent.Equals(IO.Swagger.Models.ModelEvent)">
+            <summary>
+            Returns true if ModelEvent instances are equal
+            </summary>
+            <param name="other">Instance of ModelEvent to be compared</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:IO.Swagger.Models.ModelEvent.GetHashCode">
+            <summary>
+            Gets the hash code
+            </summary>
+            <returns>Hash code</returns>
+        </member>
+        <member name="T:IO.Swagger.Controllers.EventsApiController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:IO.Swagger.Controllers.EventsApiController.ListEvents(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            
+            </summary>
+            <remarks>Allows a subscriber to retrieve a list of past events.</remarks>
+            <param name="type">Filter by a specific type of event, e.g. la.usage - specific to the service implementing the API.</param>
+            <param name="start">Start point for pagination of results, defaults to 0,</param>
+            <param name="limit">Limit of number of results returned by page, defaults to 20 with max 100.</param>
+            <response code="200">OK</response>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,24 @@
+td, th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+tr:nth-child(odd){
+  background-color: #ddd;
+}
+
+tr:nth-child(even){
+  background-color: #eee;
+}
+
+tr:hover {
+  background-color: #ccc;
+}
+
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #0082c8;
+  color: white;
+}

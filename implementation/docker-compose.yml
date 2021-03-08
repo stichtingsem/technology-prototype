@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+
+  sem-admin-client:
+    container_name: sem-admin-client
+    stdin_open: true
+    build:
+      context: ./sem-admin-client
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./sem-admin-client:/app
+      - /app/node_modules
+
+  sem-webhook-service:
+    container_name: sem-webhook-service
+    build:
+      context: ./sem-webhook-service/
+      dockerfile: ./RestService/Dockerfile
+    ports:
+    - "5000:80"
+    - "5001:403"
+
+  sem-nginx-proxy:
+    container_name: sem-nginx-proxy
+    image: nginx:mainline
+    ports:
+      - "3050:3050"
+    volumes:
+      - "./sem-nginx-proxy/nginx.conf:/etc/nginx/conf.d/sem.conf"
+      - "./sem-nginx-proxy/certs/:/usr/share/certs/"
+      - "./sem-nginx-proxy/client_config.json:/home/www-data/mysite/static/client_config.json"
+    depends_on:
+    - sem-admin-client
+    - sem-webhook-service
