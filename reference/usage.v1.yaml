@@ -3,7 +3,11 @@ info:
   title: Usage API
   version: '1.0'
   description: |
-    This is an API provided by the Learning Application in the SEM ecosystem, and is designed to enable a learning application to make information about usage of a product by a teacher or student to be confirmed to the Marketplace
+    This is an API provided by the Learning Application in the SEM ecosystem, and is designed to enable a learning application to make information about usage of a product by a teacher or student to be confirmed to the Marketplace.
+
+    The Usage events are send when a student uses the product in the entitlement. A LA can choose to send the usage per individual or if the entitlement is on school level , skip the student id and send the anonymous total.
+
+    In the Usage get api has the option to return the usage including a list of students who have used product in this entitlement 
 
     # Events
 
@@ -91,18 +95,22 @@ tags:
   - name: usage
 components:
   schemas:
-    usage:
-      title: usage API
+    usage-event:
+      title: usage API event
       type: object
+      description: |
+        This is an API provided by the LA in the SEM ecosystem, and is designed to enable a MP to make the usage information about teachers and learners of product available to the rest of the ecosystem in a security and privacy concious way.
       properties:
         entitlementId:
           type: string
         schemaVersion:
           type: integer
           description: 'schema version of this event/object. Start with 0, inclement when we have changes, so we know how to deserialise.'
+        schoolId:
+          type: string
         id:
           type: string
-          description: unique id of user who used the product of this entitlement
+          description: unique id of user who used the product of this entitlement (optional)
         eckid:
           type: string
         usageDate:
@@ -115,14 +123,58 @@ components:
             - weeklyActivation
             - monthlyActivation
             - InitialActivation
-          description: Type of usage report
+          description: Type of usage report. Currently only initialActivations are implemented
+        totalForThisEntitlement:
+          type: integer
+          description: Accumulated total for this entitlement
       required:
         - entitlementId
-        - id
         - usageDate
         - usageType
+    usage:
+      title: usage API
+      type: object
       description: |
         This is an API provided by the LA in the SEM ecosystem, and is designed to enable a MP to make the usage information about teachers and learners of product available to the rest of the ecosystem in a security and privacy concious way.
+      properties:
+        entitlementId:
+          type: string
+        schemaVersion:
+          type: integer
+          description: 'schema version of this event/object. Start with 0, inclement when we have changes, so we know how to deserialise.'
+        schoolId:
+          type: string
+        id:
+          type: string
+          description: unique id of user who used the product of this entitlement (optional)
+        eckid:
+          type: string
+        totalForThisEntitlement:
+          type: integer
+          description: Accumulated total for this entitlement
+        entitleeUsageList:
+          type: array
+          items:
+            $ref: '#/components/schemas/entitlee'
+      required:
+        - entitlementId
+    entitlee:
+      title: entitlee
+      type: object
+      properties:
+        id:
+          type: string
+        eckId:
+          type: string
+        firstUsed:
+          type: string
+          format: date-time
+        lastUsed:
+          type: string
+          format: date-time
+      required:
+        - id
+        - firstUsed
   securitySchemes:
     APIKey:
       type: oauth2
