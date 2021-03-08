@@ -23,11 +23,11 @@ steps:
 
 - task: npmAuthenticate@0
   inputs:
-    workingFile: 'implementation/sem-admin-client/.npmrc'
+    workingFile: 'implementation/LA/sem-admin-client/.npmrc'
 
 - task: Yarn@3
   inputs:
-    projectDirectory: 'implementation/sem-admin-client'
+    projectDirectory: 'implementation/LA/sem-admin-client'
     arguments: 'install'
   
 #- task: Yarn@3
@@ -42,12 +42,12 @@ steps:
 
 - task: Yarn@3
   inputs:
-    projectDirectory: 'implementation/sem-admin-client'
+    projectDirectory: 'implementation/LA/sem-admin-client'
     arguments: 'build'
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: 'implementation/sem-admin-client'
+    SourceFolder: 'implementation/LA/sem-admin-client'
     Contents: |
       web.config
       web.Acc.config
@@ -55,11 +55,11 @@ steps:
       client_config.json
       client_config.Acc.json
       client_config.Prd.json
-    TargetFolder: 'implementation/sem-admin-client/build'
+    TargetFolder: 'implementation/LA/sem-admin-client/build'
 
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: 'implementation/sem-admin-client/build'
+    rootFolderOrFile: 'implementation/LA/sem-admin-client/build'
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/sem-admin-client.zip'
