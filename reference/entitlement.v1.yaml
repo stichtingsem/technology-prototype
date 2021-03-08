@@ -202,7 +202,6 @@ components:
         - end
         - product
         - entitlee
-        - model
         - id
         - status
         - marketplace
