@@ -23,7 +23,7 @@ steps:
   - task: DotNetCoreCLI@2
     inputs:
       command: "restore"
-      projects: "implementation\\sem-webhook-service\\SEM.WebhookService.sln"
+      projects: "implementation\\LA\\sem-webhook-service\\SEM.WebhookService.sln"
       arguments: "--configuration $(buildConfiguration)"
       feedsToUse: "select"
       vstsFeed: "e42a86c2-354c-4655-a0bc-5c0c6870ca2b"
@@ -33,7 +33,7 @@ steps:
   - task: DotNetCoreCLI@2
     inputs:
       command: "build"
-      projects: "implementation\\sem-webhook-service\\SEM.WebhookService.sln"
+      projects: "implementation\\LA\\sem-webhook-service\\SEM.WebhookService.sln"
       arguments: "--configuration $(buildConfiguration)"
     displayName: "dotnet build $(buildConfiguration)"
   #- task: DotNetCoreCLI@2
@@ -47,7 +47,7 @@ steps:
       publishWebProjects: false
       zipAfterPublish: false
       modifyOutputPath: true
-      projects: implementation\sem-webhook-service\RestService\RestService.csproj
+      projects: implementation\LA\sem-webhook-service\RestService\RestService.csproj
       arguments: "--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)"
     displayName: "dotnet publish"
   - task: ArchiveFiles@2
