@@ -342,6 +342,13 @@ components:
       required:
         - id
         - schoolSubjectName
+    subject-choices:
+      type: array
+      items:
+        $ref: '#/components/schemas/subject-choice'
+      x-tags:
+        - subject-choice
+      description: List of possible subject choices
     student-delivery:
       title: student-delivery
       type: object
@@ -499,6 +506,29 @@ paths:
       security:
         - APIKey:
             - sis.student-teacher-delivery
+  /subjectchoices:
+    parameters: []
+    get:
+      summary: GET Subject choices for next years
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/subject-choices'
+      operationId: get-subjectchoices-schoolyear
+      security:
+        - APIKey:
+            - sis.student-teacher-group
+      description: Get possible subject choices for next schoolyears. User to create LML lists in MP while exact student / subjectchoices re not available
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: schoolYear
+          description: request this list for a particular schoolyear
 tags:
   - name: group
   - name: student
