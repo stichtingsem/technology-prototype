@@ -1,20 +1,20 @@
 openapi: 3.0.0
 info:
-  title: Course, Progress & Results API
+  title: Stream, Progress & Results API
   version: '1.0'
   description: |-
-    This API enables a learning application to provide information about the specific activities available within the application that can be scheduled within an LMS.  This data is always exchanged in the context of a school, as not only can course information vary by school (e.g. a learning application may allow material to be modified or configured specific to the needs of that organisation), but this API enables the sharing of progress and results - which is sensitive data and as such we must ensure that it is only shared after approval by the school to exchange this information between the LA and the LMS.
+    This API enables a learning application to provide information about the specific activities available within the application that can be scheduled within an LMS.  This data is always exchanged in the context of a school, as not only can information vary by school (e.g. a learning application may allow material to be modified or configured specific to the needs of that organisation), but this API enables the sharing of progress and results - which is sensitive data and as such we must ensure that it is only shared after approval by the school to exchange this information between the LA and the LMS.
 
     ### Event Access
 
     |Events|Event Data|Rationale|
     |------|---------|
     |la.result| // as per XAPI statements |To enable the LMS to receive XAPI statements after registering webhook for a specific school|
-    |la.course| // as per Course |To enable the LMS to receive updates to course information for a specific school|
+    |la.stream| // as per Course |To enable the LMS to receive updates to course information for a specific school|
 
     ## Scopes and Data
 
-    - la.course.school
+    - la.stream.school
     - la.results.school
   contact:
     name: Stichting SEM
@@ -23,15 +23,15 @@ servers:
   - url: 'https://example.stichtingsem.org/api'
     description: course
 paths:
-  /courses:
+  '/stream':
     get:
-      summary: Get Courses available within LA based on Stream identifier (this is shared in the catalogue API)
+      summary: Get information about all of the courses available within LA based on Stream identifier (this identifier is shared in the catalogue API)
       tags: []
       parameters:
         - in: query
           name: streamId
           description: |
-            Filter by specific stream identifier
+            Optionally filter by a specific stream identifier
           schema:
             type: string
             example: havo-1
@@ -67,10 +67,10 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CourseRef'
-      operationId: get-courses
+                  $ref: '#/components/schemas/StreamCourseRef'
+      operationId: get-stream-courses
       description: Get courses from the catalogue - either all or those matching specific criteria.
-  '/course/{id}':
+  '/stream/{id}':
     parameters:
       - schema:
           type: string
@@ -78,7 +78,33 @@ paths:
         in: path
         required: true
     get:
-      summary: Get specific Course by ID
+      summary: Get metadata about a specific stream course by ID
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StreamCourse'
+      operationId: get-stream-course
+      description: Get a specific course by stream ID - returns basic metadata.
+  '/stream/{id}/cmi5-course':
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: activityType
+        description: |
+          Filter to only specific activityTypes
+        schema:
+          type: string
+        example: reference, excercise, arrangement, user-arrangement
+    get:
+      summary: Get the CMI5 Course content for a given stream
       tags: []
       responses:
         '200':
@@ -86,10 +112,10 @@ paths:
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/Course'
-      operationId: get-product-course
-      description: Get a specific course by stream ID
-  '/course/{id}/results':
+                $ref: '#/components/schemas/CMI5.Course'
+      operationId: get-stream-course-cmi5
+      description: Get a specific course by stream ID - returns full CMI5 Course XML
+  '/stream/{id}/results':
     parameters:
       - in: path
         schema:
@@ -134,12 +160,18 @@ paths:
                   $ref: '#/components/schemas/Statement'
       operationId: get-course-statements
       description: Get statements related to a specific course
-  '/student/{id}/results':
+  '/stream/{id}/student/{studentId}/results':
     parameters:
       - in: path
         schema:
           type: string
         name: id
+        description: Unique stream identifier
+        required: true
+      - in: path
+        schema:
+          type: string
+        name: studentId
         description: Unique student identifier
         required: true
       - in: query
@@ -182,16 +214,41 @@ paths:
       description: Get statements for a specific user
 components:
   schemas:
-    Course:
+    StreamCourse:
       title: Course
       type: object
       description: A course that is available from a learning application, response is a CMI5 Course - we need to decide if we convert the XSD into OpenAPI spec definitions or leave it open here.
       x-tags:
         - course
-    CourseRef:
+    StreamCourseRef:
       title: Course Reference
       type: object
       description: A reference to a course provided by a learning application - used to enable searching / filtering.
+      x-tags:
+        - course
+      properties:
+        id:
+          type: string
+          description: A unique identifier
+        name:
+          type: string
+          description: A short name
+        author:
+          type: string
+          description: Description of the author (in cases not the provider of the LA)
+        streamId:
+          type: string
+          description: Description of the author (in cases not the provider of the LA)
+        relatedProducts:
+          type: array
+          description: |
+            An array of related products this course applies to
+          items:
+            type: string
+    CMI5.Course:
+      title: Course
+      type: object
+      description: A course that is available from a learning application, response is a CMI5 Course - we need to decide if we convert the XSD into OpenAPI spec definitions or leave it open here.
       x-tags:
         - course
       properties:
