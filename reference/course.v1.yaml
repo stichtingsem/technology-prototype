@@ -24,6 +24,8 @@ servers:
     description: course
 paths:
   '/stream':
+    x-tags:
+        - stream
     get:
       summary: Get information about all of the courses available within LA based on Stream identifier (this identifier is shared in the catalogue API)
       tags: []
@@ -71,6 +73,8 @@ paths:
       operationId: get-stream-courses
       description: Get courses from the catalogue - either all or those matching specific criteria.
   '/stream/{id}':
+    x-tags:
+        - stream
     parameters:
       - schema:
           type: string
@@ -90,6 +94,8 @@ paths:
       operationId: get-stream-course
       description: Get a specific course by stream ID - returns basic metadata.
   '/stream/{id}/cmi5-course':
+    x-tags:
+        - stream
     parameters:
       - in: path
         name: id
@@ -116,6 +122,9 @@ paths:
       operationId: get-stream-course-cmi5
       description: Get a specific course by stream ID - returns full CMI5 Course XML
   '/stream/{id}/results':
+    x-tags:
+        - results
+        - stream
     parameters:
       - in: path
         schema:
@@ -161,6 +170,9 @@ paths:
       operationId: get-course-statements
       description: Get statements related to a specific course
   '/stream/{id}/student/{studentId}/results':
+    x-tags:
+        - stream
+        - results
     parameters:
       - in: path
         schema:
@@ -215,17 +227,17 @@ paths:
 components:
   schemas:
     StreamCourse:
-      title: Course
+      title: Stream Course
       type: object
       description: A course that is available from a learning application, response is a CMI5 Course - we need to decide if we convert the XSD into OpenAPI spec definitions or leave it open here.
       x-tags:
-        - course
+        - stream
     StreamCourseRef:
-      title: Course Reference
+      title: Stream Course Reference
       type: object
       description: A reference to a course provided by a learning application - used to enable searching / filtering.
       x-tags:
-        - course
+        - stream
       properties:
         id:
           type: string
@@ -246,11 +258,11 @@ components:
           items:
             type: string
     CMI5.Course:
-      title: Course
+      title: CMI5 Course
       type: object
       description: A course that is available from a learning application, response is a CMI5 Course - we need to decide if we convert the XSD into OpenAPI spec definitions or leave it open here.
       x-tags:
-        - course
+        - stream
       properties:
         id:
           type: string
