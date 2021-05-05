@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Stream, Progress & Results API
+  title: 'Stream, Progress & Results API'
   version: '1.0'
   description: |-
     This API enables a learning application to provide information about the specific activities available within the application that can be scheduled within an LMS.  This data is always exchanged in the context of a school, as not only can information vary by school (e.g. a learning application may allow material to be modified or configured specific to the needs of that organisation), but this API enables the sharing of progress and results - which is sensitive data and as such we must ensure that it is only shared after approval by the school to exchange this information between the LA and the LMS.
@@ -23,9 +23,9 @@ servers:
   - url: 'https://example.stichtingsem.org/api'
     description: course
 paths:
-  '/stream':
+  /stream:
     x-tags:
-        - stream
+      - stream
     get:
       summary: Get information about all of the courses available within LA based on Stream identifier (this identifier is shared in the catalogue API)
       tags: []
@@ -74,7 +74,7 @@ paths:
       description: Get courses from the catalogue - either all or those matching specific criteria.
   '/stream/{id}':
     x-tags:
-        - stream
+      - stream
     parameters:
       - schema:
           type: string
@@ -93,9 +93,9 @@ paths:
                 $ref: '#/components/schemas/StreamCourse'
       operationId: get-stream-course
       description: Get a specific course by stream ID - returns basic metadata.
-  '/stream/{id}/cmi5-course':
+  '/stream/{id}/cmi5e-course':
     x-tags:
-        - stream
+      - stream
     parameters:
       - in: path
         name: id
@@ -108,7 +108,7 @@ paths:
           Filter to only specific activityTypes
         schema:
           type: string
-        example: reference, excercise, arrangement, user-arrangement
+        example: 'reference, excercise, arrangement, user-arrangement'
     get:
       summary: Get the CMI5 Course content for a given stream
       tags: []
@@ -120,11 +120,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/CMI5.Course'
       operationId: get-stream-course-cmi5
-      description: Get a specific course by stream ID - returns full CMI5 Course XML
+      description: Get a specific course by stream ID - returns full CMI5 Extended Course XML
   '/stream/{id}/results':
     x-tags:
-        - results
-        - stream
+      - results
+      - stream
     parameters:
       - in: path
         schema:
@@ -156,7 +156,7 @@ paths:
             value: 100
             summary: The largest recommended page size
     get:
-      summary: Get XAPI statements related to a specific course, newest statements first
+      summary: 'Get XAPI statements related to a specific course, newest statements first'
       tags: []
       responses:
         '200':
@@ -171,8 +171,8 @@ paths:
       description: Get statements related to a specific course
   '/stream/{id}/student/{studentId}/results':
     x-tags:
-        - stream
-        - results
+      - stream
+      - results
     parameters:
       - in: path
         schema:
@@ -211,7 +211,7 @@ paths:
             value: 100
             summary: The largest recommended page size
     get:
-      summary: Get XAPI statements related to a specific student, newest statements first
+      summary: 'Get XAPI statements related to a specific student, newest statements first'
       tags: []
       responses:
         '200':
@@ -229,7 +229,7 @@ components:
     StreamCourse:
       title: Stream Course
       type: object
-      description: A course that is available from a learning application, response is a CMI5 Course - we need to decide if we convert the XSD into OpenAPI spec definitions or leave it open here.
+      description: 'A course that is available from a learning application, response is a CMI5 Course - we need to decide if we convert the XSD into OpenAPI spec definitions or leave it open here.'
       x-tags:
         - stream
     StreamCourseRef:
@@ -245,9 +245,6 @@ components:
         name:
           type: string
           description: A short name
-        author:
-          type: string
-          description: Description of the author (in cases not the provider of the LA)
         streamId:
           type: string
           description: Description of the author (in cases not the provider of the LA)
@@ -257,10 +254,27 @@ components:
             An array of related products this course applies to
           items:
             type: string
+        levelSubjects:
+          type: array
+          description: The set of levels and subjects that this product is targeted at.
+          items:
+            $ref: '#/components/schemas/LevelSubjects'
+    LevelSubjects:
+      title: LevelSubjects
+      type: object
+      description: The combination of level and subject that indicates what a product is targeted at.
+      properties:
+        level:
+          type: string
+          description: Government level - e.g. havo-1
+        subjectCode:
+          type: string
+          description: |
+            Subject code for specific subject at this level
     CMI5.Course:
       title: CMI5 Course
       type: object
-      description: A course that is available from a learning application, response is a CMI5 Course - we need to decide if we convert the XSD into OpenAPI spec definitions or leave it open here.
+      description: 'A course that is available from a learning application, response is a CMI5 Course - we need to decide if we convert the XSD into OpenAPI spec definitions or leave it open here.'
       x-tags:
         - stream
       properties:
@@ -291,23 +305,20 @@ components:
         - verb
         - object
       properties:
-        id: #recommended
+        id:
           type: string
-        actor: #required
+        actor:
           type: object
-          description:
-            Whom the Statement is about, as an Agent or Group Object.
+          description: 'Whom the Statement is about, as an Agent or Group Object.'
           enum:
             - $ref: '#/components/schemas/Agent'
             - $ref: '#/components/schemas/Group'
-        verb: #required
+        verb:
           type: object
-          description:
-            Action taken by the Actor.
-        object: #required
+          description: Action taken by the Actor.
+        object:
           type: object
-          description:
-            Activity or Agent that is the Object of the Statement.
+          description: Activity or Agent that is the Object of the Statement.
           enum:
             - $ref: '#/components/schemas/Activity'
             - $ref: '#/components/schemas/Agent'
@@ -342,24 +353,24 @@ components:
           enum:
             - $ref: '#/components/schemas/Agent'
             - $ref: '#/components/schemas/Group'
-          description: Filter, only return Statements for which the specified Agent or Group is the Actor or Object of the Statement
+          description: 'Filter, only return Statements for which the specified Agent or Group is the Actor or Object of the Statement'
         verb:
           type: string
-          description: Filter, only return Statements matching the specified Verb id.
+          description: 'Filter, only return Statements matching the specified Verb id.'
         activity:
           type: string
-          description: Filter, only return Statements for which the Object of the Statement is an Activity with the specified id.
+          description: 'Filter, only return Statements for which the Object of the Statement is an Activity with the specified id.'
         registration:
           type: string
-          description: Filter, only return Statements matching the specified registration id. Note that although frequently a unique registration will be used for one Actor assigned to one Activity, this cannot be assumed. If only Statements for a certain Actor or Activity are required, those parameters also need to be specified.
+          description: 'Filter, only return Statements matching the specified registration id. Note that although frequently a unique registration will be used for one Actor assigned to one Activity, this cannot be assumed. If only Statements for a certain Actor or Activity are required, those parameters also need to be specified.'
         related_activities:
           type: boolean
           default: false
-          description: Apply the Activity filter broadly. Include Statements for which the Object, any of the context Activities, or any of those properties in a contained SubStatement match the Activity parameter, instead of that parameter's normal behavior. Matching is defined in the same way it is for the "activity" parameter.
+          description: 'Apply the Activity filter broadly. Include Statements for which the Object, any of the context Activities, or any of those properties in a contained SubStatement match the Activity parameter, instead of that parameter''s normal behavior. Matching is defined in the same way it is for the "activity" parameter.'
         related_agents:
           type: boolean
           default: false
-          description:  Apply the Agent filter broadly. Include Statements for which the Actor, Object, Authority, Instructor, Team, or any of these properties in a contained SubStatement match the Agent parameter, instead of that parameter's normal behavior. Matching is defined in the same way it is for the "agent" parameter.
+          description: 'Apply the Agent filter broadly. Include Statements for which the Actor, Object, Authority, Instructor, Team, or any of these properties in a contained SubStatement match the Agent parameter, instead of that parameter''s normal behavior. Matching is defined in the same way it is for the "agent" parameter.'
         since:
           type: string
           format: date-time
@@ -382,11 +393,11 @@ components:
         attachments:
           type: boolean
           default: false
-          description: If true, the LRS uses the multipart response format and includes all attachments as described previously. If false, the LRS sends the prescribed response with Content-Type application/json and does not send attachment data.
+          description: 'If true, the LRS uses the multipart response format and includes all attachments as described previously. If false, the LRS sends the prescribed response with Content-Type application/json and does not send attachment data.'
         ascending:
           type: boolean
           default: false
-          description: If true, return results in ascending order of stored time
+          description: 'If true, return results in ascending order of stored time'
     Group:
       title: XAPI Group
       type: object
@@ -394,9 +405,9 @@ components:
       title: XAPI Agent
       type: object
       properties:
-        objectType: #optional
+        objectType:
           type: string
-        name: #optional
+        name:
           type: string
     Person:
       title: XAPI Person
@@ -406,7 +417,7 @@ components:
       properties:
         objectType:
           type: string
-          default: "Person"
+          default: Person
         name:
           type: array
           items:
@@ -438,9 +449,9 @@ components:
         - homePage
         - name
       properties:
-        homePage: #required
+        homePage:
           type: string
-        name: #required
+        name:
           type: string
     Verb:
       title: XAPI Verb
@@ -448,30 +459,29 @@ components:
       required:
         - id
       properties:
-        id: #required
+        id:
           type: string
-        display: #recommended
+        display:
           type: object
-          description:
-            The human readable representation of the Verb in one or more languages. This does not have any impact on the meaning of the Statement, but serves to give a human-readable display of the meaning already determined by the chosen Verb.
+          description: 'The human readable representation of the Verb in one or more languages. This does not have any impact on the meaning of the Statement, but serves to give a human-readable display of the meaning already determined by the chosen Verb.'
       example:
-        id: "http://example.com/xapi/verbs#defenestrated"
-        display: {
-          "en-US":"defenestrated",
-          "es" : "defenestrado"}
+        id: 'http://example.com/xapi/verbs#defenestrated'
+        display:
+          en-US: defenestrated
+          es: defenestrado
     Activity:
       title: XAPI Activity
       type: object
       properties:
-        name: #recommended
+        name:
           type: object
-        description: #recommended
+        description:
           type: object
-        type: #recommended
+        type:
           type: object
-        moreInfo: #optional
+        moreInfo:
           type: object
-        extensions: #optional
+        extensions:
           type: object
     StatementReference:
       title: XAPI Statement Reference
@@ -480,25 +490,25 @@ components:
         - objectType
         - id
       properties:
-        objectType: #required
+        objectType:
           type: string
-        id: #required
+        id:
           type: string
     Result:
       title: XAPI Result
       type: object
       properties:
-        score: #optional
+        score:
           $ref: '#/components/schemas/Score'
-        success: #optional
+        success:
           type: boolean
-        completion: #optional
+        completion:
           type: boolean
-        response: #optional
+        response:
           type: string
-        duration: #optional
+        duration:
           type: string
-        extensions: #optional
+        extensions:
           type: object
     Score:
       title: XAPI Score
@@ -566,5 +576,5 @@ components:
           authorizationUrl: ''
           refreshUrl: ''
           scopes:
-            la.course.school: 'Access to available course information available to a school'
+            la.course.school: Access to available course information available to a school
             la.results.school: Access to progress and results for a specific learner at a specific school'
