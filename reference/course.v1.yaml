@@ -155,6 +155,15 @@ paths:
           max:
             value: 100
             summary: The largest recommended page size
+      - in: query
+        name: schoolYear
+        description: School year the results were recorded in
+        schema:
+          type: string
+        examples:
+          default:
+            value: 2020-2021
+            summary: The default value if none is provided          
     get:
       summary: 'Get XAPI statements related to a specific course, newest statements first'
       tags: []
@@ -210,6 +219,15 @@ paths:
           max:
             value: 100
             summary: The largest recommended page size
+      - in: query
+        name: schoolYear
+        description: School year the results were recorded in
+        schema:
+          type: string
+        examples:
+          default:
+            value: 2020-2021
+            summary: The default value if none is provided    
     get:
       summary: 'Get XAPI statements related to a specific student, newest statements first'
       tags: []
