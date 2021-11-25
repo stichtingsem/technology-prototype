@@ -1,0 +1,598 @@
+openapi: 3.0.0
+info:
+  title: 'Stream, Progress & Results API'
+  version: '1.0'
+  description: |-
+    This API enables a learning application to provide information about the specific activities available within the application that can be scheduled within an LMS.  This data is always exchanged in the context of a school, as not only can information vary by school (e.g. a learning application may allow material to be modified or configured specific to the needs of that organisation), but this API enables the sharing of progress and results - which is sensitive data and as such we must ensure that it is only shared after approval by the school to exchange this information between the LA and the LMS.
+
+    ### Event Access
+
+    |Events|Event Data|Rationale|
+    |------|---------|
+    |la.result| // as per XAPI statements |To enable the LMS to receive XAPI statements after registering webhook for a specific school|
+    |la.stream| // as per Course |To enable the LMS to receive updates to course information for a specific school|
+
+    ## Scopes and Data
+
+    - la.stream.school
+    - la.results.school
+  contact:
+    name: Stichting SEM
+    url: 'https://stichtingsem.org/'
+servers:
+  - url: 'https://example.stichtingsem.org/api'
+    description: course
+paths:
+  /stream:
+    x-tags:
+      - stream
+    get:
+      summary: Get information about all of the courses available within LA based on Stream identifier (this identifier is shared in the catalogue API)
+      tags: []
+      parameters:
+        - in: query
+          name: streamId
+          description: |
+            Optionally filter by a specific stream identifier
+          schema:
+            type: string
+            example: havo-1
+        - in: query
+          name: start
+          description: 'Start point for pagination of results, defaults to 0,'
+          schema:
+            type: integer
+            format: int32
+          examples:
+            default:
+              value: 0d
+              summary: The start point for pagination
+        - in: query
+          name: limit
+          description: 'Limit of number of results returned by page, defaults to 20 with max 100.'
+          schema:
+            type: integer
+            maximum: 100
+            format: int32
+          examples:
+            default:
+              value: 20
+              summary: The default value if none is provided
+            max:
+              value: 100
+              summary: The largest recommended page size
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StreamCourseRef'
+      operationId: get-stream-courses
+      description: Get courses from the catalogue - either all or those matching specific criteria.
+  '/stream/{id}':
+    x-tags:
+      - stream
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Get metadata about a specific stream course by ID
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StreamCourse'
+      operationId: get-stream-course
+      description: Get a specific course by stream ID - returns basic metadata.
+  '/stream/{id}/cmi5e-course':
+    x-tags:
+      - stream
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: activityType
+        description: |
+          Filter to only specific activityTypes
+        schema:
+          type: string
+        example: 'reference, excercise, arrangement, user-arrangement'
+    get:
+      summary: Get the CMI5 Course content for a given stream
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CMI5.Course'
+      operationId: get-stream-course-cmi5
+      description: Get a specific course by stream ID - returns full CMI5 Extended Course XML
+  '/stream/{id}/results':
+    x-tags:
+      - results
+      - stream
+    parameters:
+      - in: path
+        schema:
+          type: string
+        name: id
+        required: true
+      - in: query
+        name: start
+        description: 'Start point for pagination of results, defaults to 0,'
+        schema:
+          type: integer
+          format: int32
+        examples:
+          default:
+            value: 0d
+            summary: The start point for pagination
+      - in: query
+        name: limit
+        description: 'Limit of number of results returned by page, defaults to 20 with max 100.'
+        schema:
+          type: integer
+          maximum: 100
+          format: int32
+        examples:
+          default:
+            value: 20
+            summary: The default value if none is provided
+          max:
+            value: 100
+            summary: The largest recommended page size
+      - in: query
+        name: schoolYear
+        description: School year the results were recorded in
+        schema:
+          type: string
+        examples:
+          default:
+            value: 2020-2021
+            summary: The default value if none is provided          
+    get:
+      summary: 'Get XAPI statements related to a specific course, newest statements first'
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Statement'
+      operationId: get-course-statements
+      description: Get statements related to a specific course
+  '/stream/{id}/student/{studentId}/results':
+    x-tags:
+      - stream
+      - results
+    parameters:
+      - in: path
+        schema:
+          type: string
+        name: id
+        description: Unique stream identifier
+        required: true
+      - in: path
+        schema:
+          type: string
+        name: studentId
+        description: Unique student identifier
+        required: true
+      - in: query
+        name: start
+        description: 'Start point for pagination of results, defaults to 0,'
+        schema:
+          type: integer
+          format: int32
+        examples:
+          default:
+            value: 0d
+            summary: The start point for pagination
+      - in: query
+        name: limit
+        description: 'Limit of number of results returned by page, defaults to 20 with max 100.'
+        schema:
+          type: integer
+          maximum: 100
+          format: int32
+        examples:
+          default:
+            value: 20
+            summary: The default value if none is provided
+          max:
+            value: 100
+            summary: The largest recommended page size
+      - in: query
+        name: schoolYear
+        description: School year the results were recorded in
+        schema:
+          type: string
+        examples:
+          default:
+            value: 2020-2021
+            summary: The default value if none is provided    
+    get:
+      summary: 'Get XAPI statements related to a specific student, newest statements first'
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Statement'
+      operationId: get-user-statements
+      description: Get statements for a specific user
+components:
+  schemas:
+    StreamCourse:
+      title: Stream Course
+      type: object
+      description: 'A course that is available from a learning application, response is a CMI5 Course - we need to decide if we convert the XSD into OpenAPI spec definitions or leave it open here.'
+      x-tags:
+        - stream
+    StreamCourseRef:
+      title: Stream Course Reference
+      type: object
+      description: A reference to a course provided by a learning application - used to enable searching / filtering.
+      x-tags:
+        - stream
+      properties:
+        id:
+          type: string
+          description: A unique identifier
+        name:
+          type: string
+          description: A short name
+        streamId:
+          type: string
+          description: Description of the author (in cases not the provider of the LA)
+        relatedProducts:
+          type: array
+          description: |
+            An array of related products this course applies to
+          items:
+            type: string
+        levelSubjects:
+          type: array
+          description: The set of levels and subjects that this product is targeted at.
+          items:
+            $ref: '#/components/schemas/LevelSubjects'
+    LevelSubjects:
+      title: LevelSubjects
+      type: object
+      description: The combination of level and subject that indicates what a product is targeted at.
+      properties:
+        level:
+          type: string
+          description: Government level - e.g. havo-1
+        subjectCode:
+          type: string
+          description: |
+            Subject code for specific subject at this level
+    CMI5.Course:
+      title: CMI5 Course
+      type: object
+      description: 'A course that is available from a learning application, response is a CMI5 Course - we need to decide if we convert the XSD into OpenAPI spec definitions or leave it open here.'
+      x-tags:
+        - stream
+      properties:
+        id:
+          type: string
+          description: A unique identifier
+        name:
+          type: string
+          description: A short name
+        author:
+          type: string
+          description: Description of the author (in cases not the provider of the LA)
+        streamId:
+          type: string
+          description: Description of the author (in cases not the provider of the LA)
+        relatedProducts:
+          type: array
+          description: |
+            An array of related products this course applies to
+          items:
+            type: string
+    Statement:
+      title: XAPI Statement
+      type: object
+      required:
+        - id
+        - actor
+        - verb
+        - object
+      properties:
+        id:
+          type: string
+        actor:
+          type: object
+          description: 'Whom the Statement is about, as an Agent or Group Object.'
+          enum:
+            - $ref: '#/components/schemas/Agent'
+            - $ref: '#/components/schemas/Group'
+        verb:
+          type: object
+          description: Action taken by the Actor.
+        object:
+          type: object
+          description: Activity or Agent that is the Object of the Statement.
+          enum:
+            - $ref: '#/components/schemas/Activity'
+            - $ref: '#/components/schemas/Agent'
+        result:
+          $ref: '#/components/schemas/Result'
+        context:
+          type: object
+        timestamp:
+          type: string
+        stored:
+          type: string
+        authority:
+          type: object
+        version:
+          type: string
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
+    StatementResult:
+      title: XAPI Statement Result
+      type: object
+      properties:
+        statementId:
+          type: string
+          description: Id of Statement to fetch
+        voidedStatementId:
+          type: string
+          description: Id of voided Statement to fetch. see Voided Statements
+        agent:
+          type: object
+          enum:
+            - $ref: '#/components/schemas/Agent'
+            - $ref: '#/components/schemas/Group'
+          description: 'Filter, only return Statements for which the specified Agent or Group is the Actor or Object of the Statement'
+        verb:
+          type: string
+          description: 'Filter, only return Statements matching the specified Verb id.'
+        activity:
+          type: string
+          description: 'Filter, only return Statements for which the Object of the Statement is an Activity with the specified id.'
+        registration:
+          type: string
+          description: 'Filter, only return Statements matching the specified registration id. Note that although frequently a unique registration will be used for one Actor assigned to one Activity, this cannot be assumed. If only Statements for a certain Actor or Activity are required, those parameters also need to be specified.'
+        related_activities:
+          type: boolean
+          default: false
+          description: 'Apply the Activity filter broadly. Include Statements for which the Object, any of the context Activities, or any of those properties in a contained SubStatement match the Activity parameter, instead of that parameter''s normal behavior. Matching is defined in the same way it is for the "activity" parameter.'
+        related_agents:
+          type: boolean
+          default: false
+          description: 'Apply the Agent filter broadly. Include Statements for which the Actor, Object, Authority, Instructor, Team, or any of these properties in a contained SubStatement match the Agent parameter, instead of that parameter''s normal behavior. Matching is defined in the same way it is for the "agent" parameter.'
+        since:
+          type: string
+          format: date-time
+          description: Only Statements stored since the specified Timestamp (exclusive) are returned.
+        until:
+          type: string
+          format: date-time
+          description: Only Statements stored at or before the specified Timestamp are returned.
+        limit:
+          type: integer
+          default: 0
+          description: Maximum number of Statements to return. 0 indicates return the maximum the server will allow.
+        format:
+          type: string
+          default: exact
+          enum:
+            - ids
+            - exact
+            - canonical
+        attachments:
+          type: boolean
+          default: false
+          description: 'If true, the LRS uses the multipart response format and includes all attachments as described previously. If false, the LRS sends the prescribed response with Content-Type application/json and does not send attachment data.'
+        ascending:
+          type: boolean
+          default: false
+          description: 'If true, return results in ascending order of stored time'
+    Group:
+      title: XAPI Group
+      type: object
+    Agent:
+      title: XAPI Agent
+      type: object
+      properties:
+        objectType:
+          type: string
+        name:
+          type: string
+    Person:
+      title: XAPI Person
+      type: object
+      required:
+        - objectType
+      properties:
+        objectType:
+          type: string
+          default: Person
+        name:
+          type: array
+          items:
+            type: string
+            description: List of names of Agents retrieved.
+        mbox:
+          type: array
+          items:
+            type: string
+            description: List of e-mail addresses of Agents retrieved.
+        mbox_sha1sum:
+          type: array
+          items:
+            type: string
+            description: List of the SHA1 hashes of mailto IRIs (such as go in an mbox property).
+        openid*:
+          type: array
+          items:
+            type: string
+            description: List of openids that uniquely identify the Agents retrieved.
+        account*:
+          type: array
+          items:
+            $ref: '#/components/schemas/Account'
+    Account:
+      title: XAPI Account
+      type: object
+      required:
+        - homePage
+        - name
+      properties:
+        homePage:
+          type: string
+        name:
+          type: string
+    Verb:
+      title: XAPI Verb
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+        display:
+          type: object
+          description: 'The human readable representation of the Verb in one or more languages. This does not have any impact on the meaning of the Statement, but serves to give a human-readable display of the meaning already determined by the chosen Verb.'
+      example:
+        id: 'http://example.com/xapi/verbs#defenestrated'
+        display:
+          en-US: defenestrated
+          es: defenestrado
+    Activity:
+      title: XAPI Activity
+      type: object
+      properties:
+        name:
+          type: object
+        description:
+          type: object
+        type:
+          type: object
+        moreInfo:
+          type: object
+        extensions:
+          type: object
+    StatementReference:
+      title: XAPI Statement Reference
+      type: object
+      required:
+        - objectType
+        - id
+      properties:
+        objectType:
+          type: string
+        id:
+          type: string
+    Result:
+      title: XAPI Result
+      type: object
+      properties:
+        score:
+          $ref: '#/components/schemas/Score'
+        success:
+          type: boolean
+        completion:
+          type: boolean
+        response:
+          type: string
+        duration:
+          type: string
+        extensions:
+          type: object
+    Score:
+      title: XAPI Score
+      type: object
+      properties:
+        scaled:
+          type: number
+        raw:
+          type: number
+        min:
+          type: number
+        max:
+          type: number
+    Context:
+      title: XAPI Context
+      type: object
+      properties:
+        registration:
+          type: string
+        instructor:
+          $ref: '#/components/schemas/Agent'
+        team:
+          type: object
+        contextActivities:
+          type: object
+        revision:
+          type: string
+        platform:
+          type: string
+        language:
+          type: string
+        statement:
+          $ref: '#/components/schemas/Statement'
+        extensions:
+          type: object
+    Attachment:
+      title: XAPI Attachment
+      type: object
+      required:
+        - usageType
+        - display
+        - contentType
+        - length
+        - sha2
+      properties:
+        usageType:
+          type: string
+        display:
+          type: object
+        description:
+          type: object
+        contentType:
+          type: string
+        length:
+          type: integer
+        sha2:
+          type: string
+        fileUrl:
+          type: string
+  securitySchemes:
+    API Key - 1:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: ''
+          refreshUrl: ''
+          scopes:
+            la.course.school: Access to available course information available to a school
+            la.results.school: Access to progress and results for a specific learner at a specific school'
