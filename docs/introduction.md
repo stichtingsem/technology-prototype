@@ -25,6 +25,7 @@ The particular mapping of this specification is as follows:
 |[SIS Data](https://stichtingsem.stoplight.io/docs/sem-technology-prototype/reference/sisdata.v1.yaml) | SIS | MP, LA, LMS |
 |[Catalogue Data](https://stichtingsem.stoplight.io/docs/sem-technology-prototype/reference/catalogue.v1.yaml) | LA | MP, LMS |
 |[Entitlements](https://stichtingsem.stoplight.io/docs/sem-technology-prototype/reference/entitlement.v1.yaml) | MP | LMS, LA |
+|[Course](https://stichtingsem.stoplight.io/docs/sem-technology-prototype/reference/course.v1.yaml) | LA | LMS |
 |[Usage](https://stichtingsem.stoplight.io/docs/sem-technology-prototype/reference/usage.v1.yaml) | LA | MP, LMS |
 |[Progress & Results](https://stichtingsem.stoplight.io/docs/sem-technology-prototype/reference/progress-results.v1.yaml) | LA | MP, LMS |
 
