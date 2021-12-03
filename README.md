@@ -1,3 +1,8 @@
+# WARNING : no longer maintained
+This repo has become readonly after the successfull POC in Q12021. The project continues in the https://github.com/stichtingsem/ecosystem repository
+
+
+
 # technology-prototype
 Source code for any services or APIs created in the technology track in Summer 2020
 
